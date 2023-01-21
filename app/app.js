@@ -90,7 +90,10 @@ module.exports = class Application {
      * application routers initializer
      */
     createRoutes() {
-
+        /** import system main router */
+        const {mainRouter} = require("app/router/router");
+        /** initialize system main router */
+        this.#app.use(mainRouter);
     }
 
     /**
