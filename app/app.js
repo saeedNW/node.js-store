@@ -1,4 +1,3 @@
-const createError = require("http-errors");
 /**
  * Application main config class
  */
@@ -29,6 +28,8 @@ module.exports = class Application {
         this.#DB_URI = DB_URI;
         /** initialize application configuration method */
         this.applicationConfiguration();
+        /** initialize application swagger configuration method */
+        this.applicationSwaggerConfiguration();
         /** initialize mongodb configuration method */
         this.mongodbConnection();
         /** initialize server creation method */
@@ -48,6 +49,8 @@ module.exports = class Application {
         /** import morgan module */
         const morgan = require('morgan');
 
+        /** print application runtime environment */
+        console.log(`application running in ${process.env.NODE_ENV} environment`);
         /** initialize morgan for dev environment */
         if (process.env.NODE_ENV === 'development')
             this.#app.use(morgan('dev'));
@@ -58,7 +61,37 @@ module.exports = class Application {
         this.#app.use(this.#express.urlencoded({extended: true}));
         /** initialize express statics */
         this.#app.use(this.#express.static(path.resolve("./public")));
+    }
 
+    /**
+     * application swagger configuration
+     */
+    applicationSwaggerConfiguration() {
+        /** import swagger ui express module */
+        const swaggerUi = require("swagger-ui-express");
+        /** import swagger jsdoc module */
+        const swaggerJsDoc = require("swagger-jsdoc");
+
+        this.#app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerJsDoc({
+            swaggerDefinition: {
+                info: {
+                    title: "node.js store",
+                    version: "1.0.0",
+                    description: "node.js store project",
+                    contact: {
+                        name: "Saeed Norouzi",
+                        url: "https://codding.ir",
+                        email: "saeednorouzi98@gmail.com"
+                    }
+                },
+                servers: [
+                    {
+                        url: "http://localhost:3000"
+                    }
+                ]
+            },
+            apis: ['app/router/**/**.js'],
+        })));
     }
 
     /**
