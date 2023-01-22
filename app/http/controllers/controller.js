@@ -40,4 +40,25 @@ module.exports = class Controller {
             data,
         })
     }
+
+    /**
+     * convert Persian and Arabic numbers to English numbers
+     * @param num
+     * @return {string|string}
+     */
+    fixNumbers(num) {
+        /** remove commas */
+        num = num ? num.replaceAll(",", '') : num;
+
+        let
+            persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g],
+            arabicNumbers = [/٠/g, /١/g, /٢/g, /٣/g, /٤/g, /٥/g, /٦/g, /٧/g, /٨/g, /٩/g];
+
+        if (typeof num === 'string') {
+            for (let i = 0; i < 10; i++) {
+                num = num.replace(persianNumbers[i], i).replace(arabicNumbers[i], i);
+            }
+        }
+        return num ? num.replaceAll(",", '') : num;
+    }
 }
