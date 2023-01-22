@@ -1,15 +1,17 @@
-/** import express module */
-const express = require("express");
-
+const createError = require("http-errors");
 /**
  * Application main config class
  */
 module.exports = class Application {
     /**
+     * import express module
+     */
+    #express = require("express");
+    /**
      * create an app instance from express
      * @type {*|Express}
      */
-    #app = express();
+    #app = this.#express();
     /** application port number */
     #PORT;
     /** application mongodb connection string */
@@ -51,11 +53,11 @@ module.exports = class Application {
             this.#app.use(morgan('dev'));
 
         /** initialize express json body parser */
-        this.#app.use(express.json());
+        this.#app.use(this.#express.json());
         /** initialize express urlencoded body parser */
-        this.#app.use(express.urlencoded({extended: true}));
+        this.#app.use(this.#express.urlencoded({extended: true}));
         /** initialize express statics */
-        this.#app.use(express.static(path.resolve("./public")));
+        this.#app.use(this.#express.static(path.resolve("./public")));
 
     }
 
@@ -119,16 +121,14 @@ module.exports = class Application {
      * application error handler
      */
     errorHandler() {
+        /** import http-error module */
+        const createError = require("http-errors");
+
         /**
          * 404 page not found error handler
          */
         this.#app.use((req, res, next) => {
-            /** return 404 error */
-            return res.status(404).json({
-                status: 404,
-                success: false,
-                message: "آدرس مورد نظر شما یافت نشد"
-            });
+            next(createError.NotFound("آدرس مورد نظر شما یافت نشد"));
         });
 
         /**
@@ -136,24 +136,32 @@ module.exports = class Application {
          */
         this.#app.use((error, req, res, next) => {
             /**
+             * define server internal error
+             */
+            const serverError = createError.InternalServerError();
+
+            /**
              * define error status
              * @type {*|number}
              */
-            const status = error?.status || 500;
+            const status = error?.status || serverError.status;
+
             /**
              * define error message
              * @type {*|string}
              */
-            const message = error?.message || "Internal server error";
+            const message = error?.message || serverError.message;
 
             /** log the error in console */
             console.error(error);
 
             /** return error */
             return res.status(status).json({
-                status,
-                success: false,
-                message,
+                errors: {
+                    status,
+                    success: false,
+                    message,
+                },
             });
         });
     }
