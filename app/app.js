@@ -90,6 +90,19 @@ module.exports = class Application {
 
             console.log("database connected successfully");
         });
+
+        mongoose.connection.on("disconnect", () => {
+            console.log("database disconnect successfully");
+        });
+
+        /**
+         * close mongodb connection
+         */
+        process.on("SIGINT", async () => {
+            await mongoose.connection.close();
+            console.log("database connection closed successfully");
+            process.exit(0);
+        });
     }
 
     /**
