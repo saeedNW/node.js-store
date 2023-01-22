@@ -43,6 +43,12 @@ module.exports = class Application {
     applicationConfiguration() {
         /** import path module */
         const path = require("path");
+        /** import morgan module */
+        const morgan = require('morgan');
+
+        /** initialize morgan for dev environment */
+        if (process.env.NODE_ENV === 'development')
+            this.#app.use(morgan('dev'));
 
         /** initialize express json body parser */
         this.#app.use(express.json());
