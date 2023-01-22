@@ -7,17 +7,7 @@ const {default: mongoose} = require("mongoose");
 const Schema = new mongoose.Schema({
     title: {
         type: String,
-    },
-    text: {
-        type: String,
-    },
-    image: {
-        type: String,
         required: true
-    },
-    position: {
-        type: String,
-        default: "main"
     },
 }, {
     timestamps: true
@@ -26,9 +16,9 @@ const Schema = new mongoose.Schema({
 /**
  * create mongoose model from the schema
  */
-const sliderModel = mongoose.model("slider", Schema);
+const categoryModel = mongoose.model("category", Schema);
 
 /** export schema */
 module.exports = {
-    sliderModel
+    categoryModel
 }
