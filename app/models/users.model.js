@@ -35,7 +35,7 @@ const Schema = new mongoose.Schema({
             code: {
                 type: String
             },
-            expire: {
+            expiresIn: {
                 type: Date
             }
         },
