@@ -51,22 +51,30 @@ class UserAuthController extends Controller {
 
     async saveUser(phone, code) {
         /**
+         * define opt option data
+         * @type {{expiresIn: number, code}}
+         */
+        const opt = {
+            code,
+            expiresIn: new Date().getTime() + 2 * 60 * 1000 /** 2 Min */
+        }
+
+        /**
          * check user existence
          * @type {boolean}
          */
         const userExistence = await this.checkUserExistence(phone);
 
-        if (userExistence) {
-            await this.updateUser(phone, {
-                otp: {
-                    code,
-                    expiresIn: new Date().getTime() + 2 * 60 * 1000 /** 2 Min */
-                }
-            });
+        /**
+         * update user if it exists
+         */
+        if (userExistence)
+            return (await this.updateUser(phone, {...opt}));
 
-        }
-
-        console.log("user exists");
+        /**
+         * create new user if user wasn't found
+         */
+        return (await userModel.create({phone, opt}));
     }
 
     /**

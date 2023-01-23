@@ -22,13 +22,10 @@ const Schema = new mongoose.Schema({
     },
     email: {
         type: String,
-        lowercase: true,
-        required: true,
-        unique: true
+        lowercase: true
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
     otp: {
         type: {
@@ -57,7 +54,7 @@ const Schema = new mongoose.Schema({
     },
     roles: {
         type: [String],
-        default: ["USER"]
+        default: ["USERS"]
     }
 }, {
     timestamps: true
