@@ -14,7 +14,12 @@ const getOtpSchema = Joi.object({
     phone : Joi.string().required().length(11).pattern(PhoneRegEx).error(createError.BadRequest("شماره موبایل وارد شده صحیح نمیباشد"))
 });
 
+const checkOtpSchema = Joi.object({
+    phone : Joi.string().required().length(11).pattern(PhoneRegEx).error(createError.BadRequest("شماره موبایل وارد شده صحیح نمیباشد")),
+    code : Joi.string().min(4).max(6).error(createError.BadRequest("کد ارسال شده صحیح نمیباشد"))
+})
 
 module.exports = {
-    getOtpSchema
+    getOtpSchema,
+    checkOtpSchema
 }

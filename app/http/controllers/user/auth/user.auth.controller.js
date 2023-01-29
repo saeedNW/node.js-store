@@ -1,11 +1,11 @@
 /** import main controller */
 const Controller = require("app/http/controllers/controller");
 /** import user auth validator schema */
-const {getOtpSchema} = require("app/http/validators/user/auth.schema");
+const {getOtpSchema, checkOtpSchema} = require("app/http/validators/user/auth.schema");
 /** import http-error module */
 const createError = require("http-errors");
 /** import helper functions */
-const {randomNumberGenerator} = require("app/utils/functions");
+const {randomNumberGenerator, signAccessToken} = require("app/utils/functions");
 /** import models */
 const {userModel} = require("app/models");
 /** import constants */
@@ -22,7 +22,7 @@ class UserAuthController extends Controller {
      * @param next
      * @returns {Promise<void>}
      */
-    async loginProcess(req, res, next) {
+    async getOTPProcess(req, res, next) {
         /**
          * get user phone number and fix persian and arabic numbers
          * @type {string}
@@ -56,7 +56,58 @@ class UserAuthController extends Controller {
              */
             this.sendSuccessResponse(req, res, 200, "کد اعتبار سنجی با موفقیت ارسال شد", {code, phone});
         } catch (err) {
-            next(createError.BadRequest(err.message));
+            next(err);
+        }
+    }
+
+    async checkOTPProcess(req, res, next) {
+        try {
+            /**
+             * user input validation
+             */
+            await checkOtpSchema.validateAsync(req.body);
+
+            /**
+             * get user phone number and fix persian and arabic numbers
+             * @type {string}
+             */
+            const phone = this.fixNumbers(req.body.phone);
+            /**
+             * get user verification code and fix persian and arabic numbers
+             * @type {string}
+             */
+            const code = this.fixNumbers(req.body.code);
+
+            /** get user data from database */
+            const user = await userModel.findOne({phone});
+
+            /** return error if user was not found */
+            if (!user)
+                throw createError.NotFound("کاربری با این شماره تماس یافت نشد");
+
+            /** return error if user otp was not correct */
+            if (user.otp.code !== code)
+                throw createError.Unauthorized("کد وارد شده صحیح نمی باشد");
+
+            /**
+             * get current date
+             * @type {Date}
+             */
+            const now = new Date();
+
+            /** return error if otp was expired */
+            if (user.otp.expires < now)
+                throw createError.Unauthorized("کد وارد شده فاقد اعتبار می باشد");
+
+            /**
+             * create user access token
+             * @type {*}
+             */
+            const accessToken = await signAccessToken(user._id);
+
+            this.sendSuccessResponse(req, res, 200, undefined, {accessToken});
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -89,7 +140,7 @@ class UserAuthController extends Controller {
             return (await this.updateUser(phone, {otp}));
 
         /**
-         * create new user if user wasn't found
+         * create new user if user wasn't found,
          */
         return (await userModel.create({phone, otp}));
     }
