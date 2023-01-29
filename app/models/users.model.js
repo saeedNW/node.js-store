@@ -32,13 +32,13 @@ const Schema = new mongoose.Schema({
             code: {
                 type: String
             },
-            expiresIn: {
+            expires: {
                 type: Date
             }
         },
         default: {
             code: 0,
-            expire: 0,
+            expires: 0,
         }
     },
     invoices: {

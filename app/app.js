@@ -190,11 +190,9 @@ module.exports = class Application {
 
             /** return error */
             return res.status(status).json({
-                errors: {
-                    status,
-                    success: false,
-                    message,
-                },
+                status,
+                success: false,
+                errors: message
             });
         });
     }

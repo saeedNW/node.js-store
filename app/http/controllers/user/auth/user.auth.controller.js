@@ -8,6 +8,8 @@ const createError = require("http-errors");
 const {randomNumberGenerator} = require("app/utils/functions");
 /** import models */
 const {userModel} = require("app/models");
+/** import constants */
+const {userConstants} = require("app/utils/constans");
 
 /**
  * @class UserAuthController
@@ -30,9 +32,8 @@ class UserAuthController extends Controller {
         try {
             /**
              * user input validation
-             * @type {*}
              */
-            const validationResult = await getOtpSchema.validateAsync(req.body);
+            await getOtpSchema.validateAsync(req.body);
 
             /**
              * generate a random 5 digit number for phone verification
@@ -41,22 +42,38 @@ class UserAuthController extends Controller {
             const code = randomNumberGenerator();
 
             /**
+             * save/update user in database
+             * @type {*}
+             */
+            const user = await this.saveUser(phone, code);
+
+            /** return error if user creation failed */
+            if (!user)
+                throw createError.Unauthorized("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+
+            /**
              * send success message
              */
-            this.sendSuccessResponse(req, res, 200, "شما با موفقیت وارد حساب خود شدید");
+            this.sendSuccessResponse(req, res, 200, "کد اعتبار سنجی با موفقیت ارسال شد", {code, phone});
         } catch (err) {
             next(createError.BadRequest(err.message));
         }
     }
 
+    /**
+     * save/update user in database
+     * @param phone user phone number
+     * @param code user verification code
+     * @returns {Promise<*>}
+     */
     async saveUser(phone, code) {
         /**
          * define opt option data
-         * @type {{expiresIn: number, code}}
+         * @type {{expires: *, code}}
          */
-        const opt = {
+        const otp = {
             code,
-            expiresIn: new Date().getTime() + 2 * 60 * 1000 /** 2 Min */
+            expires: userConstants.EXPIRES
         }
 
         /**
@@ -69,12 +86,12 @@ class UserAuthController extends Controller {
          * update user if it exists
          */
         if (userExistence)
-            return (await this.updateUser(phone, {...opt}));
+            return (await this.updateUser(phone, {otp}));
 
         /**
          * create new user if user wasn't found
          */
-        return (await userModel.create({phone, opt}));
+        return (await userModel.create({phone, otp}));
     }
 
     /**
