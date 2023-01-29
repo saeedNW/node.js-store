@@ -1,6 +1,7 @@
 /**
  * Application main config class
  */
+const redisClient = require("./utils/init.redis");
 module.exports = class Application {
     /**
      * import express module
@@ -34,6 +35,8 @@ module.exports = class Application {
         this.applicationSwaggerConfiguration();
         /** initialize mongodb configuration method */
         this.mongodbConnection();
+        /** initialized redis configuration method */
+        this.redisConnection();
         /** initialize server creation method */
         this.createServer();
         /** initialize route creation method */
@@ -127,11 +130,11 @@ module.exports = class Application {
             /** throw error if there was any */
             if (err) throw err;
 
-            console.log("database connected successfully");
+            console.log("MongoDB connected successfully");
         });
 
         mongoose.connection.on("disconnect", () => {
-            console.log("database disconnect successfully");
+            console.log("MongoDB disconnected successfully");
         });
 
         /**
@@ -139,9 +142,24 @@ module.exports = class Application {
          */
         process.on("SIGINT", async () => {
             await mongoose.connection.close();
-            console.log("database connection closed successfully");
+            console.log("MongoDB connection closed successfully");
             process.exit(0);
         });
+    }
+
+    /**
+     * application redis database connection config
+     */
+    redisConnection() {
+        /** import and initialize redis config */
+        const redisClient = require("app/utils/init.redis");
+
+        /** test redis database connection */
+        (async () => {
+            await redisClient.set("name", "saeed norouzi");
+            const value = await redisClient.get("name");
+            console.log(value)
+        })()
     }
 
     /**
