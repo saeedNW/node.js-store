@@ -26,6 +26,8 @@ module.exports = class Application {
         this.#PORT = PORT;
         /** set application mongodb connection string */
         this.#DB_URI = DB_URI;
+        /** print application runtime environment */
+        console.log(`application running in ${process.env.NODE_ENV} environment`);
         /** initialize application configuration method */
         this.applicationConfiguration();
         /** initialize application swagger configuration method */
@@ -48,13 +50,15 @@ module.exports = class Application {
         const path = require("path");
         /** import morgan module */
         const morgan = require('morgan');
+        /** import cors module */
+        const cors = require("cors");
 
-        /** print application runtime environment */
-        console.log(`application running in ${process.env.NODE_ENV} environment`);
         /** initialize morgan for dev environment */
         if (process.env.NODE_ENV === 'development')
             this.#app.use(morgan('dev'));
 
+        /** initialize cors module */
+        this.#app.use(cors());
         /** initialize express json body parser */
         this.#app.use(this.#express.json());
         /** initialize express urlencoded body parser */
