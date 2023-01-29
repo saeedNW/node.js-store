@@ -5,7 +5,12 @@ const {getOtpSchema, checkOtpSchema} = require("app/http/validators/user/auth.sc
 /** import http-error module */
 const createError = require("http-errors");
 /** import helper functions */
-const {randomNumberGenerator, signAccessToken} = require("app/utils/functions");
+const {
+    randomNumberGenerator,
+    signAccessToken,
+    refreshTokenVerification,
+    signRefreshToken
+} = require("app/utils/functions");
 /** import models */
 const {userModel} = require("app/models");
 /** import constants */
@@ -60,6 +65,13 @@ class UserAuthController extends Controller {
         }
     }
 
+    /**
+     * check user otp code
+     * @param req
+     * @param res
+     * @param next
+     * @returns {Promise<void>}
+     */
     async checkOTPProcess(req, res, next) {
         try {
             /**
@@ -105,7 +117,58 @@ class UserAuthController extends Controller {
              */
             const accessToken = await signAccessToken(user._id);
 
-            this.sendSuccessResponse(req, res, 200, undefined, {accessToken});
+            /**
+             * create user refresh token
+             * @type {*}
+             */
+            const refreshToken = await signRefreshToken(user._id);
+
+            this.sendSuccessResponse(req, res, 201, undefined, {
+                accessToken,
+                refreshToken
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    /**
+     * verify and recreate user refresh and access token
+     * @param req
+     * @param res
+     * @param next
+     * @returns {Promise<void>}
+     */
+    async refreshTokenGenerator(req, res, next) {
+        /** extract refresh token from request body */
+        const {refreshToken} = req.body;
+
+        try {
+            /**
+             * verify refresh token.
+             * extract phone number from refresh token
+             */
+            const phone = await refreshTokenVerification(refreshToken);
+
+            /** get user data from database */
+            const user = await userModel.findOne({phone});
+
+            /**
+             * create user access token
+             * @type {*}
+             */
+            const accessToken = await signAccessToken(user._id);
+
+            /**
+             * create user refresh token
+             * @type {*}
+             */
+            const newRefreshToken = await signRefreshToken(user._id);
+
+            this.sendSuccessResponse(req, res, 200, undefined, {
+                accessToken,
+                refreshToken: newRefreshToken
+            });
         } catch (err) {
             next(err);
         }

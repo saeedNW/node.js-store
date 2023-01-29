@@ -23,7 +23,16 @@ async function accessTokenVerification(req, res, next) {
          * verify jwt token
          * @type {*}
          */
-        const {phone} = JWT.verify(token, JWTConstants.ACCESS_TOKEN_SECRET_KEY);
+        const payload = JWT.verify(token, JWTConstants.ACCESS_TOKEN_SECRET_KEY);
+
+        /**
+         * extract phone number from payload
+         */
+        const {phone} = payload || {};
+
+        /** return error if phone was not exists in payload */
+        if (!phone)
+            throw createError.Unauthorized("کد وارد شده صحیح نمی باشد");
 
         /** get user data from database */
         const user = await userModel.findOne({phone}, {password: 0, otp: 0});
@@ -37,6 +46,7 @@ async function accessTokenVerification(req, res, next) {
 
         return next();
     } catch (err) {
+        console.log(err);
         next(createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید"));
     }
 }
