@@ -187,7 +187,7 @@ class UserAuthController extends Controller {
          */
         const otp = {
             code,
-            expires: userConstants.EXPIRES
+            expires: (new Date().getTime() + 2 * 60 * 1000) /** 2 Min */
         }
 
         /**
