@@ -28,6 +28,9 @@ class AdminCategoryController extends Controller {
              */
             await addCategorySchema.validateAsync(req.body);
 
+            /** check if category already exists */
+            if (await categoryModel.findOne({title})) throw createError.BadRequest("این دسته بندی از پیش وجود دارد");
+
             /** get parent category */
             const parentCategory = (parent && (parent !== "" || parent !== " ")) ? await categoryModel.findById(parent) : undefined;
 
@@ -74,7 +77,7 @@ class AdminCategoryController extends Controller {
 
         try {
             /** check if the given id is a valid mongodb ObjectId */
-            this.mongoObjectIdValidation(req, categoryId);
+            this.mongoObjectIdValidation(categoryId);
 
             /** get category from database by id */
             const category = await categoryModel.findById(categoryId);
@@ -109,8 +112,11 @@ class AdminCategoryController extends Controller {
      */
     async getAllCategories(req, res, next) {
         try {
-            /** get all the categories from database */
-            const categories = await categoryModel.aggregate([
+            /**
+             * get all the categories from database
+             * get data up to one step deep
+             */
+            const oneLevelCategories = await categoryModel.aggregate([
                 {
                     '$lookup': {
                         'from': 'categories',
@@ -132,7 +138,35 @@ class AdminCategoryController extends Controller {
                 }
             ]);
 
-            this.sendSuccessResponse(req, res, 200, undefined, {categories});
+            /**
+             * get all the categories from database
+             * get data up to five step deep
+             */
+            const fineLevelCategories = await categoryModel.aggregate([
+                {
+                    '$graphLookup': {
+                        'from': 'categories',
+                        'startWith': '$_id',
+                        'connectFromField': '_id',
+                        'connectToField': 'parent',
+                        'maxDepth': 5,
+                        'depthField': 'depth',
+                        'as': "children"
+                    }
+                }, {
+                    '$project': {
+                        '__v': 0,
+                        'children.__v': 0,
+                    }
+                },
+                {
+                    '$match': {
+                        'parent': undefined
+                    }
+                }
+            ]);
+
+            this.sendSuccessResponse(req, res, 200, undefined, {oneLevelCategories, fineLevelCategories});
         } catch (err) {
             next(err);
         }
@@ -151,10 +185,35 @@ class AdminCategoryController extends Controller {
 
         try {
             /** check if the given id is a valid mongodb ObjectId */
-            this.mongoObjectIdValidation(req, categoryId);
+            this.mongoObjectIdValidation(categoryId);
 
             /** get category from database by id */
-            const category = await categoryModel.findById(categoryId);
+            const category = await categoryModel.aggregate([
+                {
+                    '$match': {
+                        '_id': this.convertStringToMongoObjectId(categoryId)
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'categories',
+                        'localField': '_id',
+                        'foreignField': 'parent',
+                        'as': "children"
+                    }
+                }, {
+                    '$project': {
+                        '__v': 0,
+                        'children.__v': 0,
+                        'children.parent': 0
+                    }
+                }
+            ]);
+
+            console.log(category)
+
+            /** return error if category was not found */
+            if (!category)
+                throw createError.NotFound("دسته بندی درخواست داده شده یافت نشد");
 
             this.sendSuccessResponse(req, res, 200, undefined, {category});
         } catch (err) {
@@ -196,7 +255,7 @@ class AdminCategoryController extends Controller {
 
         try {
             /** check if the given id is a valid mongodb ObjectId */
-            this.mongoObjectIdValidation(req, parent);
+            this.mongoObjectIdValidation(parent);
 
             /** get categories with given parent id */
             const categories = await categoryModel.find({parent}, {__v: 0, parent: 0});

@@ -21,11 +21,11 @@ module.exports = class Controller {
 
     /**
      * validation of mongodb ObjectID structure
-     * @param req
      * @param _id
+     * @param req
      * @return {boolean}
      */
-    mongoObjectIdValidation(req, _id) {
+    mongoObjectIdValidation(_id, req = undefined) {
         /**
          * validation of given mongodb object id
          * @type {boolean}
@@ -35,11 +35,23 @@ module.exports = class Controller {
         /** return error if given id is not a valid id */
         if (!validate) {
             /** remove uploaded file if request file exists */
-            if (req.file)
-                fs.unlinkSync(req.file.path);
+            if (req?.file)
+                fs.unlinkSync(req?.file?.path);
 
             throw createError.UnprocessableEntity("شناسه وارد شده صحیح نمی باشد");
         }
+    }
+
+    /**
+     * convert string to mongodb Object id
+     * @param id
+     * @returns {*}
+     */
+    convertStringToMongoObjectId(id) {
+        /** check if given id is a valid mongodb object id */
+        this.mongoObjectIdValidation(id);
+        /** convert id from string to mongodb object id */
+        return mongoose.Types.ObjectId(id);
     }
 
     /**
