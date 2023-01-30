@@ -9,6 +9,10 @@ const Schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    parent: {
+        type: mongoose.Types.ObjectId,
+        default: undefined
+    }
 }, {
     timestamps: true
 });

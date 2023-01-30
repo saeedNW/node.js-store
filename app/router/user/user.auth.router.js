@@ -30,6 +30,8 @@ const {UserAuthController} = require("app/http/controllers/user/auth/user.auth.c
  *              description: Bad request
  *          401:
  *              description: Unauthorized
+ *          422:
+ *              description: Validation error
  *          500:
  *              descriptions: Internal Server Error
  */
@@ -60,6 +62,8 @@ userAuthRouter.post("/get-otp", UserAuthController.getOTPProcess);
  *              description: Bad request
  *          401:
  *              description: Unauthorized
+ *          422:
+ *              description: Validation error
  *          500:
  *              descriptions: Internal Server Error
  */
@@ -85,6 +89,8 @@ userAuthRouter.post("/check-otp", UserAuthController.checkOTPProcess);
  *              description: Bad request
  *          401:
  *              description: Unauthorized
+ *          422:
+ *              description: Validation error
  *          500:
  *              descriptions: Internal Server Error
  */

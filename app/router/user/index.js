@@ -5,7 +5,7 @@
 const userMainRouter = require("express").Router();
 
 /** import user auth router */
-const {userAuthRouter} = require("./auth.router");
+const {userAuthRouter} = require("./user.auth.router");
 /** initialize user auth router */
 userMainRouter.use("/auth", userAuthRouter);
 

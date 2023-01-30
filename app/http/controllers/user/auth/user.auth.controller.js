@@ -1,7 +1,7 @@
 /** import main controller */
 const Controller = require("app/http/controllers/controller");
 /** import user auth validator schema */
-const {getOtpSchema, checkOtpSchema} = require("app/http/validators/user/auth.schema");
+const {getOtpSchema, checkOtpSchema} = require("app/http/validators/user/user.auth.schema");
 /** import http-error module */
 const createError = require("http-errors");
 /** import helper functions */
@@ -13,8 +13,6 @@ const {
 } = require("app/utils/functions");
 /** import models */
 const {userModel} = require("app/models");
-/** import constants */
-const {userConstants} = require("app/utils/constans");
 
 /**
  * @class UserAuthController
