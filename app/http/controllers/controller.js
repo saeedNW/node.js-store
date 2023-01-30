@@ -1,5 +1,11 @@
 /** import autoBind module */
 const autoBind = require("auto-bind");
+/** import mongoose module */
+const {default: mongoose} = require("mongoose");
+/** import file system module */
+const fs = require("fs");
+/** import http error module */
+const createError = require("http-errors");
 
 /**
  * main controller class
@@ -14,14 +20,26 @@ module.exports = class Controller {
     }
 
     /**
-     * create and throw errors
-     * @param {string} message error message
-     * @param {number} status error status
+     * validation of mongodb ObjectID structure
+     * @param req
+     * @param _id
+     * @return {boolean}
      */
-    throwNewError(message, status = 500) {
-        const error = new Error(message);
-        error.status = status;
-        throw error;
+    mongoObjectIdValidation(req, _id) {
+        /**
+         * validation of given mongodb object id
+         * @type {boolean}
+         */
+        const validate = mongoose.Types.ObjectId.isValid(_id);
+
+        /** return error if given id is not a valid id */
+        if (!validate) {
+            /** remove uploaded file if request file exists */
+            if (req.file)
+                fs.unlinkSync(req.file.path);
+
+            throw createError.UnprocessableEntity("شناسه وارد شده صحیح نمی باشد");
+        }
     }
 
     /**
