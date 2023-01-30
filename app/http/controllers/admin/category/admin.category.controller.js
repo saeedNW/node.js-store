@@ -142,7 +142,7 @@ class AdminCategoryController extends Controller {
              * get all the categories from database
              * get data up to five step deep
              */
-            const fineLevelCategories = await categoryModel.aggregate([
+            const fiveLevelCategories = await categoryModel.aggregate([
                 {
                     '$graphLookup': {
                         'from': 'categories',
@@ -166,7 +166,25 @@ class AdminCategoryController extends Controller {
                 }
             ]);
 
-            this.sendSuccessResponse(req, res, 200, undefined, {oneLevelCategories, fineLevelCategories});
+            /**
+             * get all the categories from database
+             * using populate option.
+             * populate has been set in model pre find method.
+             */
+            const populatedCategories = await categoryModel.find({parent: undefined}, {__v: 0});
+
+            /**
+             * get all the categories from database
+             * getting all categories without populate
+             */
+            const categoriesWithoutPopulate = await categoryModel.aggregate([{'$match': {}}]);
+
+            this.sendSuccessResponse(req, res, 200, undefined, {
+                oneLevelCategories,
+                fiveLevelCategories,
+                populatedCategories,
+                categoriesWithoutPopulate
+            });
         } catch (err) {
             next(err);
         }

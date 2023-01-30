@@ -11,11 +11,36 @@ const Schema = new mongoose.Schema({
     },
     parent: {
         type: mongoose.Types.ObjectId,
-        default: undefined
+        default: undefined,
+        ref: "category"
     }
 }, {
-    timestamps: true
+    /** activate timestamp (createdAt/updatedAt) */
+    timestamps: true,
+    /** activate virtuals */
+    toJSON: {virtuals: true},
+    /** remove external id option */
+    id: false,
 });
+
+/** define schema virtual */
+Schema.virtual("children", {
+    ref: "category",
+    localField: "_id",
+    foreignField: "parent"
+});
+
+/**
+ * auto populate function
+ * @param next
+ */
+function autoPopulate(next) {
+    this.populate({path: "children", select: {__v: 0}});
+    next();
+}
+
+/** define schema pre find and findOne method */
+Schema.pre("findOne", autoPopulate).pre("find", autoPopulate);
 
 /**
  * create mongoose model from the schema
