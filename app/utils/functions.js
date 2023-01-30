@@ -5,8 +5,9 @@ const JWT = require("jsonwebtoken");
 /** import http-error module */
 const createError = require("http-errors");
 /** import constants */
-const {JWTConstants} = require("app/utils/constans");
-const {userModel} = require("../models");
+const {JWTConstants} = require("./constans");
+/** import redis client configs */
+const redisClient = require("./init.redis");
 
 /**
  * 5 digit random number generator
@@ -46,7 +47,7 @@ async function signAccessToken(userId) {
         };
 
         /**
-         * create and return json web token
+         * create and return access token
          */
         return JWT.sign(payload, JWTConstants.ACCESS_TOKEN_SECRET_KEY, options);
     } catch (err) {
@@ -84,12 +85,17 @@ async function signRefreshToken(userId) {
         };
 
         /**
-         * create and return json web token
+         * create refresh token
          */
-        return JWT.sign(payload, JWTConstants.REFRESH_TOKEN_SECRET_KEY, options);
+        const refreshToken = JWT.sign(payload, JWTConstants.REFRESH_TOKEN_SECRET_KEY, options);
+
+        /** save refresh token in redis */
+        await redisClient.SETEX(userId.valueOf(), (360 * 24 * 60 * 60), refreshToken);
+
+        return refreshToken;
     } catch (err) {
         console.log(err);
-        return createError.InternalServerError();
+        throw createError.InternalServerError();
     }
 }
 
@@ -116,11 +122,18 @@ async function refreshTokenVerification(token) {
             throw createError.Unauthorized("کد وارد شده صحیح نمی باشد");
 
         /** get user data from database */
-        const user = await userModel.findOne({phone}, {password: 0, otp: 0});
+        const user = await model.userModel.findOne({phone}, {password: 0, otp: 0});
 
         /** return error if user was not found */
         if (!user)
             throw createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید");
+
+        /** get refresh token from redis */
+        const refreshToken = await redisClient.get(user._id.valueOf() || "key_default");
+
+        /** return error if user's refresh token wasn't match with redis refresh token */
+        if (token !== refreshToken)
+            throw createError.Unauthorized("ورود به حساب کاربری با مشکل مواجه شد لطفا مجددا تلاش نمایید");
 
         return phone;
     } catch (err) {
