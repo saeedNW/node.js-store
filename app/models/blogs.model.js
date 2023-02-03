@@ -82,7 +82,11 @@ const Schema = new mongoose.Schema({
         default: []
     },
 }, {
-    timestamps: true
+    timestamps: true,
+    /** activate virtuals */
+    toJSON: {virtuals: true},
+    /** remove external id option */
+    id: false,
 });
 
 /**

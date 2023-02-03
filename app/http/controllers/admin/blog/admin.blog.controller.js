@@ -87,7 +87,47 @@ class AdminBlogController extends Controller {
      */
     async getAllBlogs(req, res, next) {
         try {
-            this.sendSuccessResponse(req, res, 200, undefined, {});
+            /** get blogs from database */
+            const blogs = await blogModel.aggregate([
+                {
+                    '$lookup': {
+                        'from': 'users',
+                        'localField': 'author',
+                        'foreignField': '_id',
+                        'let': {'id': '$_id'},
+                        'pipeline': [{
+                            '$project': {
+                                'first_name': 1,
+                                'last_name': 1,
+                                'username': 1,
+                            }
+                        }],
+                        'as': 'author'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$author'
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'categories',
+                        'localField': 'category',
+                        'foreignField': '_id',
+                        'as': 'category'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$category'
+                    }
+                }, {
+                    '$project': {
+                        '__v': 0,
+                        'category.__v': 0,
+                    }
+                }
+            ]);
+
+            this.sendSuccessResponse(req, res, 200, undefined, {blogs});
         } catch (err) {
             next(err);
         }
