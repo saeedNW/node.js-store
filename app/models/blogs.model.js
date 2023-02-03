@@ -58,8 +58,8 @@ const Schema = new mongoose.Schema({
         type: [String],
         default: []
     },
-    categories: {
-        type: [mongoose.Types.ObjectId],
+    category: {
+        type: mongoose.Types.ObjectId,
         required: true
     },
     comments: {
