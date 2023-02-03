@@ -8,6 +8,10 @@ const createError = require("http-errors");
 const {JWTConstants} = require("./constans");
 /** import redis client configs */
 const redisClient = require("./init.redis");
+/** import path module */
+const path = require("path");
+/** import file system module */
+const fs = require("fs");
 
 /**
  * 5 digit random number generator
@@ -142,9 +146,21 @@ async function refreshTokenVerification(token) {
     }
 }
 
+function removeFile(fileAddress) {
+    /**
+     * create file absolute path
+     * @type {string}
+     */
+    const fileAbsolutePath = path.join(__dirname, "..", "..", "public", fileAddress);
+
+    /** remove file */
+    fs.unlinkSync(fileAbsolutePath);
+}
+
 module.exports = {
     randomNumberGenerator,
     signAccessToken,
     signRefreshToken,
-    refreshTokenVerification
+    refreshTokenVerification,
+    removeFile,
 }

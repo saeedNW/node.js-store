@@ -2,6 +2,35 @@
 const {default: mongoose} = require("mongoose");
 
 /**
+ * define comments schema
+ */
+const commentSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Types.ObjectId,
+        ref: "users",
+        required: true
+    },
+    comment: {
+        type: String,
+        required: true
+    },
+    parent: {
+        type: mongoose.Types.ObjectId,
+        default: undefined,
+        ref: "comment"
+    }
+}, {
+    /** activate timestamp (createdAt/updatedAt) */
+    timestamps: true,
+    /** activate virtuals */
+    toJSON: {virtuals: true},
+    /** remove external id option */
+    id: false,
+    /** remove version key */
+    versionKey: false
+});
+
+/**
  * define blogs schema
  */
 const Schema = new mongoose.Schema({
@@ -10,6 +39,10 @@ const Schema = new mongoose.Schema({
         required: true
     },
     title: {
+        type: String,
+        required: true
+    },
+    summary: {
         type: String,
         required: true
     },
@@ -26,23 +59,26 @@ const Schema = new mongoose.Schema({
         default: []
     },
     categories: {
-        type: mongoose.Types.ObjectId,
+        type: [mongoose.Types.ObjectId],
         required: true
     },
     comments: {
-        type: [],
+        type: [commentSchema],
         default: []
     },
     likes: {
         type: [mongoose.Types.ObjectId],
+        ref: "users",
         default: []
     },
     dislike: {
         type: [mongoose.Types.ObjectId],
+        ref: "users",
         default: []
     },
     bookmark: {
         type: [mongoose.Types.ObjectId],
+        ref: "users",
         default: []
     },
 }, {

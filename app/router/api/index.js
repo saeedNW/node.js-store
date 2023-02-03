@@ -5,8 +5,6 @@
 const indexRouter = require("express").Router();
 /** import home controller */
 const HomeController = require("app/http/controllers/api/home.controller");
-/** import access token verification */
-const {accessTokenVerification} = require("app/http/middlewares/verify.access.token.middleware");
 
 /**
  * @swagger
@@ -22,11 +20,6 @@ const {accessTokenVerification} = require("app/http/middlewares/verify.access.to
  *      summary: application index page route
  *      description: get application index page data
  *      tags: [public]
- *      parameters:
- *          - name: Authorization
- *            description: user authorization token
- *            in: header
- *            example: Bearer Your_access_token
  *      responses:
  *          200:
  *              description: request ended successfully
@@ -35,7 +28,7 @@ const {accessTokenVerification} = require("app/http/middlewares/verify.access.to
  *          500:
  *              description: server internal error
  */
-indexRouter.get("/", accessTokenVerification, HomeController.indexPage);
+indexRouter.get("/", HomeController.indexPage);
 
 module.exports = {
     indexRouter
