@@ -114,6 +114,34 @@ adminBlogRouter.post("/add", uploadFile.single("image"), stringToArray("tags"), 
  */
 adminBlogRouter.get("/single/:blogId", AdminBlogController.getSingleBlog);
 
+/**
+ * @swagger
+ *  /admin/blogs/remove/{blogId}:
+ *
+ *      delete:
+ *          summary: remove blog post
+ *          description: remove single post using its _id
+ *          tags: [admin-blog]
+ *          parameters:
+ *              -   name: blogId
+ *                  description: blog post _id
+ *                  in: path
+ *                  required: true
+ *                  type: string
+ *          responses:
+ *              200:
+ *                  description: successful
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized
+ *              422:
+ *                  description: Validation error
+ *              500:
+ *                  description: Internal server error
+ */
+adminBlogRouter.delete("/remove/:blogId", AdminBlogController.removeBlog);
+
 
 module.exports = {
     adminBlogRouter

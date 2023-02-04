@@ -73,8 +73,23 @@ class AdminBlogController extends Controller {
      * @returns {Promise<void>}
      */
     async removeBlog(req, res, next) {
-        try {
+        /** get blog id from request parameters */
+        const {blogId} = req.params;
 
+        try {
+            /** check if the given id is a valid mongodb ObjectId */
+            this.mongoObjectIdValidation(blogId);
+
+            /** get blog data */
+            const blog = await this.getBlog({'_id': blogId});
+
+            /** remove blog */
+            const removedBlog = await blogModel.deleteOne({'_id': blogId});
+
+            if (removedBlog.deleteCount <= 0)
+                throw createError.InternalServerError("حذف پست با مشکل مواجه شد لطفا مجددا تلاش نمایید");
+
+            this.sendSuccessResponse(req, res, 200, "پست با موفقیت حذف شد");
         } catch (err) {
             next(err);
         }
@@ -147,6 +162,9 @@ class AdminBlogController extends Controller {
         const {blogId} = req.params;
 
         try {
+            /** check if the given id is a valid mongodb ObjectId */
+            this.mongoObjectIdValidation(blogId);
+
             /** get blog data */
             const blog = await this.getBlog({'_id': blogId}, [
                 {
