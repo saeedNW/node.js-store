@@ -18,7 +18,7 @@ const createBlogSchema = Joi.object({
     /** tags validator */
     tags: Joi.array().min(0).max(20).error(createError.UnprocessableEntity("برچسب ها نمیتواند بیشتر از 20 ایتم باشد")),
     /** category validator */
-    category: Joi.string().pattern(mongodbConstants.MongoIdPattern).error(createError.BadRequest("دسته بندی مورد نظر یافت نشد")),
+    category: Joi.string().pattern(mongodbConstants.MongoIdPattern).error(createError.UnprocessableEntity("دسته بندی مورد نظر یافت نشد")),
     /** upload path validator */
     fileUploadPath: Joi.allow()
 });

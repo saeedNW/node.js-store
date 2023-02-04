@@ -29,7 +29,7 @@ class AdminCategoryController extends Controller {
             await addCategorySchema.validateAsync(req.body);
 
             /** check if category already exists */
-            if (await categoryModel.findOne({title})) throw createError.BadRequest("این دسته بندی از پیش وجود دارد");
+            if (await categoryModel.findOne({title})) throw createError.UnprocessableEntity("این دسته بندی از پیش وجود دارد");
 
             /** get parent category */
             const parentCategory = (parent && (parent !== "" || parent !== " ")) ? await categoryModel.findById(parent) : undefined;

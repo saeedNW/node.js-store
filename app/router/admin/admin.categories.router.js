@@ -31,10 +31,10 @@ const {AdminCategoryController} = require("app/http/controllers/admin/category/a
  *          responses:
  *              201:
  *                  description: category created successfully
- *              400:
- *                  description: Bad request
  *              401:
  *                  description: Unauthorized
+ *              403:
+ *                  description: forbidden
  *              422:
  *                  description: Validation error
  *              500:
@@ -60,6 +60,8 @@ adminCategoriesRouter.post("/add", AdminCategoryController.addCategory);
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *          403:
+ *              description: forbidden
  *          404:
  *              description: data notfound
  *          422:
@@ -81,6 +83,8 @@ adminCategoriesRouter.delete("/remove/:categoryId", AdminCategoryController.remo
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *          403:
+ *              description: forbidden
  *          500:
  *              description: Internal server error
  */
@@ -104,6 +108,8 @@ adminCategoriesRouter.get("/all", AdminCategoryController.getAllCategories);
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *          403:
+ *              description: forbidden
  *          422:
  *              description: validation error
  *          500:
@@ -123,6 +129,8 @@ adminCategoriesRouter.get("/single/:categoryId", AdminCategoryController.getCate
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *          403:
+ *              description: forbidden
  *          500:
  *              description: Internal server error
  */
@@ -146,6 +154,8 @@ adminCategoriesRouter.get("/parents", AdminCategoryController.getParentCategorie
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *          403:
+ *              description: forbidden
  *          422:
  *              description: validation error
  *          500:

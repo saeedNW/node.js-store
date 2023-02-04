@@ -26,6 +26,8 @@ const {stringToArray} = require("app/http/middlewares/string.to.array.middleware
  *                  description: successful
  *              401:
  *                  description: Unauthorized
+ *              403:
+ *                  description: forbidden
  *              500:
  *                  description: Internal server error
  */
@@ -75,10 +77,10 @@ adminBlogRouter.get("/", AdminBlogController.getAllBlogs);
  *          responses:
  *              201:
  *                  description: successful
- *              400:
- *                  description: Bad request
  *              401:
  *                  description: Unauthorized
+ *              403:
+ *                  description: forbidden
  *              422:
  *                  description: Validation error
  *              500:
@@ -102,10 +104,10 @@ adminBlogRouter.post("/add", uploadFile.single("image"), stringToArray("tags"), 
  *          responses:
  *              200:
  *                  description: successful
- *              400:
- *                  description: Bad request
  *              401:
  *                  description: Unauthorized
+ *              403:
+ *                  description: forbidden
  *              422:
  *                  description: Validation error
  *              500:
@@ -130,10 +132,10 @@ adminBlogRouter.get("/single/:blogId", AdminBlogController.getSingleBlog);
  *          responses:
  *              200:
  *                  description: successful
- *              400:
- *                  description: Bad request
  *              401:
  *                  description: Unauthorized
+ *              403:
+ *                  description: forbidden
  *              422:
  *                  description: Validation error
  *              500:
@@ -186,6 +188,8 @@ adminBlogRouter.delete("/remove/:blogId", AdminBlogController.removeBlog);
  *                  description: successful
  *              401:
  *                  description: Unauthorized
+ *              403:
+ *                  description: forbidden
  *              422:
  *                  description: Validation error
  *              500:

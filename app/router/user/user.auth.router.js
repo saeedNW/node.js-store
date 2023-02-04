@@ -26,8 +26,6 @@ const {UserAuthController} = require("app/http/controllers/user/auth/user.auth.c
  *      responses:
  *          200:
  *              description: OTP has been sent successfully
- *          400:
- *              description: Bad request
  *          401:
  *              description: Unauthorized
  *          422:
@@ -58,8 +56,6 @@ userAuthRouter.post("/get-otp", UserAuthController.getOTPProcess);
  *      responses:
  *          201:
  *              description: access token created successfully
- *          400:
- *              description: Bad request
  *          401:
  *              description: Unauthorized
  *          422:
@@ -85,8 +81,6 @@ userAuthRouter.post("/check-otp", UserAuthController.checkOTPProcess);
  *      responses:
  *          201:
  *              description: access and refresh tokens created successfully
- *          400:
- *              description: Bad request
  *          401:
  *              description: Unauthorized
  *          422:
