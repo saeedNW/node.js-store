@@ -16,7 +16,11 @@ const storage = multer.diskStorage({
      * @param cb callback
      */
     destination: (req, file, cb) => {
-        cb(null, createUploadPath(req));
+        /** create and return file path if file was uploaded */
+        if (file?.originalname)
+            return cb(null, createUploadPath(req));
+
+        return cb(null, null);
     },
     /**
      * uploaded file name creator
@@ -25,21 +29,27 @@ const storage = multer.diskStorage({
      * @param cb callback
      */
     filename: (req, file, cb) => {
-        /**
-         * get file type
-         * @type {string}
-         */
-        const type = path.extname(file?.originalname || "");
-        /**
-         * define file name
-         * @type {string}
-         */
-        const fileName = String(Date.now() + type);
+        /** create and return file path if file was uploaded */
+        if (file?.originalname) {
+            /**
+             * get file type
+             * @type {string}
+             */
+            const type = path.extname(file?.originalname || "");
+            /**
+             * define file name
+             * @type {string}
+             */
+            const fileName = String(Date.now() + type);
 
-        /** set file name in request body */
-        req.body.fileName = fileName;
+            /** set file name in request body */
+            req.body.fileName = fileName;
 
-        cb(null, fileName);
+           return cb(null, fileName);
+        }
+
+        return cb(null, null);
+
     }
 });
 

@@ -40,7 +40,6 @@ adminBlogRouter.get("/", AdminBlogController.getAllBlogs);
  *          tags: [admin-blog]
  *          consumes:
  *              - multipart/form-data
- *              - application/x-www-form-data-urlencoded
  *          parameters:
  *              -   name: title
  *                  description: post title
@@ -142,6 +141,57 @@ adminBlogRouter.get("/single/:blogId", AdminBlogController.getSingleBlog);
  */
 adminBlogRouter.delete("/remove/:blogId", AdminBlogController.removeBlog);
 
+/**
+ * @swagger
+ *  /admin/blogs/update/{blogId}:
+ *      patch:
+ *          summary: update a blog
+ *          description: update single blog data by its id
+ *          tags: [admin-blog]
+ *          consumes:
+ *              - multipart/form-data
+ *          parameters:
+ *              -   name: blogId
+ *                  description: blog post _id
+ *                  in: path
+ *                  required: true
+ *                  type: string
+ *              -   name: title
+ *                  description: post title
+ *                  in: formData
+ *                  type: string
+ *              -   name: text
+ *                  description: post content
+ *                  in: formData
+ *                  type: string
+ *              -   name: summary
+ *                  description: post summary
+ *                  in: formData
+ *                  type: string
+ *              -   name: tags
+ *                  description: post tags
+ *                  in: formData
+ *                  type: string
+ *                  example: tag1#tag2#tag3
+ *              -   name: category
+ *                  description: post tags
+ *                  in: formData
+ *                  type: string
+ *              -   name: image
+ *                  description: post image
+ *                  in: formData
+ *                  type: file
+ *          responses:
+ *              200:
+ *                  description: successful
+ *              401:
+ *                  description: Unauthorized
+ *              422:
+ *                  description: Validation error
+ *              500:
+ *                  description: Internal server error
+ */
+adminBlogRouter.patch("/update/:blogId", uploadFile.single("image"), stringToArray("tags"), AdminBlogController.updateBlog);
 
 module.exports = {
     adminBlogRouter

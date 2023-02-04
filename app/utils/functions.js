@@ -154,7 +154,8 @@ function removeFile(fileAddress) {
     const fileAbsolutePath = path.join(__dirname, "..", "..", "public", fileAddress);
 
     /** remove file */
-    fs.unlinkSync(fileAbsolutePath);
+    if (fs.existsSync(fileAbsolutePath))
+        fs.unlinkSync(fileAbsolutePath);
 }
 
 module.exports = {

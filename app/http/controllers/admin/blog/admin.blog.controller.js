@@ -58,9 +58,56 @@ class AdminBlogController extends Controller {
      * @returns {Promise<void>}
      */
     async updateBlog(req, res, next) {
-        try {
+        /** get blog id from request parameters */
+        const {blogId} = req.params;
+        /**
+         * define invalid inputs
+         * @type {(string|number)[]}
+         */
+        const invalidInputs = ["", " ", "0", 0, null, undefined];
+        /**
+         * define fields that can't be updated
+         * @type {string[]}
+         */
+        const blackListedFields = ["author", "comments", "likes", "dislike", "bookmark"];
 
+        try {
+            /** check if the given id is a valid mongodb ObjectId */
+            this.mongoObjectIdValidation(blogId);
+
+            /** check if blog exists */
+            const blog = await this.getBlog({'_id': blogId});
+
+            /** proceed if new image was uploaded */
+            if (req?.body?.fileUploadPath && req?.body?.fileName) {
+                /** remove blog previous image */
+                removeFile(blog.image);
+                /** add file data to request body image if file was uploaded */
+                req.body.image = path.join(req.body.fileUploadPath, req.body.fileName);
+            }
+
+            /** loop over request body data */
+            for (const key of Object.keys(req.body)) {
+                /** remove field if it's a black listed one */
+                if (blackListedFields.includes(key)) delete req.body[key];
+                /** trim string values */
+                if (typeof req.body[key] === "string") req.body[key] = req.body[key].trim();
+                /** trim array elements */
+                if (Array.isArray(req.body[key]) && req.body[key].length > 0) req.body[key] = req.body[key].map(item => item.trim());
+                /** remove data if it was invalid */
+                if (invalidInputs.includes(req.body[key])) delete req.body[key]
+            }
+
+            /** update blog */
+            const updatedBlog = await blogModel.updateOne({'_id': blogId}, {$set: req.body});
+
+            /** throw error if update was unsuccessful */
+            if (updatedBlog.updateCount <= 0) throw createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+
+            this.sendSuccessResponse(req, res, 200, "بروزرسانی با موفقیت انجام شد");
         } catch (err) {
+            /** remove uploaded file */
+            removeFile(req.body.image);
             next(err);
         }
     }
