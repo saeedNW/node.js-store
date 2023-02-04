@@ -87,6 +87,33 @@ adminBlogRouter.get("/", AdminBlogController.getAllBlogs);
  */
 adminBlogRouter.post("/add", uploadFile.single("image"), stringToArray("tags"), AdminBlogController.createBlog);
 
+/**
+ * @swagger
+ *  /admin/blogs/single/{blogId}:
+ *      get:
+ *          summary: get single blog post
+ *          description: get a single blog post by its id and populate it with category and author fields
+ *          tags: [admin-blog]
+ *          parameters:
+ *              -   name: blogId
+ *                  description: blog post _id
+ *                  in: path
+ *                  required: true
+ *                  type: string
+ *          responses:
+ *              200:
+ *                  description: successful
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized
+ *              422:
+ *                  description: Validation error
+ *              500:
+ *                  description: Internal server error
+ */
+adminBlogRouter.get("/single/:blogId", AdminBlogController.getSingleBlog);
+
 
 module.exports = {
     adminBlogRouter

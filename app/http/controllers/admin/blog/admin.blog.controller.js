@@ -8,6 +8,8 @@ const path = require("path");
 const {blogModel} = require("app/models/blogs.model");
 /** import helper functions */
 const {removeFile} = require("app/utils/functions");
+/** import http error module */
+const createError = require("http-errors");
 
 /**
  * @class AdminBlogController
@@ -141,8 +143,23 @@ class AdminBlogController extends Controller {
      * @returns {Promise<void>}
      */
     async getSingleBlog(req, res, next) {
-        try {
+        /** get blog id from request parameters */
+        const {blogId} = req.params;
 
+        try {
+            /** get blog data */
+            const blog = await this.getBlog({'_id': blogId}, [
+                {
+                    path: 'category',
+                    select: ['title'],
+                },
+                {
+                    path: 'author',
+                    select: ['first_name', 'last_name', 'username'],
+                }
+            ]);
+
+            this.sendSuccessResponse(req, res, 200, undefined, {blog});
         } catch (err) {
             next(err);
         }
@@ -161,6 +178,27 @@ class AdminBlogController extends Controller {
         } catch (err) {
             next(err);
         }
+    }
+
+    /**
+     * get blog post based on given query
+     * @param query search query
+     * @param populate mongoose populate option
+     * @returns {Promise<*>}
+     */
+    async getBlog(query = {}, populate = null) {
+        /** get blog data from database */
+        let blog = await blogModel.findOne({...query});
+
+        /** throw error if blog was not found */
+        if (!blog)
+            throw createError.NotFound("بلاگ درخواست شده پیدا نشد");
+
+        /** add populate option to search query */
+        if (populate)
+            blog = await blog.populate(populate);
+
+        return blog;
     }
 }
 

@@ -36,6 +36,7 @@ const commentSchema = new mongoose.Schema({
 const Schema = new mongoose.Schema({
     author: {
         type: mongoose.Types.ObjectId,
+        ref: "user",
         required: true
     },
     title: {
@@ -60,6 +61,7 @@ const Schema = new mongoose.Schema({
     },
     category: {
         type: mongoose.Types.ObjectId,
+        ref: "category",
         required: true
     },
     comments: {
