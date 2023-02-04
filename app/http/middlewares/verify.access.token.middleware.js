@@ -46,8 +46,30 @@ async function accessTokenVerification(req, res, next) {
 
         return next();
     } catch (err) {
-        console.log(err);
-        next(createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید"));
+        if (err?.status !== 401)
+            next(createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید"));
+        else
+            next(err);
+    }
+}
+
+/**
+ * check user role for access permission
+ * @param role the role that user need to access some certain routes
+ * @returns {(function(*, *, *): (*|undefined))|*}
+ */
+function checkRole(role) {
+    return function (req, res, next) {
+        try {
+            /** get user data */
+            const user = req.user;
+            /** throw error if user role wasn't equal to given access role */
+            if (!user.Roles.includes(role)) throw createError.Forbidden("شما اجازه دسترسی به این بخش را ندارید");
+
+            return next();
+        } catch (err) {
+            next(err);
+        }
     }
 }
 
@@ -75,5 +97,6 @@ function getToken(headers) {
 
 module.exports = {
     accessTokenVerification,
-    getToken
+    getToken,
+    checkRole
 }
