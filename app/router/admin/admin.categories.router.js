@@ -5,6 +5,49 @@ const {AdminCategoryController} = require("app/http/controllers/admin/category/a
 
 /**
  * @swagger
+ *  components:
+ *      schemas:
+ *          AddCategory:
+ *              type: object
+ *              required:
+ *                  -   title
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      description: new category title
+ *                  parent:
+ *                      type: string
+ *                      description: the id of the new category's parent category
+ *          SuccessResponse:
+ *              type: object
+ *              properties:
+ *                  status:
+ *                      type: integer
+ *                      description: response status code
+ *                      default: 200/201
+ *                  success:
+ *                      type: boolean
+ *                      description: define process ending status
+ *                      default: true
+ *                  message:
+ *                      type: string
+ *                      description: response message
+ *                  data:
+ *                      type: object
+ *                      description: response data, in case of returning/creating data
+ *      parameters:
+ *          CategoryId:
+ *              name: categoryId
+ *              in: path
+ *              type: string
+ *              required: true
+ *              schema:
+ *                  type: string
+ *              description: category ObjectId
+ */
+
+/**
+ * @swagger
  * tags:
  *  name: admin-category
  *  description: admin categories routes
@@ -17,20 +60,22 @@ const {AdminCategoryController} = require("app/http/controllers/admin/category/a
  *          summary: application admin category creation process
  *          description: create new category as parent or child with title and parent
  *          tags: [admin-category]
- *          parameters:
- *              -   name: title
- *                  description: new category title
- *                  in: formData
- *                  required: true
- *                  type: string
- *              -   name: parent
- *                  description: new category title
- *                  in: formData
- *                  required: false
- *                  type: string
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/AddCategory'
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/AddCategory'
  *          responses:
  *              201:
  *                  description: category created successfully
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/components/schemas/SuccessResponse'
  *              401:
  *                  description: Unauthorized
  *              403:
@@ -50,11 +95,7 @@ adminCategoriesRouter.post("/add", AdminCategoryController.addCategory);
  *      description: remove single category by id
  *      tags: [admin-category]
  *      parameters:
- *          -   name: categoryId
- *              description: category ObjectId
- *              in: path
- *              type: string
- *              required: true
+ *          -   $ref: '#/components/parameters/CategoryId'
  *      responses:
  *          200:
  *              description: successful
@@ -98,11 +139,7 @@ adminCategoriesRouter.get("/all", AdminCategoryController.getAllCategories);
  *      description: get single category by id
  *      tags: [admin-category]
  *      parameters:
- *          -   name: categoryId
- *              description: category ObjectId
- *              in: path
- *              type: string
- *              required: true
+ *          -   $ref: '#/components/parameters/CategoryId'
  *      responses:
  *          200:
  *              description: successful
@@ -138,17 +175,13 @@ adminCategoriesRouter.get("/parents", AdminCategoryController.getParentCategorie
 
 /**
  * @swagger
- * /admin/category/children/{parentId}:
+ * /admin/category/children/{categoryId}:
  *  get:
  *      summary: get children categories
  *      description: get categories that has a parent category
  *      tags: [admin-category]
  *      parameters:
- *          -   name: parentId
- *              description: categories parent ObjectId
- *              in: path
- *              type: string
- *              required: true
+ *          -   $ref: '#/components/parameters/CategoryId'
  *      responses:
  *          200:
  *              description: successful
@@ -161,7 +194,7 @@ adminCategoriesRouter.get("/parents", AdminCategoryController.getParentCategorie
  *          500:
  *              description: Internal server error
  */
-adminCategoriesRouter.get("/children/:parentId", AdminCategoryController.getChildCategories);
+adminCategoriesRouter.get("/children/:categoryId", AdminCategoryController.getChildCategories);
 
 /** export router */
 module.exports = {

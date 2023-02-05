@@ -54,7 +54,7 @@ const Schema = new mongoose.Schema({
     },
     roles: {
         type: [String],
-        default: ["USERS"]
+        default: ["USER"]
     }
 }, {
     timestamps: true

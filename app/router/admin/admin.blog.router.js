@@ -9,6 +9,70 @@ const {stringToArray} = require("app/http/middlewares/string.to.array.middleware
 
 /**
  * @swagger
+ *  components:
+ *      schemas:
+ *          AddBlog:
+ *              type: object
+ *              required:
+ *                  -   title
+ *                  -   text
+ *                  -   summary
+ *                  -   category
+ *                  -   image
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      description: blog title
+ *                  text:
+ *                      type: text
+ *                      description: blog content
+ *                  summary:
+ *                      type: text
+ *                      description: blog summary text
+ *                  tags:
+ *                      type: string
+ *                      description: blog tags, should be separated by hashtag
+ *                      example: tag1#tag2#tag3
+ *                  category:
+ *                      type: string
+ *                      description: _id of the category that blog, belongs to
+ *                  image:
+ *                      type: file
+ *                      description: blog image
+ *          UpdateBlog:
+ *              type: object
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      description: blog title
+ *                  text:
+ *                      type: text
+ *                      description: blog content
+ *                  summary:
+ *                      type: text
+ *                      description: blog summary text
+ *                  tags:
+ *                      type: string
+ *                      description: blog tags, should be separated by hashtag
+ *                  category:
+ *                      type: string
+ *                      description: _id of the category that blog, belongs to
+ *                  image:
+ *                      type: file
+ *                      description: blog image
+ *      parameters:
+ *          BlogId:
+ *              name: blogId
+ *              in: path
+ *              type: string
+ *              required: true
+ *              schema:
+ *                  type: string
+ *              description: blog ObjectId
+ */
+
+/**
+ * @swagger
  * tags:
  *  name: admin-blog
  *  description: admin blog routes
@@ -40,40 +104,12 @@ adminBlogRouter.get("/", AdminBlogController.getAllBlogs);
  *          summary: add blog post
  *          description: create new post for blog
  *          tags: [admin-blog]
- *          consumes:
- *              - multipart/form-data
- *          parameters:
- *              -   name: title
- *                  description: post title
- *                  in: formData
- *                  required: true
- *                  type: string
- *              -   name: text
- *                  description: post content
- *                  in: formData
- *                  required: true
- *                  type: string
- *              -   name: summary
- *                  description: post summary
- *                  in: formData
- *                  required: true
- *                  type: string
- *              -   name: tags
- *                  description: post tags
- *                  in: formData
- *                  required: false
- *                  type: string
- *                  example: tag1#tag2#tag3
- *              -   name: category
- *                  description: post tags
- *                  in: formData
- *                  required: true
- *                  type: string
- *              -   name: image
- *                  description: post image
- *                  in: formData
- *                  required: true
- *                  type: file
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/AddBlog'
  *          responses:
  *              201:
  *                  description: successful
@@ -96,11 +132,7 @@ adminBlogRouter.post("/add", uploadFile.single("image"), stringToArray("tags"), 
  *          description: get a single blog post by its id and populate it with category and author fields
  *          tags: [admin-blog]
  *          parameters:
- *              -   name: blogId
- *                  description: blog post _id
- *                  in: path
- *                  required: true
- *                  type: string
+ *              -   $ref: '#/components/parameters/BlogId'
  *          responses:
  *              200:
  *                  description: successful
@@ -124,11 +156,7 @@ adminBlogRouter.get("/single/:blogId", AdminBlogController.getSingleBlog);
  *          description: remove single post using its _id
  *          tags: [admin-blog]
  *          parameters:
- *              -   name: blogId
- *                  description: blog post _id
- *                  in: path
- *                  required: true
- *                  type: string
+ *              -   $ref: '#/components/parameters/BlogId'
  *          responses:
  *              200:
  *                  description: successful
@@ -150,39 +178,13 @@ adminBlogRouter.delete("/remove/:blogId", AdminBlogController.removeBlog);
  *          summary: update a blog
  *          description: update single blog data by its id
  *          tags: [admin-blog]
- *          consumes:
- *              - multipart/form-data
  *          parameters:
- *              -   name: blogId
- *                  description: blog post _id
- *                  in: path
- *                  required: true
- *                  type: string
- *              -   name: title
- *                  description: post title
- *                  in: formData
- *                  type: string
- *              -   name: text
- *                  description: post content
- *                  in: formData
- *                  type: string
- *              -   name: summary
- *                  description: post summary
- *                  in: formData
- *                  type: string
- *              -   name: tags
- *                  description: post tags
- *                  in: formData
- *                  type: string
- *                  example: tag1#tag2#tag3
- *              -   name: category
- *                  description: post tags
- *                  in: formData
- *                  type: string
- *              -   name: image
- *                  description: post image
- *                  in: formData
- *                  type: file
+ *              -   $ref: '#/components/parameters/BlogId'
+ *          requestBody:
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UpdateBlog'
  *          responses:
  *              200:
  *                  description: successful

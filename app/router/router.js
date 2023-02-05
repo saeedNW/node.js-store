@@ -14,7 +14,7 @@ mainRouter.use("/", indexRouter);
 /** import user main router */
 const {userMainRouter} = require("./user");
 /** initialize user router */
-mainRouter.use("/user", accessTokenVerification, userMainRouter);
+mainRouter.use("/user", userMainRouter);
 
 /** import admin main router */
 const {adminMainRouter} = require("./admin");

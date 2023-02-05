@@ -269,7 +269,7 @@ class AdminCategoryController extends Controller {
      */
     async getChildCategories(req, res, next) {
         /** extract parentId from request params */
-        const {parentId: parent} = req.params;
+        const {categoryId: parent} = req.params;
 
         try {
             /** check if the given id is a valid mongodb ObjectId */

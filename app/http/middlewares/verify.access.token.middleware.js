@@ -64,7 +64,7 @@ function checkRole(role) {
             /** get user data */
             const user = req.user;
             /** throw error if user role wasn't equal to given access role */
-            if (!user.Roles.includes(role)) throw createError.Forbidden("شما اجازه دسترسی به این بخش را ندارید");
+            if (!user.roles.includes(role)) throw createError.Forbidden("شما اجازه دسترسی به این بخش را ندارید");
 
             return next();
         } catch (err) {

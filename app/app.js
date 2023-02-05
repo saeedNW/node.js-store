@@ -79,26 +79,40 @@ module.exports = class Application {
         /** import swagger jsdoc module */
         const swaggerJsDoc = require("swagger-jsdoc");
 
-        this.#app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerJsDoc({
-            swaggerDefinition: {
-                info: {
-                    title: "node.js store",
-                    version: "1.0.0",
-                    description: "node.js store project",
-                    contact: {
-                        name: "Saeed Norouzi",
-                        url: "https://codding.ir",
-                        email: "saeednorouzi98@gmail.com"
-                    }
+        this.#app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(
+            swaggerJsDoc({
+                swaggerDefinition: {
+                    openapi: "3.0.0",
+                    info: {
+                        title: "node.js store",
+                        version: "1.0.0",
+                        description: "node.js store project",
+                        contact: {
+                            name: "Saeed Norouzi",
+                            url: "https://codding.ir",
+                            email: "saeednorouzi98@gmail.com"
+                        }
+                    },
+                    servers: [
+                        {
+                            url: "http://localhost:3000"
+                        }
+                    ],
+                    components: {
+                        securitySchemes: {
+                            BearerAuth: {
+                                type: "http",
+                                scheme: "bearer",
+                                bearerFormat: "JWT"
+                            }
+                        }
+                    },
+                    security: [{BearerAuth: []}]
                 },
-                servers: [
-                    {
-                        url: "http://localhost:3000"
-                    }
-                ]
-            },
-            apis: ['app/router/**/**.js'],
-        })));
+                apis: ['app/router/**/**.js'],
+            }),
+            {explorer: true}
+        ));
     }
 
     /**
