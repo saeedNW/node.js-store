@@ -55,7 +55,12 @@ const Schema = new mongoose.Schema({
     roles: {
         type: [String],
         default: ["USER"]
-    }
+    },
+    courses: {
+        type: [mongoose.Types.ObjectId],
+        ref: "course",
+        default: []
+    },
 }, {
     timestamps: true
 });

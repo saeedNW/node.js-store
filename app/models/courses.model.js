@@ -4,6 +4,47 @@ const {default: mongoose} = require("mongoose");
 const {commentSchema} = require("./schemas/comments.schema");
 
 /**
+ * define episodes schema
+ */
+const episodeSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    type: {
+        /** free, cash, vpi */
+        type: String,
+        default: "free"
+    },
+    duration: {
+        type: String,
+        required: true
+    },
+});
+
+/**
+ * define chapters schema
+ */
+const chapterSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        default: ""
+    },
+    episodes: {
+        type: [episodeSchema],
+        default: []
+    },
+});
+
+/**
  * define blogs schema
  */
 const Schema = new mongoose.Schema({
@@ -19,8 +60,8 @@ const Schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    images: {
-        type: [String],
+    image: {
+        type: String,
         required: true
     },
     tags: {
@@ -56,66 +97,44 @@ const Schema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    count: {
-        type: Number,
-    },
     type: {
-        /** virtual or physical */
+        /** free, cash, vpi */
         type: String,
-        required: true
+        default: "free"
     },
-    format: {
+    duration: {
         type: String,
+        default: "00:00:00"
     },
-    supplier: {
+    mentor: {
         type: mongoose.Types.ObjectId,
         res: "user",
         required: true
     },
-    features: {
-        type: {
-            length: {
-                type: Number
-            },
-            height: {
-                type: Number
-            },
-            width: {
-                type: Number
-            },
-            weight: {
-                type: Number
-            },
-            color: {
-                type: [String]
-            },
-            model: {
-                type: [String]
-            },
-            made_in: {
-                type: String
-            }
-        },
-        default: {
-            length: "",
-            height: "",
-            width: "",
-            weight: "",
-            color: [""],
-            model: [""],
-            made_in: "",
-        }
+    chapter: {
+        type: [chapterSchema],
+        default: []
     },
+    students: {
+        type: [mongoose.Types.ObjectId],
+        default: [],
+        ref: "user"
+    }
 }, {
-    timestamps: true
+    /** activate timestamp (createdAt/updatedAt) */
+    timestamps: true,
+    /** remove external id option */
+    id: false,
+    /** remove version key */
+    versionKey: false
 });
 
 /**
  * create mongoose model from the schema
  */
-const productModel = mongoose.model("product", Schema);
+const courseModel = mongoose.model("course", Schema);
 
 /** export schema */
 module.exports = {
-    productModel
+    courseModel
 }
