@@ -73,18 +73,11 @@ const {stringToArray} = require("app/http/middlewares/string.to.array.middleware
 
 /**
  * @swagger
- * tags:
- *  name: admin-blog
- *  description: admin blog routes
- */
-
-/**
- * @swagger
  *  /admin/blogs:
  *      get:
  *          summary: get all blogs
  *          description: get all blog posts as list
- *          tags: [admin-blog]
+ *          tags: [AdminPanel(Blog)]
  *          responses:
  *              200:
  *                  description: successful
@@ -103,7 +96,7 @@ adminBlogRouter.get("/", AdminBlogController.getAllBlogs);
  *      post:
  *          summary: add blog post
  *          description: create new post for blog
- *          tags: [admin-blog]
+ *          tags: [AdminPanel(Blog)]
  *          requestBody:
  *              required: true
  *              content:
@@ -130,7 +123,7 @@ adminBlogRouter.post("/add", uploadFile.single("image"), stringToArray("tags"), 
  *      get:
  *          summary: get single blog post
  *          description: get a single blog post by its id and populate it with category and author fields
- *          tags: [admin-blog]
+ *          tags: [AdminPanel(Blog)]
  *          parameters:
  *              -   $ref: '#/components/parameters/BlogId'
  *          responses:
@@ -154,7 +147,7 @@ adminBlogRouter.get("/single/:blogId", AdminBlogController.getSingleBlog);
  *      delete:
  *          summary: remove blog post
  *          description: remove single post using its _id
- *          tags: [admin-blog]
+ *          tags: [AdminPanel(Blog)]
  *          parameters:
  *              -   $ref: '#/components/parameters/BlogId'
  *          responses:
@@ -177,7 +170,7 @@ adminBlogRouter.delete("/remove/:blogId", AdminBlogController.removeBlog);
  *      patch:
  *          summary: update a blog
  *          description: update single blog data by its id
- *          tags: [admin-blog]
+ *          tags: [AdminPanel(Blog)]
  *          parameters:
  *              -   $ref: '#/components/parameters/BlogId'
  *          requestBody:

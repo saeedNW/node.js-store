@@ -48,18 +48,11 @@ const {AdminCategoryController} = require("app/http/controllers/admin/category/a
 
 /**
  * @swagger
- * tags:
- *  name: admin-category
- *  description: admin categories routes
- */
-
-/**
- * @swagger
  *  /admin/category/add:
  *      post:
  *          summary: application admin category creation process
  *          description: create new category as parent or child with title and parent
- *          tags: [admin-category]
+ *          tags: [AdminPanel(category)]
  *          requestBody:
  *              required: true
  *              content:
@@ -93,7 +86,7 @@ adminCategoriesRouter.post("/add", AdminCategoryController.addCategory);
  *  delete:
  *      summary: remove single category
  *      description: remove single category by id
- *      tags: [admin-category]
+ *      tags: [AdminPanel(category)]
  *      parameters:
  *          -   $ref: '#/components/parameters/CategoryId'
  *      responses:
@@ -118,7 +111,7 @@ adminCategoriesRouter.delete("/remove/:categoryId", AdminCategoryController.remo
  *  get:
  *      summary: get all application categories
  *      description: get application all categories
- *      tags: [admin-category]
+ *      tags: [AdminPanel(category)]
  *      responses:
  *          200:
  *              description: successful
@@ -137,7 +130,7 @@ adminCategoriesRouter.get("/all", AdminCategoryController.getAllCategories);
  *  get:
  *      summary: get single category
  *      description: get single category by id
- *      tags: [admin-category]
+ *      tags: [AdminPanel(category)]
  *      parameters:
  *          -   $ref: '#/components/parameters/CategoryId'
  *      responses:
@@ -160,7 +153,7 @@ adminCategoriesRouter.get("/single/:categoryId", AdminCategoryController.getCate
  *  get:
  *      summary: get parent categories
  *      description: get categories with child
- *      tags: [admin-category]
+ *      tags: [AdminPanel(category)]
  *      responses:
  *          200:
  *              description: successful
@@ -179,7 +172,7 @@ adminCategoriesRouter.get("/parents", AdminCategoryController.getParentCategorie
  *  get:
  *      summary: get children categories
  *      description: get categories that has a parent category
- *      tags: [admin-category]
+ *      tags: [AdminPanel(category)]
  *      parameters:
  *          -   $ref: '#/components/parameters/CategoryId'
  *      responses:

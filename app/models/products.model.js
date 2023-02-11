@@ -27,7 +27,7 @@ const Schema = new mongoose.Schema({
         type: [String],
         default: []
     },
-    categories: {
+    category: {
         type: mongoose.Types.ObjectId,
         ref: "category",
         required: true
