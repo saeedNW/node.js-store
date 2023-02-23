@@ -1,7 +1,4 @@
-/**
- * Application main config class
- */
-const redisClient = require("./utils/init.redis");
+
 module.exports = class Application {
     /**
      * import express module
