@@ -17,7 +17,7 @@ const {AdminProductController} = require("app/http/controllers/admin/product/adm
  *                  -   tags
  *                  -   category
  *                  -   count
- *                  -   type
+ *                  -   productType
  *              properties:
  *                  title:
  *                      type: string
@@ -46,7 +46,8 @@ const {AdminProductController} = require("app/http/controllers/admin/product/adm
  *                  count:
  *                      type: number
  *                      description: number of products available
- *                  type:
+ *                      default: 10
+ *                  productType:
  *                      type: string
  *                      description: product type, virtual or physical
  */

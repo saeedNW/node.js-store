@@ -59,7 +59,7 @@ const Schema = new mongoose.Schema({
     count: {
         type: Number,
     },
-    type: {
+    productType: {
         /** virtual or physical */
         type: String,
         required: true
@@ -86,23 +86,23 @@ const Schema = new mongoose.Schema({
             weight: {
                 type: Number
             },
-            color: {
+            colors: {
                 type: [String]
             },
             model: {
-                type: [String]
+                type: String
             },
             made_in: {
                 type: String
             }
         },
         default: {
-            length: "",
-            height: "",
-            width: "",
-            weight: "",
-            color: [""],
-            model: [""],
+            length: 0,
+            height: 0,
+            width: 0,
+            weight: 0,
+            colors: [""],
+            model: "",
             made_in: "",
         }
     },
