@@ -2,6 +2,8 @@
 const Controller = require("app/http/controllers/controller");
 /** import validators */
 const {createProductSchema} = require("app/http/validators/admin/admin.product.schema");
+/** import validators */
+const {ObjectIdValidator} = require("app/http/validators/public/public.schema");
 /** import path module */
 const path = require("path");
 /** import file removal */
@@ -38,8 +40,6 @@ class AdminProductController extends Controller {
                 title, summary, description, tags, category, model, made_in,
                 price, discount, count, productType, height, weight, width, length, colors
             } = productData;
-
-            console.log(req.body.fileName)
 
             /** define product features */
             const features = {
@@ -132,10 +132,32 @@ class AdminProductController extends Controller {
      */
     async getSingleProduct(req, res, next) {
         try {
-
+            /** get product id from request params */
+            const {productId} = req.params;
+            /** get product data from database based on product ObjectID */
+            const product = await this.findProductById(productId);
+            /** send success response */
+            this.sendSuccessResponse(req, res, 200, undefined, {product});
         } catch (err) {
             next(err);
         }
+    }
+
+    /**
+     * find product by id
+     * @param ProductId
+     * @returns {Promise<*>}
+     */
+    async findProductById(ProductId) {
+        /** MongoDB ObjectID validator */
+        const {id} = await ObjectIdValidator.validateAsync({id: ProductId});
+
+        /** get product from database */
+        const product = await productModel.findById(id);
+
+        if (!product) throw createError.NotFound("محصولی یافت نشد");
+
+        return product;
     }
 }
 

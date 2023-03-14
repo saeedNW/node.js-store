@@ -86,6 +86,15 @@ const {stringToArray} = require("app/http/middlewares/string.to.array.middleware
  *                      type: string
  *                      description: product manufacturing Country
  *                      default: ایران
+ *      parameters:
+ *          ProductID:
+ *              name: productId
+ *              in: path
+ *              type: string
+ *              required: true
+ *              schema:
+ *                  type: string
+ *              description: product ObjectId
  */
 
 /**
@@ -121,6 +130,27 @@ adminProductRouter.delete("/remove/:productId", AdminProductController.removePro
 
 adminProductRouter.get("/all", AdminProductController.getAllProducts);
 
+/**
+ * @swagger
+ * /admin/products/single/{productId}:
+ *  get:
+ *      summary: get single product
+ *      description: get single product by id
+ *      tags: [AdminPanel(product)]
+ *      parameters:
+ *          -   $ref: '#/components/parameters/ProductID'
+ *      responses:
+ *          200:
+ *              description: successful
+ *          401:
+ *              description: Unauthorized
+ *          403:
+ *              description: forbidden
+ *          422:
+ *              description: validation error
+ *          500:
+ *              description: Internal server error
+ */
 adminProductRouter.get("/single/:productId", AdminProductController.getSingleProduct);
 
 module.exports = {

@@ -227,8 +227,6 @@ class AdminCategoryController extends Controller {
                 }
             ]);
 
-            console.log(category)
-
             /** return error if category was not found */
             if (!category)
                 throw createError.NotFound("دسته بندی درخواست داده شده یافت نشد");
