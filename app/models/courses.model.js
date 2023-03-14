@@ -97,7 +97,7 @@ const Schema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    type: {
+    courseType: {
         /** free, cash, vpi */
         type: String,
         default: "free"
