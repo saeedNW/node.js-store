@@ -1,4 +1,3 @@
-
 module.exports = class Application {
     /**
      * import express module

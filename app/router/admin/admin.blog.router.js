@@ -143,7 +143,6 @@ adminBlogRouter.get("/single/:blogId", AdminBlogController.getSingleBlog);
 /**
  * @swagger
  *  /admin/blogs/remove/{blogId}:
- *
  *      delete:
  *          summary: remove blog post
  *          description: remove single post using its _id

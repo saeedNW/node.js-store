@@ -37,7 +37,7 @@ class AdminBlogController extends Controller {
              * save image in request body.
              * it will be used to remove file in case of any error
              */
-            req.body.imageName = blogData.image
+            req.body.imageName = blogData.image;
 
             /** create new blog */
             const blog = await blogModel.create({...blogData, author: userId});

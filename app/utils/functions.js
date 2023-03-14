@@ -146,6 +146,10 @@ async function refreshTokenVerification(token) {
     }
 }
 
+/**
+ * remove file in a specific location
+ * @param fileAddress
+ */
 function removeFile(fileAddress) {
     /**
      * create file absolute path
