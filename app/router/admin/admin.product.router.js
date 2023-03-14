@@ -128,6 +128,25 @@ adminProductRouter.patch("/edit/:productId", AdminProductController.updateProduc
 
 adminProductRouter.delete("/remove/:productId", AdminProductController.removeProduct);
 
+/**
+ * @swagger
+ * /admin/products/all:
+ *  get:
+ *      summary: get all products
+ *      description: get all products
+ *      tags: [AdminPanel(product)]
+ *      responses:
+ *          200:
+ *              description: successful
+ *          401:
+ *              description: Unauthorized
+ *          403:
+ *              description: forbidden
+ *          422:
+ *              description: validation error
+ *          500:
+ *              description: Internal server error
+ */
 adminProductRouter.get("/all", AdminProductController.getAllProducts);
 
 /**

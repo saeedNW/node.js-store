@@ -46,10 +46,10 @@ class AdminProductController extends Controller {
                 model: (!model) ? "" : model,
                 made_in: (!made_in) ? "" : made_in,
                 colors: (!colors) ? [""] : colors,
-                height: (!height) ? 0 : height,
-                weight: (!weight) ? 0 : weight,
-                width: (!width) ? 0 : width,
-                length: (!length) ? 0 : length,
+                height: (!height || isNaN(+height)) ? 0 : height,
+                weight: (!weight || isNaN(+weight)) ? 0 : weight,
+                width: (!width || isNaN(+width)) ? 0 : width,
+                length: (!length || isNaN(+length)) ? 0 : length,
             };
 
             /** add product to database */
@@ -117,7 +117,10 @@ class AdminProductController extends Controller {
      */
     async getAllProducts(req, res, next) {
         try {
-
+            /** get all products from database */
+            const products = await productModel.find({});
+            /** send success response */
+            this.sendSuccessResponse(req, res, 200, undefined, {products});
         } catch (err) {
             next(err);
         }
