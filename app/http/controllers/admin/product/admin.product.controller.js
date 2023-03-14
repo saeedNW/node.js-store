@@ -25,22 +25,18 @@ class AdminProductController extends Controller {
      * @returns {Promise<void>}
      */
     async addProduct(req, res, next) {
-        /** get user id from request */
-        const userId = req?.user?._id;
-
         try {
+            /** get user id from request */
+            const userId = req?.user?._id;
             /** get list of uploaded images addresses */
             const images = returnListOfUploadedFiles(req?.files || [], req.body.fileUploadPath);
-
             /** user input validation */
             const productData = await createProductSchema.validateAsync(req.body);
-
             /** extract data from request body */
             const {
                 title, summary, description, tags, category, model, made_in,
                 price, discount, count, productType, height, weight, width, length, colors
             } = productData;
-
             /** define product features */
             const features = {
                 model: (!model) ? "" : model,
@@ -51,7 +47,6 @@ class AdminProductController extends Controller {
                 width: (!width || isNaN(+width)) ? 0 : width,
                 length: (!length || isNaN(+length)) ? 0 : length,
             };
-
             /** add product to database */
             const createdProduct = await productModel.create({
                 title,
@@ -67,10 +62,8 @@ class AdminProductController extends Controller {
                 supplier: userId,
                 features
             });
-
             /** return error if product was not saved */
             if (!createdProduct) throw createError.InternalServerError("ایجاد محصول با مشکل مواجه شد لطفا مجددا تلاش نمایید");
-
             /** return success message */
             return this.sendSuccessResponse(req, res, 201, undefined, {createdProduct});
         } catch (err) {
@@ -102,7 +95,18 @@ class AdminProductController extends Controller {
      */
     async removeProduct(req, res, next) {
         try {
-
+            /** get product id from request params */
+            const {productId} = req.params;
+            /** get product data from database based on product ObjectID */
+            const product = await this.findProductById(productId);
+            /** todo@ check if any user has bought this product and prevent it from being removed */
+            /** remove product from database */
+            const removedProduct = await productModel.deleteOne({_id: product._id});
+            /** return error if product removal was not successful */
+            if (removedProduct.deletedCount <= 0)
+                throw createError.InternalServerError("حذف محصول با شکست مواجه شد لطفا مجددا تلاش نمایید");
+            /** send success response */
+            this.sendSuccessResponse(req, res, 200, "محصول با موفقیت حذف گردید");
         } catch (err) {
             next(err);
         }
@@ -154,12 +158,11 @@ class AdminProductController extends Controller {
     async findProductById(ProductId) {
         /** MongoDB ObjectID validator */
         const {id} = await ObjectIdValidator.validateAsync({id: ProductId});
-
         /** get product from database */
         const product = await productModel.findById(id);
-
+        /** return error if product was not found */
         if (!product) throw createError.NotFound("محصولی یافت نشد");
-
+        /** return product */
         return product;
     }
 }

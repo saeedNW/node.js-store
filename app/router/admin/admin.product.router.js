@@ -126,6 +126,29 @@ adminProductRouter.post("/new", uploadFile.array("images", 10), stringToArray("t
 
 adminProductRouter.patch("/edit/:productId", AdminProductController.updateProduct);
 
+/**
+ * @swagger
+ * /admin/products/remove/{productId}:
+ *  delete:
+ *      summary: remove single product
+ *      description: remove single product by id
+ *      tags: [AdminPanel(product)]
+ *      parameters:
+ *          -   $ref: '#/components/parameters/ProductID'
+ *      responses:
+ *          200:
+ *              description: successful
+ *          401:
+ *              description: Unauthorized
+ *          403:
+ *              description: forbidden
+ *          404:
+ *              description: data notfound
+ *          422:
+ *              description: validation error
+ *          500:
+ *              description: Internal server error
+ */
 adminProductRouter.delete("/remove/:productId", AdminProductController.removeProduct);
 
 /**

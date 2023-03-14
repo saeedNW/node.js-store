@@ -29,6 +29,8 @@
     "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
+    "@types/hapi__joi": "17.1.8",
+    "@types/http-errors": "1.8.2",
     "nodemon": "^2.0.20"
   }
 }

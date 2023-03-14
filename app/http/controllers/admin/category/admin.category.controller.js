@@ -90,7 +90,7 @@ class AdminCategoryController extends Controller {
 
             /** return error if category removal was not successful */
             if (removedCategory.deleteCount <= 0)
-                throw createError.InternalServerError("حذف دسته بندی با شکت مواجه شد لطفا مجددا تلاش نمایید");
+                throw createError.InternalServerError("حذف دسته بندی با شکست مواجه شد لطفا مجددا تلاش نمایید");
 
             /** remove parent from children categories */
             await categoryModel.updateMany({parent: categoryId}, {$set: {parent: undefined}});
