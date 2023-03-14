@@ -2,6 +2,10 @@
 const adminProductRouter = require("express").Router();
 /** import admin product controller */
 const {AdminProductController} = require("app/http/controllers/admin/product/admin.product.controller");
+/** import file uploader */
+const {uploadFile} = require("app/utils/multer");
+/** import string to array convertor */
+const {stringToArray} = require("app/http/middlewares/string.to.array.middleware");
 
 /**
  * @swagger
@@ -29,8 +33,11 @@ const {AdminProductController} = require("app/http/controllers/admin/product/adm
  *                      type: string
  *                      description: product full description
  *                  images:
- *                      type: file
+ *                      type: array
  *                      description: product images
+ *                      items:
+ *                          type: string
+ *                          format: binary
  *                  tags:
  *                      type: array
  *                      description: product tags
@@ -40,9 +47,11 @@ const {AdminProductController} = require("app/http/controllers/admin/product/adm
  *                  price:
  *                      type: number
  *                      description: product price, in case of free product just leaves it blank
+ *                      default: 2412
  *                  discount:
  *                      type: number
  *                      description: product discounted price
+ *                      default: 21
  *                  count:
  *                      type: number
  *                      description: number of products available
@@ -50,6 +59,33 @@ const {AdminProductController} = require("app/http/controllers/admin/product/adm
  *                  productType:
  *                      type: string
  *                      description: product type, virtual or physical
+ *                  height:
+ *                      type: string
+ *                      description: product boxing height
+ *                      default: 0
+ *                  weight:
+ *                      type: string
+ *                      description: product boxing weight
+ *                      default: 0
+ *                  width:
+ *                      type: string
+ *                      description: product boxing width
+ *                      default: 0
+ *                  length:
+ *                      type: string
+ *                      description: product boxing length
+ *                      default: 0
+ *                  colors:
+ *                      type: array
+ *                      description: product colors
+ *                  model:
+ *                      type: string
+ *                      description: product model name
+ *                      default: test121
+ *                  made_in:
+ *                      type: string
+ *                      description: product manufacturing Country
+ *                      default: ایران
  */
 
 /**
@@ -77,7 +113,7 @@ const {AdminProductController} = require("app/http/controllers/admin/product/adm
  *              500:
  *                  description: Internal server error
  */
-adminProductRouter.post("/new", AdminProductController.addProduct);
+adminProductRouter.post("/new", uploadFile.array("images", 10), stringToArray("tags"), stringToArray("colors"), AdminProductController.addProduct);
 
 adminProductRouter.patch("/edit/:productId", AdminProductController.updateProduct);
 

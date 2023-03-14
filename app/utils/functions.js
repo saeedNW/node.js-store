@@ -162,10 +162,26 @@ function removeFile(fileAddress) {
         fs.unlinkSync(fileAbsolutePath);
 }
 
+/**
+ * return array of uploaded files address
+ * @param files
+ * @param fileUploadPath
+ * @returns {*|*[]}
+ */
+function returnListOfUploadedFiles(files, fileUploadPath) {
+    /** return empty array if there wasn't any uploaded file */
+    if (files?.length <= 0)
+        return [];
+
+    /** return array of uploaded files address */
+    return files.map(file => path.join(fileUploadPath, file.filename));
+}
+
 module.exports = {
     randomNumberGenerator,
     signAccessToken,
     signRefreshToken,
     refreshTokenVerification,
     removeFile,
+    returnListOfUploadedFiles,
 }
