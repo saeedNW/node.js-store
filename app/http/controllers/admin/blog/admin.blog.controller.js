@@ -10,6 +10,8 @@ const {blogModel} = require("app/models/blogs.model");
 const {removeFile} = require("app/utils/functions");
 /** import http error module */
 const createError = require("http-errors");
+/** import http status codes module */
+const httpStatus = require("http-status-codes");
 
 /**
  * @class AdminBlogController
@@ -42,7 +44,7 @@ class AdminBlogController extends Controller {
             /** create new blog */
             const blog = await blogModel.create({...blogData, author: userId});
 
-            this.sendSuccessResponse(req, res, 201, "ایجاد بلاگ با موفقیت انجام شد", {blog});
+            this.sendSuccessResponse(req, res, httpStatus.CREATED, "ایجاد بلاگ با موفقیت انجام شد", {blog});
         } catch (err) {
             /** remove uploaded file */
             removeFile(req.body.imageName);
@@ -104,7 +106,7 @@ class AdminBlogController extends Controller {
             /** throw error if update was unsuccessful */
             if (updatedBlog.updateCount <= 0) throw createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
-            this.sendSuccessResponse(req, res, 200, "بروزرسانی با موفقیت انجام شد");
+            this.sendSuccessResponse(req, res, httpStatus.OK, "بروزرسانی با موفقیت انجام شد");
         } catch (err) {
             /** remove uploaded file */
             removeFile(req.body.image);
@@ -136,7 +138,7 @@ class AdminBlogController extends Controller {
             if (removedBlog.deleteCount <= 0)
                 throw createError.InternalServerError("حذف پست با مشکل مواجه شد لطفا مجددا تلاش نمایید");
 
-            this.sendSuccessResponse(req, res, 200, "پست با موفقیت حذف شد");
+            this.sendSuccessResponse(req, res, httpStatus.OK, "پست با موفقیت حذف شد");
         } catch (err) {
             next(err);
         }
@@ -191,7 +193,7 @@ class AdminBlogController extends Controller {
                 }
             ]);
 
-            this.sendSuccessResponse(req, res, 200, undefined, {blogs});
+            this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {blogs});
         } catch (err) {
             next(err);
         }
@@ -224,7 +226,7 @@ class AdminBlogController extends Controller {
                 }
             ]);
 
-            this.sendSuccessResponse(req, res, 200, undefined, {blog});
+            this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {blog});
         } catch (err) {
             next(err);
         }

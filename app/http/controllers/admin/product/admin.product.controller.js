@@ -12,6 +12,8 @@ const {removeFile, returnListOfUploadedFiles} = require("app/utils/functions");
 const {productModel} = require("app/models");
 /** import http-error module */
 const createError = require("http-errors");
+/** import http status codes module */
+const httpStatus = require("http-status-codes");
 
 /**
  * @class AdminProductController
@@ -65,7 +67,7 @@ class AdminProductController extends Controller {
             /** return error if product was not saved */
             if (!createdProduct) throw createError.InternalServerError("ایجاد محصول با مشکل مواجه شد لطفا مجددا تلاش نمایید");
             /** return success message */
-            return this.sendSuccessResponse(req, res, 201, undefined, {createdProduct});
+            return this.sendSuccessResponse(req, res, httpStatus.CREATED, undefined, {createdProduct});
         } catch (err) {
             next(err);
         }
@@ -106,7 +108,7 @@ class AdminProductController extends Controller {
             if (removedProduct.deletedCount <= 0)
                 throw createError.InternalServerError("حذف محصول با شکست مواجه شد لطفا مجددا تلاش نمایید");
             /** send success response */
-            this.sendSuccessResponse(req, res, 200, "محصول با موفقیت حذف گردید");
+            this.sendSuccessResponse(req, res, httpStatus.OK, "محصول با موفقیت حذف گردید");
         } catch (err) {
             next(err);
         }
@@ -124,7 +126,7 @@ class AdminProductController extends Controller {
             /** get all products from database */
             const products = await productModel.find({});
             /** send success response */
-            this.sendSuccessResponse(req, res, 200, undefined, {products});
+            this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {products});
         } catch (err) {
             next(err);
         }
@@ -144,7 +146,7 @@ class AdminProductController extends Controller {
             /** get product data from database based on product ObjectID */
             const product = await this.findProductById(productId);
             /** send success response */
-            this.sendSuccessResponse(req, res, 200, undefined, {product});
+            this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {product});
         } catch (err) {
             next(err);
         }

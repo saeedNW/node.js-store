@@ -6,6 +6,8 @@ const {categoryModel} = require("app/models");
 const createError = require("http-errors");
 /** import validators */
 const {addCategorySchema} = require("app/http/validators/admin/admin.category.schema");
+/** import http status codes module */
+const httpStatus = require("http-status-codes");
 
 /**
  * @class AdminCategoryController
@@ -43,7 +45,7 @@ class AdminCategoryController extends Controller {
             /** return error if category creation wasn't successful */
             if (!category) throw createError.InternalServerError("ایجاد دسته بندی با مشکل مواجه شد لطفا مجددا تلاش نمایید");
 
-            this.sendSuccessResponse(req, res, 201, "دسته بندی با موفقیت ایجاد شد", {category});
+            this.sendSuccessResponse(req, res, httpStatus.CREATED, "دسته بندی با موفقیت ایجاد شد", {category});
         } catch (err) {
             next(err);
         }
@@ -97,7 +99,7 @@ class AdminCategoryController extends Controller {
 
             /** todo@ remove category from blog posts and products */
 
-            this.sendSuccessResponse(req, res, 200, "دسته بندی با موفقیت حذف گردید");
+            this.sendSuccessResponse(req, res, httpStatus.OK, "دسته بندی با موفقیت حذف گردید");
         } catch (err) {
             next(err);
         }
@@ -179,7 +181,7 @@ class AdminCategoryController extends Controller {
              */
             const categoriesWithoutPopulate = await categoryModel.aggregate([{'$match': {}}]);
 
-            this.sendSuccessResponse(req, res, 200, undefined, {
+            this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {
                 oneLevelCategories,
                 fiveLevelCategories,
                 populatedCategories,
@@ -231,7 +233,7 @@ class AdminCategoryController extends Controller {
             if (!category)
                 throw createError.NotFound("دسته بندی درخواست داده شده یافت نشد");
 
-            this.sendSuccessResponse(req, res, 200, undefined, {category});
+            this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {category});
         } catch (err) {
             next(err);
         }
@@ -252,7 +254,7 @@ class AdminCategoryController extends Controller {
              */
             const categories = await categoryModel.find({parent: undefined}, {__v: 0});
 
-            this.sendSuccessResponse(req, res, 200, undefined, {categories});
+            this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {categories});
         } catch (err) {
             next(err);
         }
@@ -276,7 +278,7 @@ class AdminCategoryController extends Controller {
             /** get categories with given parent id */
             const categories = await categoryModel.find({parent}, {__v: 0, parent: 0});
 
-            this.sendSuccessResponse(req, res, 200, undefined, {categories});
+            this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {categories});
         } catch (err) {
             next(err);
         }

@@ -4,6 +4,10 @@ const Controller = require("app/http/controllers/controller");
 const {getOtpSchema, checkOtpSchema} = require("app/http/validators/user/user.auth.schema");
 /** import http-error module */
 const createError = require("http-errors");
+/** import http status codes module */
+const httpStatus = require("http-status-codes");
+/** import models */
+const {userModel} = require("app/models");
 /** import helper functions */
 const {
     randomNumberGenerator,
@@ -11,8 +15,6 @@ const {
     refreshTokenVerification,
     signRefreshToken
 } = require("app/utils/functions");
-/** import models */
-const {userModel} = require("app/models");
 
 /**
  * @class UserAuthController
@@ -57,7 +59,7 @@ class UserAuthController extends Controller {
             /**
              * send success message
              */
-            this.sendSuccessResponse(req, res, 200, "کد اعتبار سنجی با موفقیت ارسال شد", {code, phone});
+            this.sendSuccessResponse(req, res, httpStatus.OK, "کد اعتبار سنجی با موفقیت ارسال شد", {code, phone});
         } catch (err) {
             next(err);
         }
@@ -121,7 +123,7 @@ class UserAuthController extends Controller {
              */
             const refreshToken = await signRefreshToken(user._id);
 
-            this.sendSuccessResponse(req, res, 201, undefined, {
+            this.sendSuccessResponse(req, res, httpStatus.CREATED, undefined, {
                 accessToken,
                 refreshToken
             });
@@ -163,7 +165,7 @@ class UserAuthController extends Controller {
              */
             const newRefreshToken = await signRefreshToken(user._id);
 
-            this.sendSuccessResponse(req, res, 200, undefined, {
+            this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {
                 accessToken,
                 refreshToken: newRefreshToken
             });
