@@ -57,6 +57,15 @@ const {stringToArray} = require("app/http/middlewares/string.to.array.middleware
  *                      default: 21
  *                  courseType:
  *                      $ref: '#/components/schemas/CourseType'
+ *      parameters:
+ *          CourseID:
+ *              name: courseId
+ *              in: path
+ *              type: string
+ *              required: true
+ *              schema:
+ *                  type: string
+ *              description: course ObjectId
  */
 
 /**
@@ -109,6 +118,27 @@ adminCourseRouter.delete("/remove/:courseId", AdminCourseController.removeCourse
  */
 adminCourseRouter.get("/all", AdminCourseController.getAllCourses);
 
+/**
+ * @swagger
+ * /admin/courses/single/{courseId}:
+ *  get:
+ *      summary: get single course
+ *      description: get single course by id
+ *      tags: [AdminPanel(course)]
+ *      parameters:
+ *          -   $ref: '#/components/parameters/CourseID'
+ *      responses:
+ *          200:
+ *              description: successful
+ *          401:
+ *              description: Unauthorized
+ *          403:
+ *              description: forbidden
+ *          422:
+ *              description: validation error
+ *          500:
+ *              description: Internal server error
+ */
 adminCourseRouter.get("/single/:courseId", AdminCourseController.getSingleCourse);
 
 adminCourseRouter.put("/new/chapter", AdminCourseController.newChapter);

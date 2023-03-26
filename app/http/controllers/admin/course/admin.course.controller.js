@@ -10,6 +10,8 @@ const path = require("path");
 const {createCourseSchema} = require("app/http/validators/admin/admin.course.schema");
 /** import http-error module */
 const createError = require("http-errors");
+/** import validators */
+const {ObjectIdValidator} = require("app/http/validators/public/public.schema");
 
 /**
  * @class AdminCourseController
@@ -32,6 +34,9 @@ class AdminCourseController extends Controller {
 
             /** add file data to request body image */
             courseData.image = path.join(courseData.fileUploadPath, courseData.fileName);
+
+            if (courseData.price > 0 && courseData.courseType === "free")
+                throw createError.BadRequest("برای دوره رایگان نمیتوان قیمت ثبت کرد");
 
             /** create new course */
             const createdCourse = await courseModel.create({...courseData, mentor: userId});
@@ -103,7 +108,12 @@ class AdminCourseController extends Controller {
      */
     async getSingleCourse(req, res, next) {
         try {
-
+            /** get course id from request params */
+            const {courseId} = req.params;
+            /** get course data from database based on course ObjectID */
+            const course = await this.findCourseById(courseId);
+            /** send success response */
+            this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {course});
         } catch (err) {
             next(err);
         }
@@ -137,6 +147,22 @@ class AdminCourseController extends Controller {
         } catch (err) {
             next(err);
         }
+    }
+
+    /**
+     * find course by id
+     * @param courseId
+     * @returns {Promise<*>}
+     */
+    async findCourseById(courseId) {
+        /** MongoDB ObjectID validator */
+        const {id} = await ObjectIdValidator.validateAsync({id: courseId});
+        /** get course from database */
+        const course = await courseModel.findById(id);
+        /** return error if course was not found */
+        if (!course) throw createError.NotFound("محصولی یافت نشد");
+        /** return course */
+        return course;
     }
 }
 
