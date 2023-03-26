@@ -86,10 +86,6 @@
  *      responses:
  *          200:
  *              description: OTP has been sent successfully
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/SuccessResponse'
  *          422:
  *              description: Validation error
  *          500:
@@ -115,10 +111,6 @@
  *      responses:
  *          201:
  *              description: access token created successfully
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/SuccessResponse'
  *          422:
  *              description: Validation error
  *          500:
@@ -144,10 +136,6 @@
  *      responses:
  *          201:
  *              description: access and refresh tokens created successfully
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/SuccessResponse'
  *          422:
  *              description: Validation error
  *          500:

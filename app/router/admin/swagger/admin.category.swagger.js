@@ -18,29 +18,6 @@
 /**
  * @swagger
  *  components:
- *      schemas:
- *          SuccessResponse:
- *              type: object
- *              properties:
- *                  status:
- *                      type: integer
- *                      description: response status code
- *                      default: 200/201
- *                  success:
- *                      type: boolean
- *                      description: define process ending status
- *                      default: true
- *                  message:
- *                      type: string
- *                      description: response message
- *                  data:
- *                      type: object
- *                      description: response data, in case of returning/creating data
- */
-
-/**
- * @swagger
- *  components:
  *      parameters:
  *          CategoryId:
  *              name: categoryId
@@ -71,10 +48,6 @@
  *          responses:
  *              201:
  *                  description: category created successfully
- *                  content:
- *                      application/json:
- *                          schema:
- *                              $ref: '#/components/schemas/SuccessResponse'
  *              401:
  *                  description: Unauthorized
  *              403:
