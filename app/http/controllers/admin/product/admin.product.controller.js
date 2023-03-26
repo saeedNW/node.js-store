@@ -4,8 +4,6 @@ const Controller = require("app/http/controllers/controller");
 const {createProductSchema} = require("app/http/validators/admin/admin.product.schema");
 /** import validators */
 const {ObjectIdValidator} = require("app/http/validators/public/public.schema");
-/** import path module */
-const path = require("path");
 /** import file removal */
 const {copyObject, returnListOfUploadedFiles, setFeatures} = require("app/utils/functions");
 /** import models */
