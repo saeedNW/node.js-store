@@ -76,8 +76,7 @@ const {stringToArray} = require("app/http/middlewares/string.to.array.middleware
  *                      description: product boxing length
  *                      default: 0
  *                  colors:
- *                      type: array
- *                      description: product colors
+ *                      $ref: '#/components/schemas/Colors'
  *                  model:
  *                      type: string
  *                      description: product model name
@@ -142,8 +141,7 @@ const {stringToArray} = require("app/http/middlewares/string.to.array.middleware
  *                      description: product boxing length
  *                      default: 0
  *                  colors:
- *                      type: array
- *                      description: product colors
+ *                      $ref: '#/components/schemas/Colors'
  *                  model:
  *                      type: string
  *                      description: product model name
@@ -152,6 +150,18 @@ const {stringToArray} = require("app/http/middlewares/string.to.array.middleware
  *                      type: string
  *                      description: product manufacturing Country
  *                      default: ایران
+ *          Colors:
+ *              type: array
+ *              items:
+ *                  type: string
+ *                  enum:
+ *                      -   black
+ *                      -   white
+ *                      -   gray
+ *                      -   red
+ *                      -   blue
+ *                      -   green
+ *                      -   orange
  *      parameters:
  *          ProductID:
  *              name: productId
@@ -189,7 +199,6 @@ const {stringToArray} = require("app/http/middlewares/string.to.array.middleware
  *                  description: Internal server error
  */
 adminProductRouter.post("/new", uploadFile.array("images", 10), stringToArray("tags"), stringToArray("colors"), AdminProductController.addProduct);
-
 
 /**
  * @swagger
@@ -259,8 +268,6 @@ adminProductRouter.delete("/remove/:productId", AdminProductController.removePro
  *              description: Unauthorized
  *          403:
  *              description: forbidden
- *          422:
- *              description: validation error
  *          500:
  *              description: Internal server error
  */
