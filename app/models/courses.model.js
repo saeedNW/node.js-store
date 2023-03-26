@@ -106,6 +106,11 @@ const Schema = new mongoose.Schema({
         type: String,
         default: "00:00:00"
     },
+    status: {
+        /** notStarted, completed, holding */
+        type: String,
+        default: "notStarted"
+    },
     mentor: {
         type: mongoose.Types.ObjectId,
         res: "user",

@@ -4,6 +4,12 @@ const Controller = require("app/http/controllers/controller");
 const {courseModel} = require("app/models");
 /** import http status codes module */
 const httpStatus = require("http-status-codes");
+/** import path module */
+const path = require("path");
+/** import course validator */
+const {createCourseSchema} = require("app/http/validators/admin/admin.course.schema");
+/** import http-error module */
+const createError = require("http-errors");
 
 /**
  * @class AdminCourseController
@@ -18,7 +24,23 @@ class AdminCourseController extends Controller {
      */
     async addCourse(req, res, next) {
         try {
+            /** get user id from request */
+            const userId = req?.user?._id;
 
+            /** user input validation */
+            const courseData = await createCourseSchema.validateAsync(req.body);
+
+            /** add file data to request body image */
+            courseData.image = path.join(courseData.fileUploadPath, courseData.fileName);
+
+            /** create new course */
+            const createdCourse = await courseModel.create({...courseData, mentor: userId});
+
+            /** return error if course was not created */
+            if (!createdCourse?._id) throw createError.InternalServerError("ایجاد دوره با مشکل مواجه شد لطفا مجددا تلاش نمایید");
+
+            /** send success message */
+            return this.sendSuccessResponse(req, res, httpStatus.CREATED, "دوره با موفقیت ایجاد شد", {createdCourse});
         } catch (err) {
             next(err);
         }
