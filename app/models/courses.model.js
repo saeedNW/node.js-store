@@ -68,7 +68,7 @@ const Schema = new mongoose.Schema({
         type: [String],
         default: []
     },
-    categories: {
+    category: {
         type: mongoose.Types.ObjectId,
         ref: "category",
         required: true
@@ -111,7 +111,7 @@ const Schema = new mongoose.Schema({
         res: "user",
         required: true
     },
-    chapter: {
+    chapters: {
         type: [chapterSchema],
         default: []
     },
@@ -128,6 +128,11 @@ const Schema = new mongoose.Schema({
     /** remove version key */
     versionKey: false
 });
+
+/**
+ * define model index
+ */
+Schema.index({title: "text", summary: "text", description: "text"})
 
 /**
  * create mongoose model from the schema
