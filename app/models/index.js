@@ -6,6 +6,8 @@ const {categoryModel} = require("./category.model");
 const {paymentModel} = require("./payments.model");
 /** import products model */
 const {productModel} = require("./products.model");
+/** import products model */
+const {courseModel} = require("./courses.model");
 /** import sliders model */
 const {sliderModel} = require("./sliders.model");
 /** import users model */
@@ -17,6 +19,7 @@ module.exports = {
     categoryModel,
     paymentModel,
     productModel,
+    courseModel,
     sliderModel,
     userModel,
 }
