@@ -111,6 +111,11 @@ const Schema = new mongoose.Schema({
 });
 
 /**
+ * define model index
+ */
+Schema.index({title: "text", summary: "text", description: "text"})
+
+/**
  * create mongoose model from the schema
  */
 const productModel = mongoose.model("product", Schema);

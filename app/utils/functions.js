@@ -177,6 +177,35 @@ function returnListOfUploadedFiles(files, fileUploadPath) {
     return files.map(file => path.join(fileUploadPath, file.filename));
 }
 
+/**
+ * copy the given object
+ * @param object
+ * @returns {any}
+ */
+function copyObject(object) {
+    return JSON.parse(JSON.stringify(object));
+}
+
+/**
+ * set product feature
+ * @param body
+ * @returns {{made_in: (string|*), width: (number|*), length: (number|*), weight: (number|*), model: (string|*), colors: (string[]|*), height: (number|*)}}
+ */
+function setFeatures(body) {
+    /** extract data from request body */
+    const {model, made_in, height, weight, width, length, colors} = body;
+    /** define product features */
+    return {
+        model: (!model) ? "" : model,
+        made_in: (!made_in) ? "" : made_in,
+        colors: (!colors) ? [""] : colors,
+        height: (!height || isNaN(+height)) ? 0 : height,
+        weight: (!weight || isNaN(+weight)) ? 0 : weight,
+        width: (!width || isNaN(+width)) ? 0 : width,
+        length: (!length || isNaN(+length)) ? 0 : length,
+    };
+}
+
 module.exports = {
     randomNumberGenerator,
     signAccessToken,
@@ -184,4 +213,6 @@ module.exports = {
     refreshTokenVerification,
     removeFile,
     returnListOfUploadedFiles,
+    copyObject,
+    setFeatures,
 }
