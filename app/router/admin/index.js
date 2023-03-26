@@ -13,6 +13,8 @@ const adminMainRouter = require("express").Router();
  *          description: admin categories creation and management
  *      -   name: AdminPanel(product)
  *          description: admin products creation and management
+ *      -   name: AdminPanel(course)
+ *          description: admin course creation and management
  */
 
 /** import admin category router */
@@ -29,6 +31,11 @@ adminMainRouter.use("/blogs", adminBlogRouter);
 const {adminProductRouter} = require("./admin.product.router");
 /** initialize admin blog router */
 adminMainRouter.use("/products", adminProductRouter);
+
+/** import admin courses router */
+const {adminCourseRouter} = require("./admin.courses.router");
+/** initialize admin blog router */
+adminMainRouter.use("/courses", adminCourseRouter);
 
 /** export router */
 module.exports = {
