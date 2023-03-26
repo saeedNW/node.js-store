@@ -4,6 +4,13 @@
  */
 const userMainRouter = require("express").Router();
 
+/**
+ * @swagger
+ *  tags:
+ *      -   name: user-authentication
+ *          description: users authentication routes
+ */
+
 /** import user auth router */
 const {userAuthRouter} = require("./user.auth.router");
 /** initialize user auth router */
