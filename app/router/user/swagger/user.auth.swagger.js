@@ -46,29 +46,6 @@
 
 /**
  * @swagger
- *  components:
- *      schemas:
- *          SuccessResponse:
- *              type: object
- *              properties:
- *                  status:
- *                      type: integer
- *                      description: response status code
- *                      default: 200/201
- *                  success:
- *                      type: boolean
- *                      description: define process ending status
- *                      default: true
- *                  message:
- *                      type: string
- *                      description: response message
- *                  data:
- *                      type: object
- *                      description: response data, in case of returning/creating data
- */
-
-/**
- * @swagger
  * /user/auth/get-otp:
  *  post:
  *      summary: application users' otp creation process

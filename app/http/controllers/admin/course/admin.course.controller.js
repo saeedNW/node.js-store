@@ -45,7 +45,7 @@ class AdminCourseController extends Controller {
             if (!createdCourse?._id) throw createError.InternalServerError("ایجاد دوره با مشکل مواجه شد لطفا مجددا تلاش نمایید");
 
             /** send success message */
-            return this.sendSuccessResponse(req, res, httpStatus.CREATED, "دوره با موفقیت ایجاد شد", {createdCourse});
+            return this.sendSuccessResponse(req, res, httpStatus.CREATED, "دوره با موفقیت ایجاد شد");
         } catch (err) {
             next(err);
         }

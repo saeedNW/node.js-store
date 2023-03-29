@@ -74,51 +74,178 @@
 /**
  * @swagger
  *  definitions:
+ *      NewCourse:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: integer
+ *                  description: response http status code
+ *                  example: 201
+ *              success:
+ *                  type: boolean
+ *                  description: define process ending status
+ *                  example: true
+ *              message:
+ *                  type: string
+ *                  description: response message
+ *                  example: "your request ended successfully"
+ *              data:
+ *                  type: object
+ *
+ */
+
+/**
+ * @swagger
+ *  definitions:
  *      ListOfCourses:
- *          type: array
- *          items:
- *              type: object
- *              properties:
- *                  _id:
- *                      type: string
- *                      description: course ObjectID
- *                      example: 640d6eb5f4f1b2f8a1a55dd1
- *                  title:
- *                      type: string
- *                      description: course title
- *                      example: "title of course"
- *                  summary:
- *                      type: string
- *                      description: course summary
- *                      example: "course summary"
- *                  description:
- *                      type: string
- *                      description: course description
- *                      example: "course long description"
- *                  status:
- *                      type: string
- *                      description: course publish status
- *                      example: "notStarted|completed|holding"
- *                  duration:
- *                      type: string
- *                      description: course duration time
- *                      example: "25:12:48"
- *                  price:
- *                      type: integer
- *                      description: course price
- *                      example: 256,000
- *                  discount:
- *                      type: integer
- *                      description: course discount percentage
- *                      example: 20
- *                  studentsCount:
- *                      type: integer
- *                      description: course students count
- *                      example: 2
- *                  mentor:
- *                      type: string
- *                      description: course mentor name
- *                      example: "saeed norouzi"
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: integer
+ *                  description: response http status code
+ *                  example: 200
+ *              success:
+ *                  type: boolean
+ *                  description: define process ending status
+ *                  example: true
+ *              message:
+ *                  type: string
+ *                  description: response message
+ *                  example: "your request ended successfully"
+ *              data:
+ *                  type: object
+ *                  properties:
+ *                      courses:
+ *                          type: array
+ *                          items:
+ *                              type: object
+ *                              properties:
+ *                                  _id:
+ *                                      type: string
+ *                                      description: course ObjectID
+ *                                      example: 640d6eb5f4f1b2f8a1a55dd1
+ *                                  title:
+ *                                      type: string
+ *                                      description: course title
+ *                                      example: "title of course"
+ *                                  summary:
+ *                                      type: string
+ *                                      description: course summary
+ *                                      example: "course summary"
+ *                                  description:
+ *                                      type: string
+ *                                      description: course description
+ *                                      example: "course long description"
+ *                                  image:
+ *                                      type: string
+ *                                      description: course image
+ *                                      example: "upload/2023/3/26/1679819392568.png"
+ *                                  tags:
+ *                                      type: array
+ *                                      description: course tags
+ *                                      items:
+ *                                          type: string
+ *                                          example: tag1
+ *                                  status:
+ *                                      type: string
+ *                                      description: course publish status
+ *                                      example: "notStarted|completed|holding"
+ *                                  duration:
+ *                                      type: string
+ *                                      description: course duration time
+ *                                      example: "25:12:48"
+ *                                  price:
+ *                                      type: integer
+ *                                      description: course price
+ *                                      example: 256,000
+ *                                  discount:
+ *                                      type: integer
+ *                                      description: course discount percentage
+ *                                      example: 20
+ *                                  studentsCount:
+ *                                      type: integer
+ *                                      description: course students count
+ *                                      example: 2
+ *                                  mentor:
+ *                                      type: string
+ *                                      description: course mentor name
+ *                                      example: "saeed norouzi"
+ */
+
+/**
+ * @swagger
+ *  definitions:
+ *      SingleCourse:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: integer
+ *                  description: response http status code
+ *                  example: 200
+ *              success:
+ *                  type: boolean
+ *                  description: define process ending status
+ *                  example: true
+ *              message:
+ *                  type: string
+ *                  description: response message
+ *                  example: "your request ended successfully"
+ *              data:
+ *                  type: object
+ *                  properties:
+ *                      course:
+ *                          type: object
+ *                          properties:
+ *                              _id:
+ *                                  type: string
+ *                                  description: course ObjectID
+ *                                  example: 640d6eb5f4f1b2f8a1a55dd1
+ *                              title:
+ *                                  type: string
+ *                                  description: course title
+ *                                  example: "title of course"
+ *                              summary:
+ *                                  type: string
+ *                                  description: course summary
+ *                                  example: "course summary"
+ *                              description:
+ *                                  type: string
+ *                                  description: course description
+ *                                  example: "course long description"
+ *                              image:
+ *                                  type: string
+ *                                  description: course image
+ *                                  example: "upload/2023/3/26/1679819392568.png"
+ *                              tags:
+ *                                  type: array
+ *                                  description: course tags
+ *                                  items:
+ *                                      type: string
+ *                                      example: tag1
+ *                              status:
+ *                                  type: string
+ *                                  description: course publish status
+ *                                  example: "notStarted|completed|holding"
+ *                              duration:
+ *                                  type: string
+ *                                  description: course duration time
+ *                                  example: "25:12:48"
+ *                              price:
+ *                                  type: integer
+ *                                  description: course price
+ *                                  example: 256,000
+ *                              discount:
+ *                                  type: integer
+ *                                  description: course discount percentage
+ *                                  example: 20
+ *                              studentsCount:
+ *                                  type: integer
+ *                                  description: course students count
+ *                                  example: 2
+ *                              mentor:
+ *                                  type: string
+ *                                  description: course mentor name
+ *                                  example: "saeed norouzi"
  */
 
 /**
@@ -137,6 +264,10 @@
  *          responses:
  *              201:
  *                  description: successful
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/NewCourse'
  *              401:
  *                  description: Unauthorized
  *              403:
@@ -181,6 +312,10 @@
  *      responses:
  *          200:
  *              description: successful
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/ListOfCourses'
  *          401:
  *              description: Unauthorized
  *          403:

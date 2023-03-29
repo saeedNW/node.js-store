@@ -75,6 +75,257 @@
 
 /**
  * @swagger
+ *  definitions:
+ *      ListOfBlogs:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: integer
+ *                  description: response http status code
+ *                  example: 200
+ *              success:
+ *                  type: boolean
+ *                  description: define process ending status
+ *                  example: true
+ *              message:
+ *                  type: string
+ *                  description: response message
+ *                  example: "your request ended successfully"
+ *              data:
+ *                  type: object
+ *                  properties:
+ *                      blogs:
+ *                          type: array
+ *                          items:
+ *                              type: object
+ *                              properties:
+ *                                  _id:
+ *                                      type: string
+ *                                      description: course ObjectID
+ *                                      example: 640d6eb5f4f1b2f8a1a55dd1
+ *                                  author:
+ *                                      type: object
+ *                                      description: blog author data
+ *                                      properties:
+ *                                          _id:
+ *                                              type: string
+ *                                              description: course ObjectID
+ *                                              example: 640d6eb5f4f1b2f8a1a55dd1
+ *                                          first_name:
+ *                                              type: string
+ *                                              description: author first name
+ *                                              example: Saeed
+ *                                          last_name:
+ *                                              type: string
+ *                                              description: author last name
+ *                                              example: Norouzi
+ *                                          username:
+ *                                              type: string
+ *                                              description: author username
+ *                                              example: SNW13
+ *                                  title:
+ *                                      type: string
+ *                                      description: blog title
+ *                                      example: "title of blog"
+ *                                  summary:
+ *                                      type: string
+ *                                      description: blog summary
+ *                                      example: "blog short summary"
+ *                                  text:
+ *                                      type: string
+ *                                      description: blog description
+ *                                      example: "blog long description"
+ *                                  image:
+ *                                      type: string
+ *                                      description: blog image
+ *                                      example: "upload/2023/3/26/1679819392568.png"
+ *                                  tags:
+ *                                      type: array
+ *                                      description: course tags
+ *                                      items:
+ *                                          type: string
+ *                                          example: tag1
+ *                                  category:
+ *                                      type: object
+ *                                      descriptions: blog category data
+ *                                      properties:
+ *                                          _id:
+ *                                              type: string
+ *                                              description: category ObjectID
+ *                                              example: 640d6eb5f4f1b2f8a1a55dd1
+ *                                          title:
+ *                                              type: string
+ *                                              description: category title
+ */
+
+/**
+ * @swagger
+ *  definitions:
+ *      NewBlog:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: integer
+ *                  description: response http status code
+ *                  example: 201
+ *              success:
+ *                  type: boolean
+ *                  description: define process ending status
+ *                  example: true
+ *              message:
+ *                  type: string
+ *                  description: response message
+ *                  example: "your request ended successfully"
+ *              data:
+ *                  type: object
+ *                  properties:
+ *                      blog:
+ *                          type: object
+ *                          properties:
+ *                              _id:
+ *                                  type: string
+ *                                  description: course ObjectID
+ *                                  example: 640d6eb5f4f1b2f8a1a55dd1
+ *                              author:
+ *                                  type: object
+ *                                  description: blog author data
+ *                                  properties:
+ *                                      _id:
+ *                                          type: string
+ *                                          description: course ObjectID
+ *                                          example: 640d6eb5f4f1b2f8a1a55dd1
+ *                                      first_name:
+ *                                          type: string
+ *                                          description: author first name
+ *                                          example: Saeed
+ *                                      last_name:
+ *                                          type: string
+ *                                          description: author last name
+ *                                          example: Norouzi
+ *                                      username:
+ *                                          type: string
+ *                                          description: author username
+ *                                          example: SNW13
+ *                              title:
+ *                                  type: string
+ *                                  description: blog title
+ *                                  example: "title of blog"
+ *                              summary:
+ *                                  type: string
+ *                                  description: blog summary
+ *                                  example: "blog short summary"
+ *                              text:
+ *                                  type: string
+ *                                  description: blog description
+ *                                  example: "blog long description"
+ *                              image:
+ *                                  type: string
+ *                                  description: blog image
+ *                                  example: "upload/2023/3/26/1679819392568.png"
+ *                              tags:
+ *                                  type: array
+ *                                  description: course tags
+ *                                  items:
+ *                                      type: string
+ *                                      example: tag1
+ *                              category:
+ *                                  type: object
+ *                                  descriptions: blog category data
+ *                                  properties:
+ *                                      _id:
+ *                                          type: string
+ *                                          description: category ObjectID
+ *                                          example: 640d6eb5f4f1b2f8a1a55dd1
+ *                                      title:
+ *                                          type: string
+ *                                          description: category title
+ */
+
+/**
+ * @swagger
+ *  definitions:
+ *      SingleBlog:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: integer
+ *                  description: response http status code
+ *                  example: 200
+ *              success:
+ *                  type: boolean
+ *                  description: define process ending status
+ *                  example: true
+ *              message:
+ *                  type: string
+ *                  description: response message
+ *                  example: "your request ended successfully"
+ *              data:
+ *                  type: object
+ *                  properties:
+ *                      blog:
+ *                          type: object
+ *                          properties:
+ *                              _id:
+ *                                  type: string
+ *                                  description: course ObjectID
+ *                                  example: 640d6eb5f4f1b2f8a1a55dd1
+ *                              author:
+ *                                  type: object
+ *                                  description: blog author data
+ *                                  properties:
+ *                                      _id:
+ *                                          type: string
+ *                                          description: course ObjectID
+ *                                          example: 640d6eb5f4f1b2f8a1a55dd1
+ *                                      first_name:
+ *                                          type: string
+ *                                          description: author first name
+ *                                          example: Saeed
+ *                                      last_name:
+ *                                          type: string
+ *                                          description: author last name
+ *                                          example: Norouzi
+ *                                      username:
+ *                                          type: string
+ *                                          description: author username
+ *                                          example: SNW13
+ *                              title:
+ *                                  type: string
+ *                                  description: blog title
+ *                                  example: "title of blog"
+ *                              summary:
+ *                                  type: string
+ *                                  description: blog summary
+ *                                  example: "blog short summary"
+ *                              text:
+ *                                  type: string
+ *                                  description: blog description
+ *                                  example: "blog long description"
+ *                              image:
+ *                                  type: string
+ *                                  description: blog image
+ *                                  example: "upload/2023/3/26/1679819392568.png"
+ *                              tags:
+ *                                  type: array
+ *                                  description: course tags
+ *                                  items:
+ *                                      type: string
+ *                                      example: tag1
+ *                              category:
+ *                                  type: object
+ *                                  descriptions: blog category data
+ *                                  properties:
+ *                                      _id:
+ *                                          type: string
+ *                                          description: category ObjectID
+ *                                          example: 640d6eb5f4f1b2f8a1a55dd1
+ *                                      title:
+ *                                          type: string
+ *                                          description: category title
+ */
+
+/**
+ * @swagger
  *  /admin/blogs:
  *      get:
  *          summary: get all blogs
@@ -83,6 +334,10 @@
  *          responses:
  *              200:
  *                  description: successful
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/ListOfBlogs'
  *              401:
  *                  description: Unauthorized
  *              403:
@@ -107,6 +362,10 @@
  *          responses:
  *              201:
  *                  description: successful
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/NewBlog'
  *              401:
  *                  description: Unauthorized
  *              403:
@@ -129,6 +388,10 @@
  *          responses:
  *              200:
  *                  description: successful
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/SingleBlog'
  *              401:
  *                  description: Unauthorized
  *              403:
