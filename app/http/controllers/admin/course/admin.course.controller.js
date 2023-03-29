@@ -120,21 +120,6 @@ class AdminCourseController extends Controller {
     }
 
     /**
-     * add new chapter
-     * @param req express request
-     * @param res express response
-     * @param next express next function
-     * @returns {Promise<void>}
-     */
-    async newChapter(req, res, next) {
-        try {
-
-        } catch (err) {
-            next(err);
-        }
-    }
-
-    /**
      * add new episode
      * @param req express request
      * @param res express response
@@ -158,7 +143,7 @@ class AdminCourseController extends Controller {
         /** MongoDB ObjectID validator */
         const {id} = await ObjectIdValidator.validateAsync({id: courseId});
         /** get course from database */
-        const course = await courseModel.findById(id);
+        const course = await courseModel.findById(this.convertStringToMongoObjectId(id));
         /** return error if course was not found */
         if (!course) throw createError.NotFound("محصولی یافت نشد");
         /** return course */

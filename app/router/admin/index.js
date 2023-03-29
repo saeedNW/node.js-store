@@ -16,13 +16,18 @@ adminMainRouter.use("/blogs", adminBlogRouter);
 
 /** import admin product router */
 const {adminProductRouter} = require("./admin.product.router");
-/** initialize admin blog router */
+/** initialize admin product router */
 adminMainRouter.use("/products", adminProductRouter);
 
 /** import admin courses router */
 const {adminCourseRouter} = require("./admin.courses.router");
-/** initialize admin blog router */
+/** initialize admin courses router */
 adminMainRouter.use("/courses", adminCourseRouter);
+
+/** import admin chapters router */
+const {adminChapterRouter} = require("./admin.chapter.router");
+/** initialize admin chapters router */
+adminMainRouter.use("/chapters", adminChapterRouter);
 
 /** export router */
 module.exports = {
