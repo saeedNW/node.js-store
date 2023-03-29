@@ -50,8 +50,16 @@
  *                  description: category created successfully
  *              401:
  *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
  *              403:
  *                  description: forbidden
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Forbidden'
  *              422:
  *                  description: Validation error
  *              500:
@@ -72,8 +80,16 @@
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/Unauthorized'
  *          403:
  *              description: forbidden
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/Forbidden'
  *          404:
  *              description: data notfound
  *          422:
@@ -94,6 +110,10 @@
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/Unauthorized'
  *          403:
  *              description: forbidden
  *          500:
@@ -114,6 +134,10 @@
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/Unauthorized'
  *          403:
  *              description: forbidden
  *          422:
@@ -134,6 +158,10 @@
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/Unauthorized'
  *          403:
  *              description: forbidden
  *          500:
@@ -154,6 +182,10 @@
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/Unauthorized'
  *          403:
  *              description: forbidden
  *          422:

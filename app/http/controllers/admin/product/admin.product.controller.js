@@ -118,7 +118,7 @@ class AdminProductController extends Controller {
             const updatedProduct = await productModel.updateOne({_id: product._id}, {$set: data});
 
             /** throw error if update was unsuccessful */
-            if (updatedProduct.updateCount <= 0) throw createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+            if (updatedProduct.modifiedCount <= 0) throw createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             /** send success message */
             this.sendSuccessResponse(req, res, httpStatus.OK, "محصول با موفقیت بروزرسانی شد");

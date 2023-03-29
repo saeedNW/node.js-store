@@ -199,6 +199,10 @@
  *                  description: successful
  *              401:
  *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
  *              403:
  *                  description: forbidden
  *              422:
@@ -227,6 +231,10 @@
  *                  description: successful
  *              401:
  *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
  *              403:
  *                  description: forbidden
  *              422:
@@ -249,6 +257,10 @@
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/Unauthorized'
  *          403:
  *              description: forbidden
  *          404:
@@ -271,6 +283,10 @@
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/Unauthorized'
  *          403:
  *              description: forbidden
  *          500:
@@ -291,6 +307,10 @@
  *              description: successful
  *          401:
  *              description: Unauthorized
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/Unauthorized'
  *          403:
  *              description: forbidden
  *          422:

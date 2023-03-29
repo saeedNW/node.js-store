@@ -270,6 +270,10 @@
  *                              $ref: '#/definitions/NewCourse'
  *              401:
  *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
  *              403:
  *                  description: forbidden
  *              422:
@@ -294,6 +298,10 @@
  *                              $ref: '#/definitions/ListOfCourses'
  *              401:
  *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
  *              403:
  *                  description: forbidden
  *              500:
@@ -318,6 +326,10 @@
  *                          $ref: '#/definitions/ListOfCourses'
  *          401:
  *              description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
  *          403:
  *              description: forbidden
  *          422:

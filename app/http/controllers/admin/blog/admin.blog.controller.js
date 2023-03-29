@@ -104,7 +104,7 @@ class AdminBlogController extends Controller {
             const updatedBlog = await blogModel.updateOne({'_id': blogId}, {$set: req.body});
 
             /** throw error if update was unsuccessful */
-            if (updatedBlog.updateCount <= 0) throw createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+            if (updatedBlog.modifiedCount <= 0) throw createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             this.sendSuccessResponse(req, res, httpStatus.OK, "بروزرسانی با موفقیت انجام شد");
         } catch (err) {

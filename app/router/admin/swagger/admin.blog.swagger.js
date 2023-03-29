@@ -340,6 +340,10 @@
  *                              $ref: '#/definitions/ListOfBlogs'
  *              401:
  *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
  *              403:
  *                  description: forbidden
  *              500:
@@ -368,6 +372,10 @@
  *                              $ref: '#/definitions/NewBlog'
  *              401:
  *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
  *              403:
  *                  description: forbidden
  *              422:
@@ -394,6 +402,10 @@
  *                              $ref: '#/definitions/SingleBlog'
  *              401:
  *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
  *              403:
  *                  description: forbidden
  *              422:
@@ -416,6 +428,10 @@
  *                  description: successful
  *              401:
  *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
  *              403:
  *                  description: forbidden
  *              422:
@@ -443,6 +459,10 @@
  *                  description: successful
  *              401:
  *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
  *              403:
  *                  description: forbidden
  *              422:

@@ -224,7 +224,7 @@ module.exports = class Application {
             return res.status(status).json({
                 status,
                 success: false,
-                errors: message
+                message
             });
         });
     }
