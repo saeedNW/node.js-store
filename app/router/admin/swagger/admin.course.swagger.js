@@ -326,10 +326,10 @@
  *                          $ref: '#/definitions/ListOfCourses'
  *          401:
  *              description: Unauthorized
- *                  content:
- *                      application/json:
- *                          schema:
- *                              $ref: '#/definitions/Unauthorized'
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/definitions/Unauthorized'
  *          403:
  *              description: forbidden
  *          422:
