@@ -81,3 +81,23 @@
  *                  description: response message
  *                  example: "access denied"
  */
+
+/**
+ * @swagger
+ *  definitions:
+ *      NotFound:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: integer
+ *                  description: response http status code
+ *                  example: 404
+ *              success:
+ *                  type: boolean
+ *                  description: define process ending status
+ *                  example: false
+ *              message:
+ *                  type: string
+ *                  description: response message
+ *                  example: "requested data was not found"
+ */
