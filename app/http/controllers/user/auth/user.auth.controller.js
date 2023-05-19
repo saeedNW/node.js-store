@@ -54,7 +54,7 @@ class UserAuthController extends Controller {
 
             /** return error if user creation failed */
             if (!user)
-                throw createError.Unauthorized("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+                throw new createError.Unauthorized("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             /**
              * send success message
@@ -95,11 +95,11 @@ class UserAuthController extends Controller {
 
             /** return error if user was not found */
             if (!user)
-                throw createError.NotFound("کاربری با این شماره تماس یافت نشد");
+                throw new createError.NotFound("کاربری با این شماره تماس یافت نشد");
 
             /** return error if user otp was not correct */
             if (user.otp.code !== code)
-                throw createError.Unauthorized("کد وارد شده صحیح نمی باشد");
+                throw new createError.Unauthorized("کد وارد شده صحیح نمی باشد");
 
             /**
              * get current date
@@ -109,7 +109,7 @@ class UserAuthController extends Controller {
 
             /** return error if otp was expired */
             if (user.otp.expires < now)
-                throw createError.Unauthorized("کد وارد شده فاقد اعتبار می باشد");
+                throw new createError.Unauthorized("کد وارد شده فاقد اعتبار می باشد");
 
             /**
              * create user access token

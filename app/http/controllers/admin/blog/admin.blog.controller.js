@@ -104,7 +104,7 @@ class AdminBlogController extends Controller {
             const updatedBlog = await blogModel.updateOne({'_id': blogId}, {$set: req.body});
 
             /** throw error if update was unsuccessful */
-            if (updatedBlog.modifiedCount <= 0) throw createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+            if (updatedBlog.modifiedCount <= 0) throw new createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             this.sendSuccessResponse(req, res, httpStatus.OK, "بروزرسانی با موفقیت انجام شد");
         } catch (err) {
@@ -136,7 +136,7 @@ class AdminBlogController extends Controller {
             const removedBlog = await blogModel.deleteOne({'_id': blogId});
 
             if (removedBlog.deleteCount <= 0)
-                throw createError.InternalServerError("حذف پست با مشکل مواجه شد لطفا مجددا تلاش نمایید");
+                throw new createError.InternalServerError("حذف پست با مشکل مواجه شد لطفا مجددا تلاش نمایید");
 
             this.sendSuccessResponse(req, res, httpStatus.OK, "پست با موفقیت حذف شد");
         } catch (err) {
@@ -259,7 +259,7 @@ class AdminBlogController extends Controller {
 
         /** throw error if blog was not found */
         if (!blog)
-            throw createError.NotFound("بلاگ درخواست شده پیدا نشد");
+            throw new createError.NotFound("بلاگ درخواست شده پیدا نشد");
 
         /** add populate option to search query */
         if (populate)

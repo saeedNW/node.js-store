@@ -193,7 +193,7 @@ module.exports = class Application {
          * 404 page not found error handler
          */
         this.#app.use((req, res, next) => {
-            next(createError.NotFound("آدرس مورد نظر شما یافت نشد"));
+            next(new createError.NotFound("آدرس مورد نظر شما یافت نشد"));
         });
 
         /**
@@ -203,7 +203,7 @@ module.exports = class Application {
             /**
              * define server internal error
              */
-            const serverError = createError.InternalServerError();
+            const serverError = new createError.InternalServerError();
 
             /**
              * define error status

@@ -32,14 +32,14 @@ async function accessTokenVerification(req, res, next) {
 
         /** return error if phone was not exists in payload */
         if (!phone)
-            throw createError.Unauthorized("کد وارد شده صحیح نمی باشد");
+            throw new createError.Unauthorized("کد وارد شده صحیح نمی باشد");
 
         /** get user data from database */
         const user = await userModel.findOne({phone}, {password: 0, otp: 0});
 
         /** return error if user was not found */
         if (!user)
-            throw createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید");
+            throw new createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید");
 
         /** add user data to request */
         req.user = user;
@@ -47,7 +47,7 @@ async function accessTokenVerification(req, res, next) {
         return next();
     } catch (err) {
         if (err?.status !== 401)
-            next(createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید"));
+            next(new createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید"));
         else
             next(err);
     }
@@ -64,7 +64,7 @@ function checkRole(role) {
             /** get user data */
             const user = req.user;
             /** throw error if user role wasn't equal to given access role */
-            if (!user.roles.includes(role)) throw createError.Forbidden("شما اجازه دسترسی به این بخش را ندارید");
+            if (!user.roles.includes(role)) throw new createError.Forbidden("شما اجازه دسترسی به این بخش را ندارید");
 
             return next();
         } catch (err) {
@@ -92,7 +92,7 @@ function getToken(headers) {
     if (token && ["Bearer", "bearer"].includes(Barer)) return token;
 
     /** return error if token was invalid */
-    throw createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید");
+    throw new createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید");
 }
 
 module.exports = {

@@ -6,7 +6,7 @@ const createError = require("http-errors");
 const {mongodbConstants} = require("app/utils/constans");
 
 const ObjectIdValidator = Joi.object({
-    id: Joi.string().regex(mongodbConstants.MongoIdPattern).error(createError.UnprocessableEntity("شناسه وارد شده صحیح نمیباشد")),
+    id: Joi.string().regex(mongodbConstants.MongoIdPattern).error(new createError.UnprocessableEntity("شناسه وارد شده صحیح نمیباشد")),
 });
 
 module.exports = {

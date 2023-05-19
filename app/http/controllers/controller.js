@@ -38,7 +38,7 @@ module.exports = class Controller {
             if (req?.file)
                 fs.unlinkSync(req?.file?.path);
 
-            throw createError.UnprocessableEntity("شناسه وارد شده صحیح نمی باشد");
+            throw new createError.UnprocessableEntity("شناسه وارد شده صحیح نمی باشد");
         }
     }
 

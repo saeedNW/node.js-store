@@ -39,7 +39,7 @@ class AdminChapterController extends Controller {
             });
 
             /** throw error if update was unsuccessful */
-            if (createdChapter.modifiedCount <= 0) throw createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+            if (createdChapter.modifiedCount <= 0) throw new createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             this.sendSuccessResponse(req, res, httpStatus.CREATED, "بروزرسانی با موفقیت انجام شد");
         } catch (err) {
@@ -58,7 +58,7 @@ class AdminChapterController extends Controller {
         /** get course from database */
         const course = await courseModel.findById(this.convertStringToMongoObjectId(id));
         /** return error if course was not found */
-        if (!course) throw createError.NotFound("محصولی یافت نشد");
+        if (!course) throw new createError.NotFound("محصولی یافت نشد");
         /** return course */
         return course;
     }
@@ -91,10 +91,12 @@ class AdminChapterController extends Controller {
      * @returns {Promise<*>}
      */
     async getCourseChapters(courseId) {
+        /** MongoDB ObjectID validator */
+        const {id} = await ObjectIdValidator.validateAsync({id: courseId});
         /** get course chapters */
-        const course = await courseModel.findOne({_id: courseId}, {chapters: 1, title:1});
+        const course = await courseModel.findOne({_id: id}, {chapters: 1, title: 1});
         /** return error if chapter was not found */
-        if (!course) throw createError.NotFound("دوره انتخابی یافت نشد");
+        if (!course) throw new createError.NotFound("دوره انتخابی یافت نشد");
         /** return chapters */
         return course
     }

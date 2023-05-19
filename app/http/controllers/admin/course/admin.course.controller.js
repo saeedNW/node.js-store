@@ -36,13 +36,13 @@ class AdminCourseController extends Controller {
             courseData.image = path.join(courseData.fileUploadPath, courseData.fileName);
 
             if (courseData.price > 0 && courseData.courseType === "free")
-                throw createError.BadRequest("برای دوره رایگان نمیتوان قیمت ثبت کرد");
+                throw new createError.BadRequest("برای دوره رایگان نمیتوان قیمت ثبت کرد");
 
             /** create new course */
             const createdCourse = await courseModel.create({...courseData, mentor: userId});
 
             /** return error if course was not created */
-            if (!createdCourse?._id) throw createError.InternalServerError("ایجاد دوره با مشکل مواجه شد لطفا مجددا تلاش نمایید");
+            if (!createdCourse?._id) throw new createError.InternalServerError("ایجاد دوره با مشکل مواجه شد لطفا مجددا تلاش نمایید");
 
             /** send success message */
             return this.sendSuccessResponse(req, res, httpStatus.CREATED, "دوره با موفقیت ایجاد شد");
@@ -145,7 +145,7 @@ class AdminCourseController extends Controller {
         /** get course from database */
         const course = await courseModel.findById(this.convertStringToMongoObjectId(id));
         /** return error if course was not found */
-        if (!course) throw createError.NotFound("محصولی یافت نشد");
+        if (!course) throw new createError.NotFound("محصولی یافت نشد");
         /** return course */
         return course;
     }

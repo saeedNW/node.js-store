@@ -68,7 +68,7 @@ function fileFilter(req, file, cb) {
     const validMimetypes = [".jpg", ".png", ".jpeg", ".gif", ".webp"];
 
     if (!validMimetypes.includes(fileExt))
-        return cb(createError.UnprocessableEntity("تصویر ارسال شده صحیح نمیباشد"));
+        return cb(new createError.UnprocessableEntity("تصویر ارسال شده صحیح نمیباشد"));
 
     return cb(null, true);
 }

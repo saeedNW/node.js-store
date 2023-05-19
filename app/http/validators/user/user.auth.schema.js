@@ -22,15 +22,15 @@ const getOtpSchema = Joi.object({
         /** it should be a valid phone number */
         .pattern(PhoneRegEx)
         /** set validation error */
-        .error(createError.UnprocessableEntity("شماره موبایل وارد شده صحیح نمیباشد"))
+        .error(new createError.UnprocessableEntity("شماره موبایل وارد شده صحیح نمیباشد"))
 });
 
 /** define user auth check opt validator schema */
 const checkOtpSchema = Joi.object({
     /** phone validator */
-    phone: Joi.string().required().length(11).pattern(PhoneRegEx).error(createError.UnprocessableEntity("شماره موبایل وارد شده صحیح نمیباشد")),
+    phone: Joi.string().required().length(11).pattern(PhoneRegEx).error(new createError.UnprocessableEntity("شماره موبایل وارد شده صحیح نمیباشد")),
     /** code validator */
-    code: Joi.string().min(4).max(6).error(createError.UnprocessableEntity("کد ارسال شده صحیح نمیباشد"))
+    code: Joi.string().min(4).max(6).error(new createError.UnprocessableEntity("کد ارسال شده صحیح نمیباشد"))
 });
 
 module.exports = {
