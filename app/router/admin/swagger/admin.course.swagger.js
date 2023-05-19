@@ -7,7 +7,7 @@
  *              enum:
  *                  -   free
  *                  -   cash
- *                  -   vpi
+ *                  -   vip
  */
 
 /**
