@@ -48,22 +48,6 @@ class AdminChapterController extends Controller {
     }
 
     /**
-     * find course by id
-     * @param courseId
-     * @returns {Promise<*>}
-     */
-    async findCourseById(courseId) {
-        /** MongoDB ObjectID validator */
-        const {id} = await ObjectIdValidator.validateAsync({id: courseId});
-        /** get course from database */
-        const course = await courseModel.findById(this.convertStringToMongoObjectId(id));
-        /** return error if course was not found */
-        if (!course) throw new createError.NotFound("محصولی یافت نشد");
-        /** return course */
-        return course;
-    }
-
-    /**
      * get chapters list of a single course
      * @param req express request
      * @param res express response
@@ -86,6 +70,44 @@ class AdminChapterController extends Controller {
     }
 
     /**
+     * get single chapter
+     * @param req express request
+     * @param res express response
+     * @param next express next function
+     * @returns {Promise<void>}
+     */
+    async singleChapter(req, res, next) {
+        try {
+            /** extract chapter id from request params */
+            const {chapterId} = req.params;
+
+            /** read chapter data from database */
+            const chapter = await this.getChapterById(chapterId);
+
+            /** send success response */
+            this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {chapter});
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    /**
+     * find course by id
+     * @param courseId
+     * @returns {Promise<*>}
+     */
+    async findCourseById(courseId) {
+        /** MongoDB ObjectID validator */
+        const {id} = await ObjectIdValidator.validateAsync({id: courseId});
+        /** get course from database */
+        const course = await courseModel.findById(this.convertStringToMongoObjectId(id));
+        /** return error if course was not found */
+        if (!course) throw new createError.NotFound("محصولی یافت نشد");
+        /** return course */
+        return course;
+    }
+
+    /**
      * read amd return single course chapters
      * @param courseId courseId
      * @returns {Promise<*>}
@@ -98,7 +120,23 @@ class AdminChapterController extends Controller {
         /** return error if chapter was not found */
         if (!course) throw new createError.NotFound("دوره انتخابی یافت نشد");
         /** return chapters */
-        return course
+        return course;
+    }
+
+    /**
+     * read and return single chapter with ObjectId
+     * @param chapterId
+     * @returns {Promise<*>}
+     */
+    async getChapterById(chapterId) {
+        /** MongoDB ObjectID validator */
+        const {id} = await ObjectIdValidator.validateAsync({id: chapterId});
+        /** get chapter data */
+        const chapter = await courseModel.findOne({'chapters._id': id}, {'chapters.$': 1});
+        /** return error if chapter was not found */
+        if (!chapter) throw new createError.NotFound('فصل انتخابی یافت نشد');
+        /** return chapter */
+        return chapter['chapters'][0];
     }
 }
 

@@ -7,6 +7,8 @@ adminChapterRouter.put("/new", AdminChapterController.newChapter);
 
 adminChapterRouter.get("/list/:courseId", AdminChapterController.chapterOfCourse);
 
+adminChapterRouter.get("/single/:chapterId", AdminChapterController.singleChapter);
+
 module.exports = {
     adminChapterRouter
 }

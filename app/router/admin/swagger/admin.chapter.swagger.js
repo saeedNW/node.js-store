@@ -36,6 +36,20 @@
 
 /**
  * @swagger
+ *  components:
+ *      parameters:
+ *          ChapterId:
+ *              name: chapterId
+ *              in: path
+ *              type: string
+ *              required: true
+ *              schema:
+ *                  type: string
+ *              description: chapter ObjectId
+ */
+
+/**
+ * @swagger
  *  definitions:
  *      ListOfChapters:
  *          type: object
@@ -112,6 +126,69 @@
 
 /**
  * @swagger
+ *  definitions:
+ *      SingleChapter:
+ *          type: object
+ *          properties:
+ *              status:
+ *                  type: integer
+ *                  description: response http status code
+ *                  example: 200
+ *              success:
+ *                  type: boolean
+ *                  description: define process ending status
+ *                  example: true
+ *              message:
+ *                  type: string
+ *                  description: response message
+ *                  example: "your request ended successfully"
+ *              data:
+ *                  type: object
+ *                  properties:
+ *                      chapter:
+ *                          type: object
+ *                          properties:
+ *                               _id:
+ *                                   type: string
+ *                                   description: chapter ObjectID
+ *                                   example: 640d6eb5f4f1b2f8a1a55dd1
+ *                               title:
+ *                                   type: string
+ *                                   description: chapter title
+ *                                   example: "title of chapter"
+ *                               description:
+ *                                   type: string
+ *                                   description: chapter description
+ *                                   example: "chapter long description"
+ *                               episodes:
+ *                                   type: array
+ *                                   items:
+ *                                       type: object
+ *                                       properties:
+ *                                           _id:
+ *                                               type: string
+ *                                               description: episode ObjectID
+ *                                               example: 640d6eb5f4f1b2f8a1a55dd1
+ *                                           title:
+ *                                               type: string
+ *                                               description: episode title
+ *                                               example: "title of episode"
+ *                                           description:
+ *                                               type: string
+ *                                               description: episode description
+ *                                               example: "episode long description"
+ *                                           type:
+ *                                               type: string
+ *                                               description: episode type (free, cash, vpi)
+ *                                               example: free
+ *                                           duration:
+ *                                               type: string
+ *                                               description: episode duration time
+ *                                               example: "25:12:48"
+ */
+
+/**
+ * @swagger
  *  /admin/chapters/new:
  *      put:
  *          summary: add new chapter
@@ -165,6 +242,43 @@
  *                      application/json:
  *                          schema:
  *                              $ref: '#/definitions/ListOfChapters'
+ *              401:
+ *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
+ *              403:
+ *                  description: forbidden
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Forbidden'
+ *              404:
+ *                  description: data not found
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/NotFound'
+ *              500:
+ *                  description: Internal server error
+ */
+
+/**
+ * @swagger
+ *  /admin/chapters/single/{chapterId}:
+ *      get:
+ *          summary: get single chapter by ObjectId
+ *          tags: [AdminPanel(chapters)]
+ *          parameters:
+ *              -   $ref: '#/components/parameters/ChapterId'
+ *          responses:
+ *              200:
+ *                  description: successful
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/SingleChapter'
  *              401:
  *                  description: Unauthorized
  *                  content:
