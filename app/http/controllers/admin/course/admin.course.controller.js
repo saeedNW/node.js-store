@@ -91,7 +91,15 @@ class AdminCourseController extends Controller {
     async getAllCourses(req, res, next) {
         try {
             /** get all courses from database */
-            const courses = await courseModel.find({});
+            const courses = await courseModel.find({}).populate([
+                {
+                    'path': 'category',
+                    'select': ['title']
+                }, {
+                    'path': 'mentor',
+                    'select': ['first_name', 'last_name', 'phone', 'email']
+                }
+            ]);
             /** send success response */
             this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {courses});
         } catch (err) {
@@ -143,7 +151,15 @@ class AdminCourseController extends Controller {
         /** MongoDB ObjectID validator */
         const {id} = await ObjectIdValidator.validateAsync({id: courseId});
         /** get course from database */
-        const course = await courseModel.findById(this.convertStringToMongoObjectId(id));
+        const course = await courseModel.findById(this.convertStringToMongoObjectId(id)).populate([
+            {
+                'path': 'category',
+                'select': ['title']
+            }, {
+                'path': 'mentor',
+                'select': ['first_name', 'last_name', 'phone', 'email']
+            }
+        ]);
         /** return error if course was not found */
         if (!course) throw new createError.NotFound("محصولی یافت نشد");
         /** return course */
