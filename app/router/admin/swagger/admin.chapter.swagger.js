@@ -300,3 +300,40 @@
  *              500:
  *                  description: Internal server error
  */
+
+/**
+ * @swagger
+ *  /admin/chapters/remove/{chapterId}:
+ *      delete:
+ *          summary: remove single chapter by ObjectId
+ *          tags: [AdminPanel(chapters)]
+ *          parameters:
+ *              -   $ref: '#/components/parameters/ChapterId'
+ *          responses:
+ *              200:
+ *                  description: successful
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/DefaultSuccess'
+ *              401:
+ *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
+ *              403:
+ *                  description: forbidden
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Forbidden'
+ *              404:
+ *                  description: data not found
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/NotFound'
+ *              500:
+ *                  description: Internal server error
+ */

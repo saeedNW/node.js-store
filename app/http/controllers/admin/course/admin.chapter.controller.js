@@ -41,7 +41,7 @@ class AdminChapterController extends Controller {
             /** throw error if update was unsuccessful */
             if (createdChapter.modifiedCount <= 0) throw new createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
-            this.sendSuccessResponse(req, res, httpStatus.CREATED, "بروزرسانی با موفقیت انجام شد");
+            this.sendSuccessResponse(req, res, httpStatus.CREATED, "فصل با موفقیت افزوده شد");
         } catch (err) {
             next(err);
         }
@@ -86,6 +86,40 @@ class AdminChapterController extends Controller {
 
             /** send success response */
             this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {chapter});
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    /**
+     * remove a chapter
+     * @param req express request
+     * @param res express response
+     * @param next express next function
+     * @returns {Promise<void>}
+     */
+    async removeChapterById(req, res, next) {
+        try {
+            /** extract chapter id from request params */
+            const {chapterId} = req.params;
+
+            /** read chapter data from database */
+            const chapter = await this.getChapterById(chapterId);
+
+            /** remove chapter from course */
+            const removedChapter = await courseModel.updateOne({'chapters._id': chapterId}, {
+                '$pull': {
+                    'chapters': {
+                        '_id': chapterId
+                    }
+                }
+            });
+
+            /** throw error if update was unsuccessful */
+            if (removedChapter.modifiedCount <= 0) throw new createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+
+            /** return success message */
+            return this.sendSuccessResponse(req, res, httpStatus.OK, 'فصل با موفقیت حذف گردید');
         } catch (err) {
             next(err);
         }

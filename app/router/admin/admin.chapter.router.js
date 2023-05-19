@@ -9,6 +9,8 @@ adminChapterRouter.get("/list/:courseId", AdminChapterController.chapterOfCourse
 
 adminChapterRouter.get("/single/:chapterId", AdminChapterController.singleChapter);
 
+adminChapterRouter.delete("/remove/:chapterId", AdminChapterController.removeChapterById);
+
 module.exports = {
     adminChapterRouter
 }
