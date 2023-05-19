@@ -62,6 +62,42 @@ class AdminChapterController extends Controller {
         /** return course */
         return course;
     }
+
+    /**
+     * get chapters list of a single course
+     * @param req express request
+     * @param res express response
+     * @param next express next function
+     * @returns {Promise<void>}
+     */
+    async chapterOfCourse(req, res, next) {
+        try {
+            /** extract course id from request params */
+            const {courseId} = req.params;
+
+            /** read course data from database */
+            const course = await this.getCourseChapters(courseId);
+
+            /** send success message */
+            return this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {course});
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    /**
+     * read amd return single course chapters
+     * @param courseId courseId
+     * @returns {Promise<*>}
+     */
+    async getCourseChapters(courseId) {
+        /** get course chapters */
+        const course = await courseModel.findOne({_id: courseId}, {chapters: 1, title:1});
+        /** return error if chapter was not found */
+        if (!course) throw createError.NotFound("دوره انتخابی یافت نشد");
+        /** return chapters */
+        return course
+    }
 }
 
 module.exports = {

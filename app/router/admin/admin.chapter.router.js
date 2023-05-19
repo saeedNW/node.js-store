@@ -5,6 +5,8 @@ const {AdminChapterController} = require("app/http/controllers/admin/course/admi
 
 adminChapterRouter.put("/new", AdminChapterController.newChapter);
 
+adminChapterRouter.get("/list/:courseId", AdminChapterController.chapterOfCourse);
+
 module.exports = {
     adminChapterRouter
 }
