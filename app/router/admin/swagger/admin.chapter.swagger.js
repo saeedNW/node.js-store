@@ -23,6 +23,24 @@
 /**
  * @swagger
  *  components:
+ *      schemas:
+ *          UpdateChapter:
+ *                  type: object
+ *                  required:
+ *                      -   title
+ *                      -   description
+ *                  properties:
+ *                      title:
+ *                          type: string
+ *                          description: chapter title
+ *                      description:
+ *                          type: string
+ *                          description: chapter full description
+ */
+
+/**
+ * @swagger
+ *  components:
  *      parameters:
  *          CourseId:
  *              name: courseId
@@ -309,6 +327,52 @@
  *          tags: [AdminPanel(chapters)]
  *          parameters:
  *              -   $ref: '#/components/parameters/ChapterId'
+ *          responses:
+ *              200:
+ *                  description: successful
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/DefaultSuccess'
+ *              401:
+ *                  description: Unauthorized
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Unauthorized'
+ *              403:
+ *                  description: forbidden
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/Forbidden'
+ *              404:
+ *                  description: data not found
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/NotFound'
+ *              500:
+ *                  description: Internal server error
+ */
+
+/**
+ * @swagger
+ *  /admin/chapters/update/{chapterId}:
+ *      patch:
+ *          summary: update chapter by ObjectId
+ *          tags: [AdminPanel(chapters)]
+ *          parameters:
+ *              -   $ref: '#/components/parameters/ChapterId'
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UpdateChapter'
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UpdateChapter'
  *          responses:
  *              200:
  *                  description: successful

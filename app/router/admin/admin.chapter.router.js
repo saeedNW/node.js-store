@@ -11,6 +11,8 @@ adminChapterRouter.get("/single/:chapterId", AdminChapterController.singleChapte
 
 adminChapterRouter.delete("/remove/:chapterId", AdminChapterController.removeChapterById);
 
+adminChapterRouter.patch("/update/:chapterId", AdminChapterController.updateChapterById);
+
 module.exports = {
     adminChapterRouter
 }

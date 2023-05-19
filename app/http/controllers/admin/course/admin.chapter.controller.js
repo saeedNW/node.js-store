@@ -104,7 +104,7 @@ class AdminChapterController extends Controller {
             const {chapterId} = req.params;
 
             /** read chapter data from database */
-            const chapter = await this.getChapterById(chapterId);
+            await this.getChapterById(chapterId);
 
             /** remove chapter from course */
             const removedChapter = await courseModel.updateOne({'chapters._id': chapterId}, {
@@ -120,6 +120,47 @@ class AdminChapterController extends Controller {
 
             /** return success message */
             return this.sendSuccessResponse(req, res, httpStatus.OK, 'فصل با موفقیت حذف گردید');
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    /**
+     * update single chapter by object id
+     * @param req express request
+     * @param res express response
+     * @param next express next function
+     * @returns {Promise<void>}
+     */
+    async updateChapterById(req, res, next) {
+        try {
+            /** extract chapter id from request params */
+            const {chapterId} = req.params;
+
+            /** read chapter data from database */
+            await this.getChapterById(chapterId);
+
+            /**
+             * extract data from request body.
+             * todo@ add validation for user entries
+             */
+            const {title, description} = req.body;
+
+            /** update chapter */
+            const updatedChapter = await courseModel.updateOne({'chapters._id': chapterId}, {
+                $set: {
+                    'chapters.$': {
+                        title,
+                        description
+                    }
+                }
+            });
+
+            /** throw error if update was unsuccessful */
+            if (updatedChapter.modifiedCount <= 0) throw new createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+
+            /** send success message */
+            return this.sendSuccessResponse(req, res, httpStatus.OK);
         } catch (err) {
             next(err);
         }
