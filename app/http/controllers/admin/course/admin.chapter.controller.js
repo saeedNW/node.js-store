@@ -62,7 +62,7 @@ class AdminChapterController extends Controller {
             /** read course data from database */
             const course = await this.getCourseChapters(courseId);
 
-            /** send success message */
+            /** send the success message */
             return this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {course});
         } catch (err) {
             next(err);

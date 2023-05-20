@@ -16,11 +16,15 @@ const episodeSchema = new mongoose.Schema({
         required: true
     },
     type: {
-        /** free, cash, vpi */
+        /** lock, unlock */
         type: String,
-        default: "free"
+        default: "lock"
     },
     duration: {
+        type: String,
+        required: true
+    },
+    videoAddress: {
         type: String,
         required: true
     },

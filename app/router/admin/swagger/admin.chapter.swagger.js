@@ -134,8 +134,8 @@
  *                                                          example: "episode long description"
  *                                                      type:
  *                                                          type: string
- *                                                          description: episode type (free, cash, vpi)
- *                                                          example: free
+ *                                                          description: episode type (lock, unlock)
+ *                                                          example: lock
  *                                                      duration:
  *                                                          type: string
  *                                                          description: episode duration time
@@ -197,8 +197,8 @@
  *                                               example: "episode long description"
  *                                           type:
  *                                               type: string
- *                                               description: episode type (free, cash, vpi)
- *                                               example: free
+ *                                               description: episode type (lock, unlock)
+ *                                               example: lock
  *                                           duration:
  *                                               type: string
  *                                               description: episode duration time
