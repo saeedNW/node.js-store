@@ -120,7 +120,7 @@
 
 /**
  * @swagger
- *  /admin/episodes/update/{episodeID}:
+ *  /admin/episodes/update/{episodeId}:
  *      patch:
  *          summary: edit episode of chapter
  *          tags: [AdminPanel(episodes)]
@@ -165,7 +165,7 @@
 
 /**
  * @swagger
- *  /admin/episodes/remove/{episodeID}:
+ *  /admin/episodes/remove/{episodeId}:
  *      delete:
  *          summary: remove episode of Chapter
  *          tags: [AdminPanel(episodes)]

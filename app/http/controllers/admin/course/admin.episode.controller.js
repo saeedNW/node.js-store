@@ -16,6 +16,8 @@ const createError = require("http-errors");
 const httpStatus = require("http-status-codes");
 /** import file system module */
 const fs = require('fs')
+/** import mongodb object id validator */
+const {ObjectIdValidator} = require("app/http/validators/public/public.schema");
 
 /**
  * @class AdminEpisodeController
@@ -80,6 +82,66 @@ class AdminEpisodeController extends Controller {
             console.log(err)
             next(err);
         }
+    }
+
+    /**
+     * remove an episode
+     * @param req express request
+     * @param res express response
+     * @param next express next function
+     * @returns {Promise<*>}
+     */
+    async removeEpisode(req, res, next) {
+        try {
+            /** check if the episode id is a valid mongodb object id */
+            const {id: episodeId} = await ObjectIdValidator.validateAsync({id: req.params.episodeId});
+
+            /** get episode data */
+            await this.getOneEpisode(episodeId);
+
+            /** remove episode from database */
+            const removedEpisode = await courseModel.updateOne({
+                "chapters.episodes._id": episodeId,
+            }, {
+                $pull: {
+                    "chapters.$.episodes": {
+                        _id: episodeId
+                    }
+                }
+            });
+
+            /** return error if the episode was not removed */
+            if (removedEpisode.modifiedCount <= 0) throw new createError.InternalServerError("حذف اپیزود با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+
+            /** return the success message */
+            return this.sendSuccessResponse(req, res, httpStatus.OK, 'حذف اپیزود با موفقیت انجام شد');
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    /**
+     * get an episode with object id
+     * @param episodeId episode object id
+     * @returns {Promise<*>}
+     */
+    async getOneEpisode(episodeId) {
+        /** get episode data from database */
+        const course = await courseModel.findOne({"chapters.episodes._id": episodeId}, {
+            "chapters.$.episodes": 1
+        });
+
+        /** return error if the episode was not found */
+        if (!course) throw new createError.NotFound("اپیزود انتخابی یافت یافت نشد");
+
+        /** change database search result structure */
+        const episode = await course?.chapters?.[0]?.episodes?.[0];
+
+        /** return error if the episode was not found */
+        if (!episode) throw new createError.NotFound("اپیزود انتخابی یافت یافت نشد");
+
+        /** return episode data */
+        return copyObject(episode)
     }
 }
 

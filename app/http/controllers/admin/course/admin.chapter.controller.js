@@ -174,7 +174,7 @@ class AdminChapterController extends Controller {
     async findCourseById(courseId) {
         /** MongoDB ObjectID validator */
         const {id} = await ObjectIdValidator.validateAsync({id: courseId});
-        /** get course from database */
+        /** get course from the database */
         const course = await courseModel.findById(this.convertStringToMongoObjectId(id));
         /** return error if course was not found */
         if (!course) throw new createError.NotFound("محصولی یافت نشد");

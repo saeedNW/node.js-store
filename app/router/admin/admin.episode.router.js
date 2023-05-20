@@ -4,7 +4,9 @@ const {AdminEpisodeController} = require("app/http/controllers/admin/course/admi
 /** import multer video uploader */
 const { uploadVideo } = require("app/utils/multer");
 
-adminEpisodeRouter.post("/new", uploadVideo.single("video"), AdminEpisodeController.addNewEpisode)
+adminEpisodeRouter.post("/new", uploadVideo.single("video"), AdminEpisodeController.addNewEpisode);
+
+adminEpisodeRouter.delete("/remove/:episodeId", AdminEpisodeController.removeEpisode);
 
 module.exports = {
     adminEpisodeRouter
