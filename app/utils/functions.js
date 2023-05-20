@@ -206,6 +206,79 @@ function setFeatures(body) {
     };
 }
 
+/**
+ * remove invalid properties in an object
+ * @param data data object that needs to be validated
+ * @param blackListFields list of the fields that has to be removed
+ */
+function deleteInvalidPropertyInObject(data = {}, blackListFields = []) {
+    /**
+     * define invalid and nullish data
+     * @type {(string|number)[]}
+     */
+    let nullishData = ["", " ", "0", 0, null, undefined];
+
+    /** loop over data object properties */
+    Object.keys(data).forEach(key => {
+        /** remove property if it's a blacked listed data */
+        if (blackListFields.includes(key)) delete data[key]
+        /** trim string data */
+        if (typeof data[key] == "string") data[key] = data[key].trim();
+        /** loop over element of array properties and trim them */
+        if (Array.isArray(data[key]) && data[key].length > 0) data[key] = data[key].map(item => item.trim())
+        /** remove array properties if it's empty */
+        if (Array.isArray(data[key]) && data[key].length == 0) delete data[key]
+        /** remove property if it's an invalid or nullish data */
+        if (nullishData.includes(data[key])) delete data[key];
+    })
+}
+
+/**
+ * convert seconds to full 24-hour format
+ * @param seconds
+ * @returns {string}
+ */
+function getTime(seconds) {
+    /** convert seconds to minutes */
+    let total = Math.round(seconds) / 60;
+
+    /** split conversion result to minutes and percent */
+    let [minutes, percent] = String(total).split(".");
+
+    /** calculate seconds from percent */
+    let second = Math.round((percent * 60) / 100).toString().substring(0, 2);
+
+    /** define hour */
+    let hour = 0;
+
+    /** check if calculated minutes are more than 60 */
+    if (minutes > 60) {
+        /** convert minutes to hours */
+        total = minutes / 60;
+
+        /** split conversion result to hour and percent */
+        let [h1, percent] = String(total).split(".");
+
+        /** set hours */
+        hour = h1;
+
+        /** calculate and set minutes */
+        minutes = Math.round((percent * 60) / 100).toString().substring(0, 2);
+    }
+
+    /** add 0 to hour if it's a single digit number 6 => 06 */
+    if (String(hour).length === 1) hour = `0${hour}`;
+
+    /** add 0 to minutes if it's a single digit number 6 => 06 */
+    if (String(minutes).length === 1) minutes = `0${minutes}`;
+
+    /** add 0 to second if it's a single digit number 6 => 06 */
+    if (String(second).length === 1) second = `0${second}`;
+
+    /** return total conversion result */
+    return (hour + ":" + minutes + ":" + second)
+}
+
 module.exports = {
     randomNumberGenerator,
     signAccessToken,
@@ -214,5 +287,7 @@ module.exports = {
     removeFile,
     returnListOfUploadedFiles,
     copyObject,
+    deleteInvalidPropertyInObject,
     setFeatures,
+    getTime,
 }

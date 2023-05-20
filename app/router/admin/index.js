@@ -29,6 +29,11 @@ const {adminChapterRouter} = require("./admin.chapter.router");
 /** initialize admin chapters router */
 adminMainRouter.use("/chapters", adminChapterRouter);
 
+/** import admin episode router */
+const {adminEpisodeRouter} = require("./admin.episode.router");
+/** initialize admin episode router */
+adminMainRouter.use("/episodes", adminEpisodeRouter);
+
 /** export router */
 module.exports = {
     adminMainRouter
