@@ -8,6 +8,8 @@ adminEpisodeRouter.post("/new", uploadVideo.single("video"), AdminEpisodeControl
 
 adminEpisodeRouter.delete("/remove/:episodeId", AdminEpisodeController.removeEpisode);
 
+adminEpisodeRouter.patch("/update/:episodeId", uploadVideo.single("video"), AdminEpisodeController.updateEpisode)
+
 module.exports = {
     adminEpisodeRouter
 }

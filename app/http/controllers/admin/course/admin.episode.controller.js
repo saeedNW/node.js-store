@@ -45,7 +45,7 @@ class AdminEpisodeController extends Controller {
             const videoAddress = `/${fileAddress.replace(/\\/g, "/")}`;
 
             /** read video file */
-            const stream = fs.createReadStream(path.resolve(`./public${videoAddress}`))
+            const stream = fs.createReadStream(path.resolve(`./public${videoAddress}`));
 
             /** get video file duration in seconds */
             const seconds = await getVideoDurationInSeconds(stream);
@@ -115,6 +115,85 @@ class AdminEpisodeController extends Controller {
 
             /** return the success message */
             return this.sendSuccessResponse(req, res, httpStatus.OK, 'حذف اپیزود با موفقیت انجام شد');
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    /**
+     * update episode data bu episode object id
+     * @param req express request
+     * @param res express response
+     * @param next express next function
+     * @returns {Promise<*>}
+     */
+    async updateEpisode(req, res, next) {
+        try {
+            /** extract episode object id from request */
+            const {episodeId} = req.params;
+
+            /** get episode data */
+            const episode = await this.getOneEpisode(episodeId);
+
+            /** extract video file data from request body */
+            const {fileName, fileUploadPath} = req.body;
+
+            /** define block-list fields */
+            let blackListFields = ["_id"];
+
+            /** proceed if episode video file was updated */
+            if (fileName && fileUploadPath) {
+                /** get video file absolute location (address) */
+                const fileAddress = path.join(fileUploadPath, fileName);
+
+                /** convert video address and replace all of "\" with "/" */
+                req.body.videoAddress = `/${fileAddress.replace(/\\/g, "/")}`;
+
+                /** read video file */
+                const stream = fs.createReadStream(path.resolve(`./public${req.body.videoAddress}`))
+
+                /** get video file duration in seconds */
+                const seconds = await getVideoDurationInSeconds(stream);
+
+                /** convert video duration to full hour format */
+                req.body.time = getTime(seconds);
+
+                /** add file name to black-listed fields */
+                blackListFields.push("fileName");
+                /** add file upload path to black-listed fields */
+                blackListFields.push("fileUploadPath");
+            } else {
+                /** add time to black-listed fields if video was not unloaded */
+                blackListFields.push("time");
+                /** add video address to black-listed fields if video was not unloaded */
+                blackListFields.push("videoAddress");
+            }
+
+            /** extract data from request body */
+            const data = req.body;
+            /** remove black-listed fields from data */
+            deleteInvalidPropertyInObject(data, blackListFields);
+
+            /** define episode new data */
+            const newEpisode = {
+                ...episode,
+                ...data
+            }
+
+            /** update episode in database */
+            const editEpisodeResult = await courseModel.updateOne({
+                "chapters.episodes._id": episodeId
+            }, {
+                $set: {
+                    "chapters.$.episodes": newEpisode
+                }
+            });
+
+            /** return error if update was unsuccessful */
+            if (!editEpisodeResult.modifiedCount) throw new createError.InternalServerError("ویرایش اپیزود با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+
+            /** return the success response */
+            return this.sendSuccessResponse(req, res, httpStatus.OK, 'اپیزود با موفقیت بروزرسانی شد');
         } catch (error) {
             next(error)
         }
