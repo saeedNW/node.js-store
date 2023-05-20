@@ -45,7 +45,7 @@ const storage = multer.diskStorage({
             /** set file name in request body */
             req.body.fileName = fileName;
 
-           return cb(null, fileName);
+            return cb(null, fileName);
         }
 
         return cb(null, null);
@@ -53,7 +53,7 @@ const storage = multer.diskStorage({
     }
 });
 
-/** multer file filter */
+/** multer file filter for images */
 function fileFilter(req, file, cb) {
     /**
      * get file type extension
@@ -69,6 +69,26 @@ function fileFilter(req, file, cb) {
 
     if (!validMimetypes.includes(fileExt))
         return cb(new createError.UnprocessableEntity("تصویر ارسال شده صحیح نمیباشد"));
+
+    return cb(null, true);
+}
+
+/** multer file filter for videos */
+function videoFilter(req, file, cb) {
+    /**
+     * get file type extension
+     * @type {string}
+     */
+    const fileExt = path.extname(file.originalname);
+
+    /**
+     * define file valid mimetypes
+     * @type {string[]}
+     */
+    const validMimetypes = [".mp4", ".mpg", ".mov", ".avi", ".mkv"];
+
+    if (!validMimetypes.includes(fileExt))
+        return cb(new createError.UnprocessableEntity("فرمت ویدئو ارسال شده صحیح نمیباشد"));
 
     return cb(null, true);
 }
@@ -113,7 +133,7 @@ function createUploadPath(req) {
     req.body.fileUploadPath = path.join("upload", Year, Month, day)
 
     /**
-     * create upload path if doesn't exist
+     * create upload path if it doesn't exist
      */
     fs.mkdirSync(uploadPath, {recursive: true});
 
@@ -123,10 +143,17 @@ function createUploadPath(req) {
     return path.join("public", "upload", Year, Month, day);
 }
 
+/** define files size limit for images */
+const pictureMaxSize = 1000 * 1000; /** 1MB file size limit */
+/** define files size limit for videos */
+const videoMaxSize = 300 * 1000 * 1000; /** 300MB file size limit */
 
-/** create multer uploader with defined storage configuration */
-const uploadFile = multer({storage, fileFilter});
+/** create multer image uploader with defined storage configuration */
+const uploadFile = multer({storage, fileFilter, limits: {fileSize: pictureMaxSize}});
+/** create multer video uploader with defined storage configuration */
+const uploadVideo = multer({storage, videoFilter, limits: {fileSize: videoMaxSize}});
 
 module.exports = {
-    uploadFile
+    uploadFile,
+    uploadVideo
 }
