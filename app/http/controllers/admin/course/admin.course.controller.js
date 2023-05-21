@@ -12,6 +12,8 @@ const {createCourseSchema} = require("app/http/validators/admin/admin.course.sch
 const createError = require("http-errors");
 /** import validators */
 const {ObjectIdValidator} = require("app/http/validators/public/public.schema");
+/** import helper functions */
+const {getCourseTotalTime} = require("app/utils/functions");
 
 /**
  * @class AdminCourseController
@@ -38,13 +40,13 @@ class AdminCourseController extends Controller {
             if (courseData.price > 0 && courseData.courseType === "free")
                 throw new createError.BadRequest("برای دوره رایگان نمیتوان قیمت ثبت کرد");
 
-            /** create new course */
+            /** create a new course */
             const createdCourse = await courseModel.create({...courseData, mentor: userId});
 
             /** return error if course was not created */
             if (!createdCourse?._id) throw new createError.InternalServerError("ایجاد دوره با مشکل مواجه شد لطفا مجددا تلاش نمایید");
 
-            /** send success message */
+            /** send a success message */
             return this.sendSuccessResponse(req, res, httpStatus.CREATED, "دوره با موفقیت ایجاد شد");
         } catch (err) {
             next(err);
@@ -100,6 +102,12 @@ class AdminCourseController extends Controller {
                     'select': ['first_name', 'last_name', 'phone', 'email']
                 }
             ]);
+
+            /** loop over courses */
+            for (const course of courses)
+                /** calculate course total time */
+                course.duration = getCourseTotalTime(course.chapters);
+
             /** send success response */
             this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {courses});
         } catch (err) {
@@ -118,7 +126,7 @@ class AdminCourseController extends Controller {
         try {
             /** get course id from request params */
             const {courseId} = req.params;
-            /** get course data from database based on course ObjectID */
+            /** get the course data from the project database based on course ObjectID */
             const course = await this.findCourseById(courseId);
             /** send success response */
             this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {course});
@@ -150,7 +158,7 @@ class AdminCourseController extends Controller {
     async findCourseById(courseId) {
         /** MongoDB ObjectID validator */
         const {id} = await ObjectIdValidator.validateAsync({id: courseId});
-        /** get course from database */
+        /** get course from the app database */
         const course = await courseModel.findById(this.convertStringToMongoObjectId(id)).populate([
             {
                 'path': 'category',
@@ -162,6 +170,10 @@ class AdminCourseController extends Controller {
         ]);
         /** return error if course was not found */
         if (!course) throw new createError.NotFound("محصولی یافت نشد");
+
+        /** calculate course total time */
+        course.duration = getCourseTotalTime(course.chapters);
+
         /** return course */
         return course;
     }

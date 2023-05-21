@@ -268,15 +268,71 @@ function getTime(seconds) {
 
     /** add 0 to hour if it's a single digit number 6 => 06 */
     if (String(hour).length === 1) hour = `0${hour}`;
-
     /** add 0 to minutes if it's a single digit number 6 => 06 */
     if (String(minutes).length === 1) minutes = `0${minutes}`;
-
     /** add 0 to second if it's a single digit number 6 => 06 */
     if (String(second).length === 1) second = `0${second}`;
 
     /** return total conversion result */
-    return (hour + ":" + minutes + ":" + second)
+    return (hour + ":" + minutes + ":" + second);
+}
+
+/**
+ * return course full time
+ * @param chapters course chapters list
+ * @returns {string}
+ */
+function getCourseTotalTime(chapters = []) {
+    /** define time variables */
+    let duration, hour, minute, second = 0;
+
+    /** loop over chapters */
+    for (const chapter of chapters) {
+        /** check if there are any episodes in the chapter */
+        if (Array.isArray(chapter?.episodes)) {
+            /** loop over chapter episodes */
+            for (const episode of chapter.episodes) {
+                /**
+                 * split episode duration time with ":" if episode time has been set.
+                 * otherwise, set episode time to "00:00:00" and then split it
+                 */
+                if (episode?.duration) duration = episode.duration.split(":"); /** [hour, min, second] */
+                else duration = "00:00:00".split(":");
+
+                /** check if the time includes hour or just minutes and second */
+                if (duration.length === 3) {
+                    /** convert episode hour to second and sum with total seconds */
+                    second += Number(duration[0]) * 3600;
+                    /** convert episode minute to second and sum with total seconds */
+                    second += Number(duration[1]) * 60;
+                    /** sum episode second with total second */
+                    second += Number(duration[2]);
+                } else if (duration.length === 2) {
+                    /** convert episode minute to second and sum with total seconds */
+                    second += Number(duration[0]) * 60;
+                    /** sum episode second with total second */
+                    second += Number(duration[1]);
+                }
+            }
+        }
+    }
+
+    /** convert second to hour */
+    hour = Math.floor(second / 3600);
+    /** convert second to minutes */
+    minute = Math.floor(second / 60) % 60;
+    /** convert seconds to second */
+    second = Math.floor(second % 60);
+
+    /** add 0 to hour if it's a single digit number 6 => 06 */
+    if (String(hour).length === 1) hour = `0${hour}`;
+    /** add 0 to minutes if it's a single digit number 6 => 06 */
+    if (String(minute).length === 1) minute = `0${minute}`;
+    /** add 0 to second if it's a single digit number 6 => 06 */
+    if (String(second).length === 1) second = `0${second}`;
+
+    /** return total conversion result */
+    return (hour + ":" + minute + ":" + second);
 }
 
 module.exports = {
@@ -290,4 +346,5 @@ module.exports = {
     deleteInvalidPropertyInObject,
     setFeatures,
     getTime,
+    getCourseTotalTime
 }

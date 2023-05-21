@@ -51,12 +51,12 @@ class AdminEpisodeController extends Controller {
             const seconds = await getVideoDurationInSeconds(stream);
 
             /** convert video duration to full hour format */
-            const time = getTime(seconds);
+            const duration = getTime(seconds);
 
             /** create episode data object */
             const episode = {
                 title, description, type,
-                time, videoAddress
+                duration, videoAddress
             };
 
             /** save episode data in data base */
@@ -94,9 +94,9 @@ class AdminEpisodeController extends Controller {
     async removeEpisode(req, res, next) {
         try {
             /** check if the episode id is a valid mongodb object id */
-            const {id: episodeId} = await ObjectIdValidator.validateAsync({id: req.params.episodeId});
+            const {id: episodeId} = await ObjectIdValidator.validateAsync({id: req.params['episodeId']});
 
-            /** get episode data */
+            /** check episode existence */
             await this.getOneEpisode(episodeId);
 
             /** remove episode from database */
@@ -156,16 +156,16 @@ class AdminEpisodeController extends Controller {
                 const seconds = await getVideoDurationInSeconds(stream);
 
                 /** convert video duration to full hour format */
-                req.body.time = getTime(seconds);
+                req.body.duration = getTime(seconds);
 
-                /** add file name to black-listed fields */
+                /** add "file name" key to black-listed fields */
                 blackListFields.push("fileName");
-                /** add file upload path to black-listed fields */
+                /** add "file upload path" key to black-listed fields */
                 blackListFields.push("fileUploadPath");
             } else {
-                /** add time to black-listed fields if video was not unloaded */
+                /** add "time" key to black-listed fields if video was not unloaded */
                 blackListFields.push("time");
-                /** add video address to black-listed fields if video was not unloaded */
+                /** add "video address" key to black-listed fields if video was not unloaded */
                 blackListFields.push("videoAddress");
             }
 
@@ -206,7 +206,9 @@ class AdminEpisodeController extends Controller {
      */
     async getOneEpisode(episodeId) {
         /** get episode data from database */
-        const course = await courseModel.findOne({"chapters.episodes._id": episodeId}, {
+        const course = await courseModel.findOne({
+            "chapters.episodes._id": this.convertStringToMongoObjectId(episodeId)
+        }, {
             "chapters.$.episodes": 1
         });
 
