@@ -65,6 +65,9 @@ const Schema = new mongoose.Schema({
     timestamps: true
 });
 
+/** define search text index */
+Schema.index({first_name: "text", last_name: "text", username: "text", phone: "text", email: "text"});
+
 /**
  * create mongoose model from the schema
  */

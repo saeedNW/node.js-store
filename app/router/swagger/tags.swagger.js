@@ -13,6 +13,8 @@
  *          description: admin course chapter creation and management
  *      -   name: AdminPanel(episodes)
  *          description: admin chapter episodes creation and management
+ *      -   name: AdminPanel(users)
+ *          description: admin users management
  */
 
 /**

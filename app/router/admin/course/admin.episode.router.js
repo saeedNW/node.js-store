@@ -1,5 +1,6 @@
+/** define admin episodes router */
 const adminEpisodeRouter = require("express").Router();
-/** import admin chapter controller */
+/** import admin episodes controller */
 const {AdminEpisodeController} = require("app/http/controllers/admin/course/admin.episode.controller");
 /** import multer video uploader */
 const { uploadVideo } = require("app/utils/multer");

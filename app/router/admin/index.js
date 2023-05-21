@@ -34,6 +34,11 @@ const {adminEpisodeRouter} = require("./course/admin.episode.router");
 /** initialize admin episode router */
 adminMainRouter.use("/episodes", adminEpisodeRouter);
 
+/** import admin users router */
+const {adminUsersRouter} = require("./user/admin.user.router");
+/** initialize admin users router */
+adminMainRouter.use("/users", adminUsersRouter);
+
 /** export router */
 module.exports = {
     adminMainRouter

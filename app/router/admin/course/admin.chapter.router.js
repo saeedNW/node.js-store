@@ -1,4 +1,4 @@
-/** define admin course router */
+/** define admin chapters router */
 const adminChapterRouter = require("express").Router();
 /** import admin chapter controller */
 const {AdminChapterController} = require("app/http/controllers/admin/course/admin.chapter.controller");
