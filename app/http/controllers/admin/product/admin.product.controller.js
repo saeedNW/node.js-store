@@ -12,7 +12,7 @@ const {productModel} = require("app/models");
 const createError = require("http-errors");
 /** import http status codes module */
 const httpStatus = require("http-status-codes");
-/** define a list of product black list fields */
+/** define a list of product block-list fields */
 const productBlackList = Object.freeze({
     BOOKMARKS: "bookmarks",
     LIKES: "likes",
