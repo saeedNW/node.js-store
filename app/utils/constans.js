@@ -17,8 +17,27 @@ const mongodbConstants = Object.freeze({
     MongoIdPattern: /^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i,
 });
 
+const permissionConstants = Object.freeze({
+    /** super admin full permissions */
+    fullAccess: "full-access",
+    /** blog permissions */
+    showBlogs: "show-blogs",
+    addBlogs: "add-blogs",
+    singleBlog: "single-blog",
+    removeBlogs: "remove-blogs",
+    editBlogs: "edit-blogs",
+    /** category permissions */
+    addCategories: "add-categories",
+    removeCategories: "remove-categories",
+    showCategories: "show-categories",
+    showParentsCategories: "show-parents-categories",
+    showChildrenCategories: "show-children-categories",
+    singleCategory: "single-category",
+});
+
 module.exports = {
     userConstants,
     JWTConstants,
     mongodbConstants,
+    permissionConstants,
 }

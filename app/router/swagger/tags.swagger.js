@@ -15,6 +15,10 @@
  *          description: admin chapter episodes creation and management
  *      -   name: AdminPanel(users)
  *          description: admin users management
+ *      -   name: AdminPanel(roles)
+ *          description: admin roles creation and management
+ *      -   name: AdminPanel(permissions)
+ *          description: admin permissions creation and management
  */
 
 /**

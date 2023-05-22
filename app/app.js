@@ -136,9 +136,12 @@ module.exports = class Application {
         mongoose.set('strictQuery', false);
 
         /** create database connection */
-        mongoose.connect(this.#DB_URI, (err) => {
+        mongoose.connect(this.#DB_URI, async (err) => {
             /** throw error if there was any */
             if (err) throw err;
+
+            /** call system database initializer */
+            await this.systemDatabaseCollectionInitializer();
 
             console.log("MongoDB connected successfully");
         });
@@ -227,5 +230,20 @@ module.exports = class Application {
                 message
             });
         });
+    }
+
+    /**
+     * system default database data initializer
+     * @returns {Promise<void>}
+     */
+    async systemDatabaseCollectionInitializer() {
+        try {
+            /** import system permissions initializer */
+            const {permissionsInitializer} = require("app/initializers/permission.collecion.initializer");
+            /** initialize system default permissions */
+            await permissionsInitializer();
+        } catch (err) {
+            console.error(err);
+        }
     }
 }

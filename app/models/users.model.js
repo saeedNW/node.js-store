@@ -2,7 +2,7 @@
 const {default: mongoose} = require("mongoose");
 
 /**
- * define blogs schema
+ * define user schema
  */
 const Schema = new mongoose.Schema({
     first_name: {
@@ -55,6 +55,11 @@ const Schema = new mongoose.Schema({
     roles: {
         type: [String],
         default: ["USER"]
+    },
+    adminRole: {
+        type: mongoose.Types.ObjectId,
+        ref: 'role',
+        default: null
     },
     courses: {
         type: [mongoose.Types.ObjectId],

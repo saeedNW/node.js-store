@@ -39,6 +39,16 @@ const {adminUsersRouter} = require("./user/admin.user.router");
 /** initialize admin users router */
 adminMainRouter.use("/users", adminUsersRouter);
 
+/** import admin roles router */
+const {adminRoleRouter} = require("./RBAC/admin.role.router");
+/** initialize admin roles router */
+adminMainRouter.use("/roles", adminRoleRouter);
+
+/** import admin permissions router */
+const {adminPermissionRouter} = require("./RBAC/admin.permission.router");
+/** initialize admin permissions router */
+adminMainRouter.use("/permissions", adminPermissionRouter);
+
 /** export router */
 module.exports = {
     adminMainRouter

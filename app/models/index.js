@@ -12,6 +12,10 @@ const {courseModel} = require("./courses.model");
 const {sliderModel} = require("./sliders.model");
 /** import users model */
 const {userModel} = require("./users.model");
+/** import permissions model */
+const {permissionsModel} = require("./permission.model");
+/** import roles model */
+const {rolesModel} = require("./role.model");
 
 /** export main model */
 module.exports = {
@@ -22,4 +26,6 @@ module.exports = {
     courseModel,
     sliderModel,
     userModel,
+    permissionsModel,
+    rolesModel,
 }
