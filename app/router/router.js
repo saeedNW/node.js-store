@@ -5,6 +5,8 @@
 const mainRouter = require("express").Router();
 /** import access token verifier */
 const {accessTokenVerification, checkRole} = require("app/http/middlewares/verify.access.token.middleware");
+/** import express-graphql */
+const {graphqlHTTP} = require("express-graphql")
 
 /** import index router */
 const {indexRouter} = require("./api/index");
@@ -20,6 +22,11 @@ mainRouter.use("/user", userMainRouter);
 const {adminMainRouter} = require("./admin");
 /** initialize admin router */
 mainRouter.use("/admin", accessTokenVerification, checkRole("ADMIN"), adminMainRouter);
+
+/** import graphql config */
+const {graphqlConfig} = require("app/graphql/graphql.config");
+/** initialize admin router */
+mainRouter.use("/graphql", graphqlHTTP(graphqlConfig));
 
 /** export main router */
 module.exports = {
