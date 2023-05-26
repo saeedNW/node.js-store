@@ -4,8 +4,9 @@ const {blogModel} = require("app/models");
 /**
  * define blog resolver
  */
-const BlogResolver = async () => {
-    return blogModel.findOne({}).populate([{path: 'author'}, {path: 'category'}]);
+const BlogResolver = async (_, args) => {
+    const {blogId} = args;
+    return blogModel.findOne({_id: blogId}).populate([{path: 'author'}, {path: 'category'}]);
 }
 
 /**

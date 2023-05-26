@@ -2,12 +2,15 @@
 const {BlogsListType, BlogType} = require("app/graphql/types/blogs.types");
 /** import blogs resolver */
 const {BlogsListResolver, BlogResolver} = require("app/graphql/resolvers/blogs.resolver");
+/** import categories args */
+const {BlogId} = require("app/graphql/args/blogs.args");
 
 /**
  * define blog query
  */
 const BlogQuery = {
     type: BlogType,
+    args: {...BlogId},
     resolve: BlogResolver
 }
 

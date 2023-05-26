@@ -4,8 +4,9 @@ const {categoryModel} = require("app/models");
 /**
  * define category resolver
  */
-const CategoryResolver = async () => {
-    return categoryModel.findOne({});
+const CategoryResolver = async (_, args) => {
+    const {categoryId} = args;
+    return categoryModel.findOne({_id: categoryId});
 }
 
 /**

@@ -4,8 +4,9 @@ const {productModel} = require("app/models");
 /**
  * define product resolver
  */
-const ProductResolver = async () => {
-    return productModel.findOne({}).populate([{path: 'supplier'}, {path: 'category'}]);
+const ProductResolver = async (_, args) => {
+    const {productId} = args;
+    return productModel.findOne({_id: productId}).populate([{path: 'supplier'}, {path: 'category'}]);
 }
 
 /**

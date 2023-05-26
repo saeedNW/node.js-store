@@ -2,16 +2,18 @@
 const {CategoryType, CategoriesListType} = require("app/graphql/types/categories.types");
 /** import categories resolvers */
 const {
-    CategoryResolver,
-    CategoriesListResolver,
+    CategoryResolver, CategoriesListResolver,
     ParentCategoriesListResolver
 } = require("app/graphql/resolvers/categories.resolver");
+/** import categories args */
+const {CategoryId} = require("app/graphql/args/categories.args");
 
 /**
  * define category query
  */
 const CategoryQuery = {
     type: CategoryType,
+    args: {...CategoryId},
     resolve: CategoryResolver
 }
 
