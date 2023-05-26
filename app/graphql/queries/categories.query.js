@@ -4,6 +4,7 @@ const {CategoryType, CategoriesListType} = require("app/graphql/types/categories
 const {
     CategoryResolver,
     CategoriesListResolver,
+    ParentCategoriesListResolver
 } = require("app/graphql/resolvers/categories.resolver");
 
 /**
@@ -22,7 +23,16 @@ const CategoriesListQuery = {
     resolve: CategoriesListResolver
 }
 
+/**
+ * define parents categories list query
+ */
+const ParentCategoriesList = {
+    type: CategoriesListType,
+    resolve: ParentCategoriesListResolver
+}
+
 module.exports = {
     CategoryQuery,
     CategoriesListQuery,
+    ParentCategoriesList,
 }

@@ -5,7 +5,7 @@ const {BlogsListQuery, BlogQuery} = require("./queries/blogs.query");
 /** import products queries */
 const {ProductsListQuery, ProductQuery} = require("./queries/products.query");
 /** import categories queries */
-const {CategoryQuery, CategoriesListQuery} = require("./queries/categories.query");
+const {CategoryQuery, CategoriesListQuery, ParentCategoriesList} = require("./queries/categories.query");
 
 /**
  * define graphql root query
@@ -20,6 +20,7 @@ const RootQuery = new GraphQLObjectType({
         products: ProductsListQuery,
         category: CategoryQuery,
         categories: CategoriesListQuery,
+        parentCategories: ParentCategoriesList,
     }
 });
 
