@@ -17,7 +17,7 @@ const AuthorType = new GraphQLObjectType({
  * define category type
  */
 const CategoryType = new GraphQLObjectType({
-    name: 'categoryType',
+    name: 'publicCategoryType',
     fields: {
         _id: {type: GraphQLString},
         title: {type: GraphQLString},

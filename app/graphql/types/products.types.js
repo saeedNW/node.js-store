@@ -1,8 +1,5 @@
 /** import graphql */
-const {
-    GraphQLObjectType, GraphQLString, GraphQLInt,
-    GraphQLList
-} = require("graphql");
+const {GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList} = require("graphql");
 /** import public types */
 const {AuthorType, CategoryType} = require("./public.types");
 

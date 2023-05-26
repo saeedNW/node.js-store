@@ -172,6 +172,8 @@ class AdminCategoryController extends Controller {
              * get all the categories from database
              * using populate option.
              * populate has been set in model pre find method.
+             * Note: this query returns parents categories as
+             * the first option and then goes deep to their children
              */
             const populatedCategories = await categoryModel.find({parent: undefined}, {__v: 0});
 
