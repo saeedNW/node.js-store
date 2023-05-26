@@ -1,7 +1,9 @@
 /** import graphql */
 const {GraphQLObjectType, GraphQLSchema} = require("graphql");
 /** import blog query */
-const {BlogsListQuery} = require("./queries/blog.query");
+const {BlogsListQuery, BlogQuery} = require("./queries/blog.query");
+/** import products queries */
+const {ProductsListQuery, ProductQuery} = require("./queries/product.query");
 
 /**
  * define graphql root query
@@ -10,7 +12,10 @@ const {BlogsListQuery} = require("./queries/blog.query");
 const RootQuery = new GraphQLObjectType({
     name: "RootQuery",
     fields: {
-        blogs: BlogsListQuery
+        blog: BlogQuery,
+        blogs: BlogsListQuery,
+        product: ProductQuery,
+        products: ProductsListQuery,
     }
 });
 
