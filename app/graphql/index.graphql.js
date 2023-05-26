@@ -1,9 +1,9 @@
 /** import graphql */
 const {GraphQLObjectType, GraphQLSchema} = require("graphql");
 /** import blog query */
-const {BlogsListQuery, BlogQuery} = require("./queries/blog.query");
+const {BlogsListQuery, BlogQuery} = require("./queries/blogs.query");
 /** import products queries */
-const {ProductsListQuery, ProductQuery} = require("./queries/product.query");
+const {ProductsListQuery, ProductQuery} = require("./queries/products.query");
 
 /**
  * define graphql root query

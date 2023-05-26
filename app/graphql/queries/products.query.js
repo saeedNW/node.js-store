@@ -1,7 +1,7 @@
 /** import products types */
 const {ProductsListType, ProductType} = require("app/graphql/types/products.types");
 /** import products resolvers */
-const {ProductResolver, ProductsListResolver} = require("app/graphql/resolvers/product.resolver");
+const {ProductResolver, ProductsListResolver} = require("app/graphql/resolvers/products.resolver");
 
 /**
  * define product query

@@ -1,7 +1,7 @@
 /** import blogs types */
 const {BlogsListType, BlogType} = require("app/graphql/types/blogs.types");
 /** import blogs resolver */
-const {BlogsListResolver, BlogResolver} = require("app/graphql/resolvers/blog.resolver");
+const {BlogsListResolver, BlogResolver} = require("app/graphql/resolvers/blogs.resolver");
 
 /**
  * define blog query
