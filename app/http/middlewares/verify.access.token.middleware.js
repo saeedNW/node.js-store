@@ -54,6 +54,46 @@ async function accessTokenVerification(req, res, next) {
 }
 
 /**
+ * user access token verification for graphql
+ * in graphql we don't have access to next function
+ * @param context graphql context option
+ * @returns {*}
+ */
+async function graphqlAccessTokenVerification(context) {
+    try {
+        /** get user access token from request headers */
+        const token = getToken(context.req.headers);
+
+        /**
+         * verify jwt token
+         * @type {*}
+         */
+        const payload = JWT.verify(token, JWTConstants.ACCESS_TOKEN_SECRET_KEY);
+
+        /**
+         * extract phone number from payload
+         */
+        const {phone} = payload || {};
+
+        /** return error if phone was not exists in payload */
+        if (!phone)
+            throw new createError.Unauthorized("کد وارد شده صحیح نمی باشد");
+
+        /** get user data from database */
+        const user = await userModel.findOne({phone}, {password: 0, otp: 0});
+
+        /** return error if user was not found */
+        if (!user)
+            throw new createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید");
+
+        /** return user data */
+        return user
+    } catch (err) {
+        throw new createError.Unauthorized();
+    }
+}
+
+/**
  * check user role for access permission
  * @param role the role that user need to access some certain routes
  * @returns {(function(*, *, *): (*|undefined))|*}
@@ -98,5 +138,6 @@ function getToken(headers) {
 module.exports = {
     accessTokenVerification,
     getToken,
-    checkRole
+    checkRole,
+    graphqlAccessTokenVerification
 }
