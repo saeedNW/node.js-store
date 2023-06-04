@@ -1,7 +1,7 @@
 /** import graphql */
 const {GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList} = require("graphql");
 /** import public types */
-const {AuthorType, CategoryType} = require("./public.types");
+const {AuthorType, PublicCategoryType} = require("./public.types");
 
 /**
  * define product features type
@@ -31,7 +31,7 @@ const ProductType = new GraphQLObjectType({
         description: {type: GraphQLString},
         images: {type: new GraphQLList(GraphQLString)},
         tags: {type: new GraphQLList(GraphQLString)},
-        category: {type: CategoryType},
+        category: {type: PublicCategoryType},
         price: {type: GraphQLInt},
         discount: {type: GraphQLInt},
         count: {type: GraphQLInt},

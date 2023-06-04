@@ -1,7 +1,7 @@
 /** import graphql */
 const {GraphQLObjectType, GraphQLString, GraphQLList} = require("graphql");
 /** import public types */
-const {AuthorType, CategoryType} = require("./public.types");
+const {AuthorType, PublicCategoryType} = require("./public.types");
 
 /**
  * define blog type
@@ -16,7 +16,7 @@ const BlogType = new GraphQLObjectType({
         text: {type: GraphQLString},
         image: {type: GraphQLString},
         tags: {type: new GraphQLList(GraphQLString)},
-        category: {type: CategoryType},
+        category: {type: PublicCategoryType},
         createdAt: {type: GraphQLString},
         updatedAt: {type: GraphQLString},
     }

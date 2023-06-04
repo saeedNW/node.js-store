@@ -23,8 +23,17 @@ const ParentCategoriesListResolver = async () => {
     return categoryModel.find({parent: undefined});
 }
 
+/**
+ * define child categories list resolver
+ */
+const ChildCategoriesListResolver = async (_, args) => {
+    const {parent} = args;
+    return categoryModel.find({parent});
+}
+
 module.exports = {
     CategoryResolver,
     CategoriesListResolver,
     ParentCategoriesListResolver,
+    ChildCategoriesListResolver
 }

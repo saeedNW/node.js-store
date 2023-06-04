@@ -8,6 +8,14 @@ const CategoryId = {
     categoryId: {type: GraphQLString},
 }
 
+/**
+ * define categories parent argument
+ */
+const CategoryParent = {
+    parent: {type: GraphQLString},
+}
+
 module.exports = {
-    CategoryId
+    CategoryId,
+    CategoryParent
 }
