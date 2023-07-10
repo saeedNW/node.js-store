@@ -117,7 +117,7 @@ const Schema = new mongoose.Schema({
     },
     mentor: {
         type: mongoose.Types.ObjectId,
-        res: "user",
+        ref: "user",
         required: true
     },
     chapters: {
