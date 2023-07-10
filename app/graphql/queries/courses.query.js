@@ -19,6 +19,7 @@ const CourseQuery = {
  */
 const CoursesListQuery = {
     type: CoursesListType,
+    args: {...CategoryId},
     resolve: CoursesListResolver
 }
 
