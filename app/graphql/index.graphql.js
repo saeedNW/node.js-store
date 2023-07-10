@@ -4,6 +4,8 @@ const {GraphQLObjectType, GraphQLSchema} = require("graphql");
 const {BlogsListQuery, BlogQuery} = require("./queries/blogs.query");
 /** import products queries */
 const {ProductsListQuery, ProductQuery} = require("./queries/products.query");
+/** import products queries */
+const {CoursesListQuery, CourseQuery} = require("./queries/courses.query");
 /** import categories queries */
 const {
     CategoryQuery,
@@ -23,6 +25,8 @@ const RootQuery = new GraphQLObjectType({
         blogs: BlogsListQuery,
         product: ProductQuery,
         products: ProductsListQuery,
+        course: CourseQuery,
+        courses: CoursesListQuery,
         category: CategoryQuery,
         categories: CategoriesListQuery,
         parentCategories: ParentCategoriesList,
