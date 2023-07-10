@@ -1,5 +1,17 @@
 /** import graphql */
-const {GraphQLObjectType, GraphQLString} = require("graphql");
+const {GraphQLObjectType, GraphQLString, GraphQLScalarType, GraphQLList} = require("graphql");
+/** import graphql utils */
+const {toObject, parseLiteral} = require("app/graphql/utils");
+
+/**
+ * define graphql scalar type
+ */
+const AnyType = new GraphQLScalarType({
+    name: "anyType",
+    parseValue: toObject,
+    serialize: toObject,
+    parseLiteral: parseLiteral,
+});
 
 /**
  * define author type
@@ -26,5 +38,6 @@ const PublicCategoryType = new GraphQLObjectType({
 
 module.exports = {
     AuthorType,
-    PublicCategoryType
+    PublicCategoryType,
+    AnyType
 }

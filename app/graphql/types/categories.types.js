@@ -1,7 +1,7 @@
 /** import graphql */
 const {GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList} = require("graphql");
-/** import public categories */
-const {PublicCategoryType} = require("./public.types");
+/** import public types */
+const {AnyType} = require("./public.types");
 
 /**
  * define category type
@@ -13,7 +13,12 @@ const CategoryType = new GraphQLObjectType({
         title: {type: GraphQLString},
         createdAt: {type: GraphQLString},
         updatedAt: {type: GraphQLString},
-        children: {type: new GraphQLList(PublicCategoryType)}
+        /**
+         * By defining the Type of children as "AnyType",
+         * we make it possible to returns parents categories as
+         * the first option and then goes deep to their children
+         */
+        children: {type: new GraphQLList(AnyType)}
     }
 })
 
