@@ -16,8 +16,8 @@ const AnyType = new GraphQLScalarType({
 /**
  * define author type
  */
-const AuthorType = new GraphQLObjectType({
-    name: 'authorType',
+const UserType = new GraphQLObjectType({
+    name: 'userType',
     fields: {
         _id: {type: GraphQLString},
         first_name: {type: GraphQLString},
@@ -37,7 +37,7 @@ const PublicCategoryType = new GraphQLObjectType({
 });
 
 module.exports = {
-    AuthorType,
+    UserType,
     PublicCategoryType,
     AnyType
 }
