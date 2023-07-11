@@ -1,7 +1,7 @@
 /** import permission constants */
 const {permissionConstants} = require("app/utils/constans");
 /** import http-error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 
 /**
  * check if user has a required role for accessing to the route
@@ -28,7 +28,7 @@ function permissionGuard(requiredPermissions = []) {
             /**
              * throw error if user doesn't have any roles
              */
-            if (!user.adminRole) throw new createError.Forbidden("شما اجازه دسترسی به این بخش را ندارید");
+            if (!user.adminRole) throw new createHttpError.Forbidden("شما اجازه دسترسی به این بخش را ندارید");
 
             /**
              * get user access permissions title as an array
@@ -60,7 +60,7 @@ function permissionGuard(requiredPermissions = []) {
             /**
              * throw error if user doesn't have the required permission
              */
-            throw new createError.Forbidden("شما اجازه دسترسی به این بخش را ندارید");
+            throw new createHttpError.Forbidden("شما اجازه دسترسی به این بخش را ندارید");
         } catch (err) {
             next(err);
         }

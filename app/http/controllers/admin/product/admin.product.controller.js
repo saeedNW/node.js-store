@@ -9,7 +9,7 @@ const {copyObject, returnListOfUploadedFiles, setFeatures} = require("app/utils/
 /** import models */
 const {productModel} = require("app/models");
 /** import http-error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 /** import http status codes module */
 const httpStatus = require("http-status-codes");
 /** define a list of product block-list fields */
@@ -64,7 +64,7 @@ class AdminProductController extends Controller {
                 features
             });
             /** return error if product was not saved */
-            if (!createdProduct) throw new createError.InternalServerError("ایجاد محصول با مشکل مواجه شد لطفا مجددا تلاش نمایید");
+            if (!createdProduct) throw new createHttpError.InternalServerError("ایجاد محصول با مشکل مواجه شد لطفا مجددا تلاش نمایید");
             /** return success message */
             return this.sendSuccessResponse(req, res, httpStatus.CREATED, undefined, {createdProduct});
         } catch (err) {

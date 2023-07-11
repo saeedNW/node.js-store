@@ -2,8 +2,6 @@
 const Controller = require("app/http/controllers/controller");
 /** import models */
 const {rolesModel} = require("app/models");
-/** import http-error module */
-const createError = require("http-errors");
 /** import http status codes module */
 const httpStatus = require("http-status-codes");
 

@@ -5,7 +5,7 @@ const {default: mongoose} = require("mongoose");
 /** import file system module */
 const fs = require("fs");
 /** import http error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 
 /**
  * main controller class
@@ -38,7 +38,7 @@ module.exports = class Controller {
             if (req?.file)
                 fs.unlinkSync(req?.file?.path);
 
-            throw new createError.UnprocessableEntity("شناسه وارد شده صحیح نمی باشد");
+            throw new createHttpError.UnprocessableEntity("شناسه وارد شده صحیح نمی باشد");
         }
     }
 

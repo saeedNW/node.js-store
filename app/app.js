@@ -190,13 +190,13 @@ module.exports = class Application {
      */
     errorHandler() {
         /** import http-error module */
-        const createError = require("http-errors");
+        const createHttpError = require("http-errors");
 
         /**
          * 404 page not found error handler
          */
         this.#app.use((req, res, next) => {
-            next(new createError.NotFound("آدرس مورد نظر شما یافت نشد"));
+            next(new createHttpError.NotFound("آدرس مورد نظر شما یافت نشد"));
         });
 
         /**

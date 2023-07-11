@@ -9,7 +9,7 @@ const path = require("path");
 /** import course validator */
 const {createCourseSchema} = require("app/http/validators/admin/admin.course.schema");
 /** import http-error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 /** import validators */
 const {ObjectIdValidator} = require("app/http/validators/public/public.schema");
 /** import helper functions */
@@ -38,13 +38,13 @@ class AdminCourseController extends Controller {
             courseData.image = path.join(courseData.fileUploadPath, courseData.fileName);
 
             if (courseData.price > 0 && courseData.courseType === "free")
-                throw new createError.BadRequest("برای دوره رایگان نمیتوان قیمت ثبت کرد");
+                throw new createHttpError.BadRequest("برای دوره رایگان نمیتوان قیمت ثبت کرد");
 
             /** create a new course */
             const createdCourse = await courseModel.create({...courseData, mentor: userId});
 
             /** return error if course was not created */
-            if (!createdCourse?._id) throw new createError.InternalServerError("ایجاد دوره با مشکل مواجه شد لطفا مجددا تلاش نمایید");
+            if (!createdCourse?._id) throw new createHttpError.InternalServerError("ایجاد دوره با مشکل مواجه شد لطفا مجددا تلاش نمایید");
 
             /** send a success message */
             return this.sendSuccessResponse(req, res, httpStatus.CREATED, "دوره با موفقیت ایجاد شد");
@@ -169,7 +169,7 @@ class AdminCourseController extends Controller {
             }
         ]);
         /** return error if course was not found */
-        if (!course) throw new createError.NotFound("محصولی یافت نشد");
+        if (!course) throw new createHttpError.NotFound("محصولی یافت نشد");
 
         /** calculate course total time */
         course.duration = getCourseTotalTime(course.chapters);

@@ -5,7 +5,7 @@ const path = require("path");
 /** import file system module */
 const fs = require("fs");
 /** import http-error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 
 /** multer storage configuration */
 const storage = multer.diskStorage({
@@ -68,7 +68,7 @@ function fileFilter(req, file, cb) {
     const validMimetypes = [".jpg", ".png", ".jpeg", ".gif", ".webp"];
 
     if (!validMimetypes.includes(fileExt))
-        return cb(new createError.UnprocessableEntity("تصویر ارسال شده صحیح نمیباشد"));
+        return cb(new createHttpError.UnprocessableEntity("تصویر ارسال شده صحیح نمیباشد"));
 
     return cb(null, true);
 }
@@ -88,7 +88,7 @@ function videoFilter(req, file, cb) {
     const validMimetypes = [".mp4", ".mpg", ".mov", ".avi", ".mkv"];
 
     if (!validMimetypes.includes(fileExt))
-        return cb(new createError.UnprocessableEntity("فرمت ویدئو ارسال شده صحیح نمیباشد"));
+        return cb(new createHttpError.UnprocessableEntity("فرمت ویدئو ارسال شده صحیح نمیباشد"));
 
     return cb(null, true);
 }

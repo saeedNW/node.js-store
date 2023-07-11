@@ -3,7 +3,7 @@ const model = require("app/models");
 /** import json web token module */
 const JWT = require("jsonwebtoken");
 /** import http-error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 /** import constants */
 const {JWTConstants} = require("./constans");
 /** import redis client configs */
@@ -56,7 +56,7 @@ async function signAccessToken(userId) {
         return JWT.sign(payload, JWTConstants.ACCESS_TOKEN_SECRET_KEY, options);
     } catch (err) {
         console.log(err);
-        return new createError.InternalServerError();
+        return new createHttpError.InternalServerError();
     }
 }
 
@@ -99,7 +99,7 @@ async function signRefreshToken(userId) {
         return refreshToken;
     } catch (err) {
         console.log(err);
-        throw new createError.InternalServerError();
+        throw new createHttpError.InternalServerError();
     }
 }
 
@@ -123,26 +123,26 @@ async function refreshTokenVerification(token) {
 
         /** return error if phone was not exists in payload */
         if (!phone)
-            throw new createError.Unauthorized("کد وارد شده صحیح نمی باشد");
+            throw new createHttpError.Unauthorized("کد وارد شده صحیح نمی باشد");
 
         /** get user data from database */
         const user = await model.userModel.findOne({phone}, {password: 0, otp: 0});
 
         /** return error if user was not found */
         if (!user)
-            throw new createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید");
+            throw new createHttpError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید");
 
         /** get refresh token from redis */
         const refreshToken = await redisClient.get(user._id.valueOf() || "key_default");
 
         /** return error if user's refresh token wasn't match with redis refresh token */
         if (token !== refreshToken)
-            throw new createError.Unauthorized("ورود به حساب کاربری با مشکل مواجه شد لطفا مجددا تلاش نمایید");
+            throw new createHttpError.Unauthorized("ورود به حساب کاربری با مشکل مواجه شد لطفا مجددا تلاش نمایید");
 
         return phone;
     } catch (err) {
         console.log(err.message);
-        if (err.message === "invalid token") throw new createError.Unauthorized("کد وارد شده صحیح نمی باشد"); else throw err;
+        if (err.message === "invalid token") throw new createHttpError.Unauthorized("کد وارد شده صحیح نمی باشد"); else throw err;
     }
 }
 

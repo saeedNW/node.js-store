@@ -3,7 +3,7 @@ const Controller = require("app/http/controllers/controller");
 /** import user auth validator schema */
 const {getOtpSchema, checkOtpSchema} = require("app/http/validators/user/user.auth.schema");
 /** import http-error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 /** import http status codes module */
 const httpStatus = require("http-status-codes");
 /** import models */
@@ -54,7 +54,7 @@ class UserAuthController extends Controller {
 
             /** return error if user creation failed */
             if (!user)
-                throw new createError.Unauthorized("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+                throw new createHttpError.Unauthorized("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             /**
              * send success message
@@ -95,11 +95,11 @@ class UserAuthController extends Controller {
 
             /** return error if user was not found */
             if (!user)
-                throw new createError.NotFound("کاربری با این شماره تماس یافت نشد");
+                throw new createHttpError.NotFound("کاربری با این شماره تماس یافت نشد");
 
             /** return error if user otp was not correct */
             if (user.otp.code !== code)
-                throw new createError.Unauthorized("کد وارد شده صحیح نمی باشد");
+                throw new createHttpError.Unauthorized("کد وارد شده صحیح نمی باشد");
 
             /**
              * get current date
@@ -109,7 +109,7 @@ class UserAuthController extends Controller {
 
             /** return error if otp was expired */
             if (user.otp.expires < now)
-                throw new createError.Unauthorized("کد وارد شده فاقد اعتبار می باشد");
+                throw new createHttpError.Unauthorized("کد وارد شده فاقد اعتبار می باشد");
 
             /**
              * create user access token

@@ -9,7 +9,7 @@ const {blogModel} = require("app/models/blogs.model");
 /** import helper functions */
 const {removeFile} = require("app/utils/functions");
 /** import http error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 /** import http status codes module */
 const httpStatus = require("http-status-codes");
 
@@ -104,7 +104,7 @@ class AdminBlogController extends Controller {
             const updatedBlog = await blogModel.updateOne({'_id': blogId}, {$set: req.body});
 
             /** throw error if update was unsuccessful */
-            if (updatedBlog.modifiedCount <= 0) throw new createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+            if (updatedBlog.modifiedCount <= 0) throw new createHttpError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             this.sendSuccessResponse(req, res, httpStatus.OK, "بروزرسانی با موفقیت انجام شد");
         } catch (err) {

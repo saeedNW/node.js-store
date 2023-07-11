@@ -1,7 +1,7 @@
 /** import joi module */
 const Joi = require("@hapi/joi");
 /** import http-error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 /**
  * define valid phone regex
  * @type {RegExp}
@@ -22,15 +22,15 @@ const getOtpSchema = Joi.object({
         /** it should be a valid phone number */
         .pattern(PhoneRegEx)
         /** set validation error */
-        .error(new createError.UnprocessableEntity("شماره موبایل وارد شده صحیح نمیباشد"))
+        .error(new createHttpError.UnprocessableEntity("شماره موبایل وارد شده صحیح نمیباشد"))
 });
 
 /** define user auth check opt validator schema */
 const checkOtpSchema = Joi.object({
     /** phone validator */
-    phone: Joi.string().required().length(11).pattern(PhoneRegEx).error(new createError.UnprocessableEntity("شماره موبایل وارد شده صحیح نمیباشد")),
+    phone: Joi.string().required().length(11).pattern(PhoneRegEx).error(new createHttpError.UnprocessableEntity("شماره موبایل وارد شده صحیح نمیباشد")),
     /** code validator */
-    code: Joi.string().min(4).max(6).error(new createError.UnprocessableEntity("کد ارسال شده صحیح نمیباشد"))
+    code: Joi.string().min(4).max(6).error(new createHttpError.UnprocessableEntity("کد ارسال شده صحیح نمیباشد"))
 });
 
 module.exports = {

@@ -5,7 +5,7 @@ const {courseModel} = require("app/models");
 /** import http status codes module */
 const httpStatus = require("http-status-codes");
 /** import http-error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 /** import validators */
 const {ObjectIdValidator} = require("app/http/validators/public/public.schema");
 
@@ -39,7 +39,7 @@ class AdminChapterController extends Controller {
             });
 
             /** throw error if update was unsuccessful */
-            if (createdChapter.modifiedCount <= 0) throw new createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+            if (createdChapter.modifiedCount <= 0) throw new createHttpError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             this.sendSuccessResponse(req, res, httpStatus.CREATED, "فصل با موفقیت افزوده شد");
         } catch (err) {

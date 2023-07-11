@@ -4,9 +4,6 @@ const Controller = require("app/http/controllers/controller");
 const {userModel} = require("app/models");
 /** import http status codes module */
 const httpStatus = require("http-status-codes");
-/** import http-error module */
-const createError = require("http-errors");
-
 
 /**
  * @class AdminUserController

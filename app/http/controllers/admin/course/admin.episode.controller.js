@@ -11,7 +11,7 @@ const {copyObject, removeFile, deleteInvalidPropertyInObject, getTime} = require
 /** import models */
 const {courseModel} = require("app/models");
 /** import http-error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 /** import http status codes module */
 const httpStatus = require("http-status-codes");
 /** import file system module */
@@ -74,7 +74,7 @@ class AdminEpisodeController extends Controller {
             });
 
             /** return error if update was unsuccessful */
-            if (createEpisodeResult.modifiedCount <= 0) throw new createError.InternalServerError("افزودن اپیزود با شکست مواجه شد. لطفا مجددا تلاش نمایید");
+            if (createEpisodeResult.modifiedCount <= 0) throw new createHttpError.InternalServerError("افزودن اپیزود با شکست مواجه شد. لطفا مجددا تلاش نمایید");
 
             /** send the success message */
             return this.sendSuccessResponse(req, res, httpStatus.OK, 'اپیزود با موفقیت افزوده شد');
@@ -111,7 +111,7 @@ class AdminEpisodeController extends Controller {
             });
 
             /** return error if the episode was not removed */
-            if (removedEpisode.modifiedCount <= 0) throw new createError.InternalServerError("حذف اپیزود با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+            if (removedEpisode.modifiedCount <= 0) throw new createHttpError.InternalServerError("حذف اپیزود با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             /** return the success message */
             return this.sendSuccessResponse(req, res, httpStatus.OK, 'حذف اپیزود با موفقیت انجام شد');

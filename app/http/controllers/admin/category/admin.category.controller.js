@@ -3,7 +3,7 @@ const Controller = require("app/http/controllers/controller");
 /** import models */
 const {categoryModel} = require("app/models");
 /** import http error module */
-const createError = require("http-errors");
+const createHttpError = require("http-errors");
 /** import validators */
 const {addCategorySchema} = require("app/http/validators/admin/admin.category.schema");
 /** import http status codes module */
@@ -31,19 +31,19 @@ class AdminCategoryController extends Controller {
             await addCategorySchema.validateAsync(req.body);
 
             /** check if category already exists */
-            if (await categoryModel.findOne({title})) throw new createError.UnprocessableEntity("این دسته بندی از پیش وجود دارد");
+            if (await categoryModel.findOne({title})) throw new createHttpError.UnprocessableEntity("این دسته بندی از پیش وجود دارد");
 
             /** get parent category */
             const parentCategory = (parent && (parent !== "" || parent !== " ")) ? await categoryModel.findById(parent) : undefined;
 
             /** return error if parent category was not found */
-            if (parent && !parentCategory) throw new createError.NotFound("دسته بندی والد انتخاب شده وجود ندارد");
+            if (parent && !parentCategory) throw new createHttpError.NotFound("دسته بندی والد انتخاب شده وجود ندارد");
 
             /** save category in database */
             const category = await categoryModel.create({title, parent});
 
             /** return error if category creation wasn't successful */
-            if (!category) throw new createError.InternalServerError("ایجاد دسته بندی با مشکل مواجه شد لطفا مجددا تلاش نمایید");
+            if (!category) throw new createHttpError.InternalServerError("ایجاد دسته بندی با مشکل مواجه شد لطفا مجددا تلاش نمایید");
 
             this.sendSuccessResponse(req, res, httpStatus.CREATED, "دسته بندی با موفقیت ایجاد شد", {category});
         } catch (err) {
@@ -85,14 +85,14 @@ class AdminCategoryController extends Controller {
             const category = await categoryModel.findById(categoryId);
 
             /** return error if category was not found */
-            if (!category) throw new createError.NotFound("دسته بندی درخواست شده پیدا نشد");
+            if (!category) throw new createHttpError.NotFound("دسته بندی درخواست شده پیدا نشد");
 
             /** remove category */
             const removedCategory = await categoryModel.deleteOne({_id: categoryId});
 
             /** return error if category removal was not successful */
             if (removedCategory.deleteCount <= 0)
-                throw new createError.InternalServerError("حذف دسته بندی با شکست مواجه شد لطفا مجددا تلاش نمایید");
+                throw new createHttpError.InternalServerError("حذف دسته بندی با شکست مواجه شد لطفا مجددا تلاش نمایید");
 
             /** remove parent from children categories */
             await categoryModel.updateMany({parent: categoryId}, {$set: {parent: undefined}});
@@ -233,7 +233,7 @@ class AdminCategoryController extends Controller {
 
             /** return error if category was not found */
             if (!category)
-                throw new createError.NotFound("دسته بندی درخواست داده شده یافت نشد");
+                throw new createHttpError.NotFound("دسته بندی درخواست داده شده یافت نشد");
 
             this.sendSuccessResponse(req, res, httpStatus.OK, undefined, {category});
         } catch (err) {
