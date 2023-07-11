@@ -118,7 +118,7 @@ class AdminProductController extends Controller {
             const updatedProduct = await productModel.updateOne({_id: product._id}, {$set: data});
 
             /** throw error if update was unsuccessful */
-            if (updatedProduct.modifiedCount <= 0) throw new createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+            if (updatedProduct.modifiedCount <= 0) throw new createHttpError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             /** send success message */
             this.sendSuccessResponse(req, res, httpStatus.OK, "محصول با موفقیت بروزرسانی شد");
@@ -145,7 +145,7 @@ class AdminProductController extends Controller {
             const removedProduct = await productModel.deleteOne({_id: product._id});
             /** return error if product removal was not successful */
             if (removedProduct.deletedCount <= 0)
-                throw new createError.InternalServerError("حذف محصول با شکست مواجه شد لطفا مجددا تلاش نمایید");
+                throw new createHttpError.InternalServerError("حذف محصول با شکست مواجه شد لطفا مجددا تلاش نمایید");
             /** send success response */
             this.sendSuccessResponse(req, res, httpStatus.OK, "محصول با موفقیت حذف گردید");
         } catch (err) {
@@ -202,7 +202,7 @@ class AdminProductController extends Controller {
         /** get product from database */
         const product = await productModel.findById(id);
         /** return error if product was not found */
-        if (!product) throw new createError.NotFound("محصولی یافت نشد");
+        if (!product) throw new createHttpError.NotFound("محصولی یافت نشد");
         /** return product */
         return product;
     }

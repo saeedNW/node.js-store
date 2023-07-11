@@ -136,7 +136,7 @@ class AdminBlogController extends Controller {
             const removedBlog = await blogModel.deleteOne({'_id': blogId});
 
             if (removedBlog.deleteCount <= 0)
-                throw new createError.InternalServerError("حذف پست با مشکل مواجه شد لطفا مجددا تلاش نمایید");
+                throw new createHttpError.InternalServerError("حذف پست با مشکل مواجه شد لطفا مجددا تلاش نمایید");
 
             this.sendSuccessResponse(req, res, httpStatus.OK, "پست با موفقیت حذف شد");
         } catch (err) {
@@ -259,7 +259,7 @@ class AdminBlogController extends Controller {
 
         /** throw error if blog was not found */
         if (!blog)
-            throw new createError.NotFound("بلاگ درخواست شده پیدا نشد");
+            throw new createHttpError.NotFound("بلاگ درخواست شده پیدا نشد");
 
         /** add populate option to search query */
         if (populate)

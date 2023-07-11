@@ -36,11 +36,11 @@ const createProductSchema = Joi.object({
     /** product width validator */
     width: Joi.number().allow(null, 0, "0").error(new createHttpError.UnprocessableEntity("عرض وارد شده صحیح نمیباشد")),
     /** product model validator */
-    model: Joi.string().allow(null, "", " ").error(new createError.UnprocessableEntity("مدل وارد شده صحیح نمیباشد")),
+    model: Joi.string().allow(null, "", " ").error(new createHttpError.UnprocessableEntity("مدل وارد شده صحیح نمیباشد")),
     /** product made_in validator */
-    made_in: Joi.string().allow(null, "", " ").error(new createError.UnprocessableEntity("کشور وارد شده صحیح نمیباشد")),
+    made_in: Joi.string().allow(null, "", " ").error(new createHttpError.UnprocessableEntity("کشور وارد شده صحیح نمیباشد")),
     /** file validator */
-    fileName: Joi.string().regex(/(\.png|\.jpg|\.webp|\.jpeg|\.gif)$/).error(new createError.UnprocessableEntity("تصویر ارسال شده صحیح نمیباشد")),
+    fileName: Joi.string().regex(/(\.png|\.jpg|\.webp|\.jpeg|\.gif)$/).error(new createHttpError.UnprocessableEntity("تصویر ارسال شده صحیح نمیباشد")),
     /** upload path validator */
     fileUploadPath: Joi.allow()
 });

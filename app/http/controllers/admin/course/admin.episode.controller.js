@@ -190,7 +190,7 @@ class AdminEpisodeController extends Controller {
             });
 
             /** return error if update was unsuccessful */
-            if (!editEpisodeResult.modifiedCount) throw new createError.InternalServerError("ویرایش اپیزود با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+            if (!editEpisodeResult.modifiedCount) throw new createHttpError.InternalServerError("ویرایش اپیزود با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             /** return the success response */
             return this.sendSuccessResponse(req, res, httpStatus.OK, 'اپیزود با موفقیت بروزرسانی شد');
@@ -213,13 +213,13 @@ class AdminEpisodeController extends Controller {
         });
 
         /** return error if the episode was not found */
-        if (!course) throw new createError.NotFound("اپیزود انتخابی یافت یافت نشد");
+        if (!course) throw new createHttpError.NotFound("اپیزود انتخابی یافت یافت نشد");
 
         /** change database search result structure */
         const episode = await course?.chapters?.[0]?.episodes?.[0];
 
         /** return error if the episode was not found */
-        if (!episode) throw new createError.NotFound("اپیزود انتخابی یافت یافت نشد");
+        if (!episode) throw new createHttpError.NotFound("اپیزود انتخابی یافت یافت نشد");
 
         /** return episode data */
         return copyObject(episode)

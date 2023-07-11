@@ -116,7 +116,7 @@ class AdminChapterController extends Controller {
             });
 
             /** throw error if update was unsuccessful */
-            if (removedChapter.modifiedCount <= 0) throw new createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+            if (removedChapter.modifiedCount <= 0) throw new createHttpError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             /** return success message */
             return this.sendSuccessResponse(req, res, httpStatus.OK, 'فصل با موفقیت حذف گردید');
@@ -157,7 +157,7 @@ class AdminChapterController extends Controller {
             });
 
             /** throw error if update was unsuccessful */
-            if (updatedChapter.modifiedCount <= 0) throw new createError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+            if (updatedChapter.modifiedCount <= 0) throw new createHttpError.ServerInternalError("بروزرسانی با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
             /** send success message */
             return this.sendSuccessResponse(req, res, httpStatus.OK);
@@ -177,7 +177,7 @@ class AdminChapterController extends Controller {
         /** get course from the database */
         const course = await courseModel.findById(this.convertStringToMongoObjectId(id));
         /** return error if course was not found */
-        if (!course) throw new createError.NotFound("محصولی یافت نشد");
+        if (!course) throw new createHttpError.NotFound("محصولی یافت نشد");
         /** return course */
         return course;
     }
@@ -193,7 +193,7 @@ class AdminChapterController extends Controller {
         /** get course chapters */
         const course = await courseModel.findOne({_id: id}, {chapters: 1, title: 1});
         /** return error if chapter was not found */
-        if (!course) throw new createError.NotFound("دوره انتخابی یافت نشد");
+        if (!course) throw new createHttpError.NotFound("دوره انتخابی یافت نشد");
         /** return chapters */
         return course;
     }
@@ -209,7 +209,7 @@ class AdminChapterController extends Controller {
         /** get chapter data */
         const chapter = await courseModel.findOne({'chapters._id': id}, {'chapters.$': 1});
         /** return error if chapter was not found */
-        if (!chapter) throw new createError.NotFound('فصل انتخابی یافت نشد');
+        if (!chapter) throw new createHttpError.NotFound('فصل انتخابی یافت نشد');
         /** return chapter */
         return chapter['chapters'][0];
     }

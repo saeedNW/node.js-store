@@ -206,7 +206,7 @@ module.exports = class Application {
             /**
              * define server internal error
              */
-            const serverError = new createError.InternalServerError();
+            const serverError = new createHttpError.InternalServerError();
 
             /**
              * define error status
