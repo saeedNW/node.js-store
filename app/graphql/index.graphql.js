@@ -1,18 +1,13 @@
 /** import graphql */
 const {GraphQLObjectType, GraphQLSchema} = require("graphql");
-/** import blog query */
-const {BlogsListQuery, BlogQuery} = require("./queries/blogs.query");
-/** import products queries */
-const {ProductsListQuery, ProductQuery} = require("./queries/products.query");
-/** import products queries */
-const {CoursesListQuery, CourseQuery} = require("./queries/courses.query");
-/** import categories queries */
+/** import queries */
 const {
-    CategoryQuery,
-    CategoriesListQuery,
-    ParentCategoriesList,
-    ChildCategoriesList
-} = require("./queries/categories.query");
+    BlogsListQuery, BlogQuery,
+    ProductsListQuery, ProductQuery,
+    CoursesListQuery, CourseQuery,
+    CategoryQuery, CategoriesListQuery,
+    ParentCategoriesList, ChildCategoriesList
+} = require("./queries");
 
 /**
  * define graphql root query
