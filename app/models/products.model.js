@@ -69,7 +69,7 @@ const Schema = new mongoose.Schema({
     },
     supplier: {
         type: mongoose.Types.ObjectId,
-        res: "user",
+        ref: "user",
         required: true
     },
     features: {
