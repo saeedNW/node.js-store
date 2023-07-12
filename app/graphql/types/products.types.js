@@ -1,5 +1,7 @@
 /** import graphql */
 const {GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList} = require("graphql");
+/** import graphql iso-date-type module */
+const {GraphQLDateTime} = require("graphql-iso-date");
 /** import public types */
 const {UserType, PublicCategoryType} = require("./public.types");
 
@@ -39,8 +41,8 @@ const ProductType = new GraphQLObjectType({
         format: {type: GraphQLString},
         supplier: {type: UserType},
         features: {type: FeaturesType},
-        createdAt: {type: GraphQLString},
-        updatedAt: {type: GraphQLString},
+        createdAt: {type: GraphQLDateTime},
+        updatedAt: {type: GraphQLDateTime},
     }
 });
 

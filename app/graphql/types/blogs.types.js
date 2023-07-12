@@ -1,5 +1,7 @@
 /** import graphql */
 const {GraphQLObjectType, GraphQLString, GraphQLList} = require("graphql");
+/** import graphql iso-date-type module */
+const {GraphQLDateTime} = require("graphql-iso-date");
 /** import public types */
 const {UserType, PublicCategoryType} = require("./public.types");
 
@@ -18,7 +20,8 @@ const BlogType = new GraphQLObjectType({
         tags: {type: new GraphQLList(GraphQLString)},
         category: {type: PublicCategoryType},
         createdAt: {type: GraphQLString},
-        updatedAt: {type: GraphQLString},
+        createdAt: {type: GraphQLDateTime},
+        updatedAt: {type: GraphQLDateTime},
     }
 });
 

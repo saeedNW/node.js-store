@@ -1,5 +1,7 @@
 /** import graphql */
 const {GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList} = require("graphql");
+/** import graphql iso-date-type module */
+const {GraphQLDateTime} = require("graphql-iso-date");
 /** import public types */
 const {AnyType} = require("./public.types");
 
@@ -11,8 +13,8 @@ const CategoryType = new GraphQLObjectType({
     fields: {
         _id: {type: GraphQLString},
         title: {type: GraphQLString},
-        createdAt: {type: GraphQLString},
-        updatedAt: {type: GraphQLString},
+        createdAt: {type: GraphQLDateTime},
+        updatedAt: {type: GraphQLDateTime},
         /**
          * By defining the Type of children as "AnyType",
          * we make it possible to returns parents categories as

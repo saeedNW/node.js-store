@@ -1,5 +1,7 @@
 /** import graphql */
 const {GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList} = require("graphql");
+/** import graphql iso-date-type module */
+const {GraphQLDateTime} = require("graphql-iso-date");
 /** import public types */
 const {UserType, PublicCategoryType} = require("./public.types");
 
@@ -52,8 +54,8 @@ const CourseType = new GraphQLObjectType({
         status: {type: GraphQLString},
         mentor: {type: UserType},
         chapters: {type: new GraphQLList(ChaptersType)},
-        createdAt: {type: GraphQLString},
-        updatedAt: {type: GraphQLString},
+        createdAt: {type: GraphQLDateTime},
+        updatedAt: {type: GraphQLDateTime},
     }
 });
 
