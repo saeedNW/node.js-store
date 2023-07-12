@@ -12,7 +12,12 @@ const BlogResolver = async (_, args, context) => {
     /** extract blog id from args */
     const {blogId} = args;
     /** get blog data from database */
-    return blogModel.findOne({_id: blogId}).populate([{path: 'author'}, {path: 'category'}]);
+    return blogModel.findOne({_id: blogId}).populate([
+        {path: 'author'},
+        {path: 'category'},
+        {path: 'comments.user'},
+        {path: 'comments.answers.user'},
+    ]);
 }
 
 /**
@@ -22,7 +27,12 @@ const BlogsListResolver = async (_, args, context) => {
     /** initialize user access verification */
     await graphqlAccessTokenVerification(context);
     /** get blogs data from database */
-    return blogModel.find({}).populate([{path: 'author'}, {path: 'category'}]);
+    return blogModel.find({}).populate([
+        {path: 'author'},
+        {path: 'category'},
+        {path: 'comments.user'},
+        {path: 'comments.answers.user'},
+    ]);
 }
 
 module.exports = {

@@ -8,6 +8,10 @@ const {
     CategoryQuery, CategoriesListQuery,
     ParentCategoriesList, ChildCategoriesList
 } = require("./queries");
+/** import mutations */
+const {
+    BlogCommentCreationMutation
+} = require("./mutations");
 
 /**
  * define graphql root query
@@ -35,7 +39,9 @@ const RootQuery = new GraphQLObjectType({
  */
 const RootMutation = new GraphQLObjectType({
     name: "Mutation",
-    fields: {}
+    fields: {
+        BlogCommentCreationMutation
+    }
 });
 
 /**
@@ -44,7 +50,7 @@ const RootMutation = new GraphQLObjectType({
  */
 const graphQLSchema = new GraphQLSchema({
     query: RootQuery,
-    // mutation: RootMutation
+    mutation: RootMutation
 });
 
 module.exports = {

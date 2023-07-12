@@ -2,22 +2,59 @@
 const {default: mongoose} = require("mongoose");
 
 /**
- * define comments schema
+ * define answer schema
  */
-const commentSchema = new mongoose.Schema({
+const answerSchema = new mongoose.Schema({
     user: {
         type: mongoose.Types.ObjectId,
-        ref: "users",
+        ref: "user",
         required: true
     },
     comment: {
         type: String,
         required: true
     },
-    parent: {
+    visibility: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+}, {
+    /** activate timestamp (createdAt/updatedAt) */
+    timestamps: true,
+    /** activate virtuals */
+    toJSON: {virtuals: true},
+    /** remove external id option */
+    id: false,
+    /** remove version key */
+    versionKey: false
+});
+
+/**
+ * define comments schema
+ */
+const commentSchema = new mongoose.Schema({
+    user: {
         type: mongoose.Types.ObjectId,
-        default: undefined,
-        ref: "comment"
+        ref: "user",
+        required: true
+    },
+    comment: {
+        type: String,
+        required: true
+    },
+    visibility: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    openToComment: {
+        type: Boolean,
+        default: true
+    },
+    answers: {
+        type: [answerSchema],
+        default: [],
     }
 }, {
     /** activate timestamp (createdAt/updatedAt) */

@@ -1,5 +1,13 @@
 /** import graphql king method */
 const {Kind} = require("graphql");
+/** import models */
+const {blogModel} = require("app/models");
+/** import http-error module */
+const createHttpError = require("http-errors");
+/** import mongoose */
+const {default: mongoose} = require("mongoose");
+/** import helper functions */
+const {copyObject} = require("app/utils/functions");
 
 /**
  * Parses an object value from a value node.
@@ -85,16 +93,81 @@ function parseLiteral(valueNode) {
  * @returns {object|null} - The converted object, or null if conversion is not possible.
  */
 function toObject(value) {
+    /** If the value is already an object, return it as is */
     if (typeof value === 'object') {
-        /** If the value is already an object, return it as is */
         return value;
     }
+
+    /** If the value is a string and starts with '{', parse it as JSON and return the parsed object */
     if (typeof value === "string" && value.charAt(0) === "{") {
-        /** If the value is a string and starts with '{', parse it as JSON and return the parsed object */
         return JSON.parse(value);
     }
+
     /** Return null if the value is not an object or a JSON string */
     return null;
+}
+
+/**
+ * check if a blog exists by blog _id
+ * @param _id blog object id
+ * @returns {QueryWithHelpers<HydratedDocument<unknown, {}, {}> | null, HydratedDocument<unknown, {}, {}>, {}, unknown>}
+ */
+async function checkBlogExistence(_id) {
+    /** get blog data from database */
+    const blog = await blogModel.findOne({_id});
+
+    /** throw error if blog was not found */
+    if (!blog) throw new createHttpError.NotFound("بلاگی با این مشخصات یافت نشد");
+
+    /** return blog data */
+    return blog;
+}
+
+/**
+ * check if a comment exists
+ * @param model model that comment belongs to
+ * @param _id comment object id
+ * @returns {Promise<*>}
+ */
+async function checkCommentExistence(model, _id) {
+    /** get comment from database */
+    let comment = await model.findOne({"comments._id": new mongoose.Types.ObjectId(_id)}, {"comments.$": 1});
+
+    /** copy comment data */
+    comment = copyObject(comment);
+
+    /** return error if comment was not found */
+    if (!comment?.comments?.[0]) throw new createHttpError.NotFound("کامنتی با این مشخصات یافت نشد");
+
+    /** return comment data */
+    return comment?.comments?.[0]
+}
+
+/**
+ * validation of mongodb ObjectID structure
+ * @param _id
+ * @return {boolean}
+ */
+function mongoObjectIdValidation(_id) {
+    /**
+     * validation of given mongodb object id
+     * @type {boolean}
+     */
+    const validate = mongoose.Types.ObjectId.isValid(_id);
+
+    /** return error if given id is not a valid id */
+    if (!validate) {
+        throw new createHttpError.BadGateway("شناسه وارد شده صحیح نمی باشد");
+    }
+}
+
+function sendSuccessResponse(status, message = undefined, data = {}) {
+    return {
+        status,
+        success: true,
+        message: message || "درخواست شما با موفقیت به اتمام رسید",
+        data
+    }
 }
 
 module.exports = {
@@ -102,4 +175,8 @@ module.exports = {
     parseValueNode,
     parseLiteral,
     toObject,
+    checkBlogExistence,
+    checkCommentExistence,
+    mongoObjectIdValidation,
+    sendSuccessResponse
 }

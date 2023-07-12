@@ -4,6 +4,8 @@ const {GraphQLObjectType, GraphQLString, GraphQLList} = require("graphql");
 const {GraphQLDateTime} = require("graphql-iso-date");
 /** import public types */
 const {UserType, PublicCategoryType} = require("./public.types");
+/** import comments type */
+const {CommentsListType} = require("./comments.type");
 
 /**
  * define blog type
@@ -19,7 +21,7 @@ const BlogType = new GraphQLObjectType({
         image: {type: GraphQLString},
         tags: {type: new GraphQLList(GraphQLString)},
         category: {type: PublicCategoryType},
-        createdAt: {type: GraphQLString},
+        comments: {type: CommentsListType},
         createdAt: {type: GraphQLDateTime},
         updatedAt: {type: GraphQLDateTime},
     }

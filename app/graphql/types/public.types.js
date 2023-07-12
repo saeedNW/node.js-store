@@ -1,10 +1,11 @@
 /** import graphql */
-const {GraphQLObjectType, GraphQLString, GraphQLScalarType, GraphQLList} = require("graphql");
+const {GraphQLObjectType, GraphQLString, GraphQLScalarType, GraphQLInt, GraphQLBoolean} = require("graphql");
 /** import graphql utils */
 const {toObject, parseLiteral} = require("app/graphql/utils");
 
 /**
  * define graphql scalar type
+ * @type {GraphQLScalarType}
  */
 const AnyType = new GraphQLScalarType({
     name: "anyType",
@@ -15,6 +16,7 @@ const AnyType = new GraphQLScalarType({
 
 /**
  * define author type
+ * @type {GraphQLObjectType<any, any>}
  */
 const UserType = new GraphQLObjectType({
     name: 'userType',
@@ -27,6 +29,7 @@ const UserType = new GraphQLObjectType({
 
 /**
  * define category type
+ * @type {GraphQLObjectType<any, any>}
  */
 const PublicCategoryType = new GraphQLObjectType({
     name: 'publicCategoryType',
@@ -36,8 +39,23 @@ const PublicCategoryType = new GraphQLObjectType({
     }
 });
 
+/**
+ * define mutation response type
+ * @type {GraphQLObjectType<any, any>}
+ */
+const ResponseType = new GraphQLObjectType({
+    name: "responseType",
+    fields: {
+        status: {type: GraphQLInt},
+        success: {type: GraphQLBoolean},
+        message: {type: GraphQLString},
+        data: {type: AnyType}
+    }
+})
+
 module.exports = {
     UserType,
     PublicCategoryType,
-    AnyType
+    AnyType,
+    ResponseType
 }
