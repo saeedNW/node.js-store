@@ -10,6 +10,26 @@ const BlogCommentCreationArgs = {
     parent: {type: GraphQLString},
 }
 
+/**
+ * define product comment creation args
+ */
+const ProductCommentCreationArgs = {
+    comment: {type: GraphQLString},
+    productId: {type: GraphQLString},
+    parent: {type: GraphQLString},
+}
+
+/**
+ * define course comment creation args
+ */
+const CourseCommentCreationArgs = {
+    comment: {type: GraphQLString},
+    courseId: {type: GraphQLString},
+    parent: {type: GraphQLString},
+}
+
 module.exports = {
-    BlogCommentCreationArgs
+    BlogCommentCreationArgs,
+    ProductCommentCreationArgs,
+    CourseCommentCreationArgs,
 }

@@ -4,6 +4,8 @@ const {GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList} = require("gra
 const {GraphQLDateTime} = require("graphql-iso-date");
 /** import public types */
 const {UserType, PublicCategoryType} = require("./public.types");
+/** import comments type */
+const {CommentsListType} = require("./comments.type");
 
 /**
  * define product features type
@@ -41,6 +43,7 @@ const ProductType = new GraphQLObjectType({
         format: {type: GraphQLString},
         supplier: {type: UserType},
         features: {type: FeaturesType},
+        comments: {type: CommentsListType},
         createdAt: {type: GraphQLDateTime},
         updatedAt: {type: GraphQLDateTime},
     }

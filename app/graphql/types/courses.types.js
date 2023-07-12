@@ -4,6 +4,8 @@ const {GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList} = require("gra
 const {GraphQLDateTime} = require("graphql-iso-date");
 /** import public types */
 const {UserType, PublicCategoryType} = require("./public.types");
+/** import comments type */
+const {CommentsListType} = require("./comments.type");
 
 /**
  * define episodes type
@@ -54,6 +56,7 @@ const CourseType = new GraphQLObjectType({
         status: {type: GraphQLString},
         mentor: {type: UserType},
         chapters: {type: new GraphQLList(ChaptersType)},
+        comments: {type: CommentsListType},
         createdAt: {type: GraphQLDateTime},
         updatedAt: {type: GraphQLDateTime},
     }

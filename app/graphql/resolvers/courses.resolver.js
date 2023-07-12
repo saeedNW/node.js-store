@@ -12,7 +12,12 @@ const CourseResolver = async (_, args, context) => {
     /** extract course id from args */
     const {courseId} = args;
     /** get course data */
-    return courseModel.findOne({_id: courseId}).populate([{path: 'mentor'}, {path: 'category'}]);
+    return courseModel.findOne({_id: courseId}).populate([
+        {path: 'mentor'},
+        {path: 'category'},
+        {path: 'comments.user'},
+        {path: 'comments.answers.user'},
+    ]);
 }
 
 /**
@@ -26,7 +31,12 @@ const CoursesListResolver = async (_, args, context) => {
     /** define search query */
     const searchQuery = category ? {category} : {}
     /** get courses data */
-    return courseModel.find(searchQuery).populate([{path: 'mentor'}, {path: 'category'}]);
+    return courseModel.find(searchQuery).populate([
+        {path: 'mentor'},
+        {path: 'category'},
+        {path: 'comments.user'},
+        {path: 'comments.answers.user'},
+    ]);
 }
 
 module.exports = {

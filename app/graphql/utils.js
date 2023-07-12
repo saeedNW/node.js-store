@@ -1,7 +1,7 @@
 /** import graphql king method */
 const {Kind} = require("graphql");
 /** import models */
-const {blogModel} = require("app/models");
+const {blogModel, courseModel, productModel} = require("app/models");
 /** import http-error module */
 const createHttpError = require("http-errors");
 /** import mongoose */
@@ -124,6 +124,38 @@ async function checkBlogExistence(_id) {
 }
 
 /**
+ * check if a product exists by product _id
+ * @param _id product object id
+ * @returns {QueryWithHelpers<HydratedDocument<unknown, {}, {}> | null, HydratedDocument<unknown, {}, {}>, {}, unknown>}
+ */
+async function checkProductExistence(_id) {
+    /** get product data from database */
+    const product = await productModel.findOne({_id});
+
+    /** throw error if product was not found */
+    if (!product) throw new createHttpError.NotFound("محصولی با این مشخصات یافت نشد");
+
+    /** return product data */
+    return product;
+}
+
+/**
+ * check if a course exists by course _id
+ * @param _id course object id
+ * @returns {QueryWithHelpers<HydratedDocument<unknown, {}, {}> | null, HydratedDocument<unknown, {}, {}>, {}, unknown>}
+ */
+async function checkCourseExistence(_id) {
+    /** get course data from database */
+    const course = await courseModel.findOne({_id});
+
+    /** throw error if course was not found */
+    if (!course) throw new createHttpError.NotFound("دوره ای با این مشخصات یافت نشد");
+
+    /** return course data */
+    return course;
+}
+
+/**
  * check if a comment exists
  * @param model model that comment belongs to
  * @param _id comment object id
@@ -171,12 +203,9 @@ function sendSuccessResponse(status, message = undefined, data = {}) {
 }
 
 module.exports = {
-    parseObject,
-    parseValueNode,
-    parseLiteral,
-    toObject,
-    checkBlogExistence,
-    checkCommentExistence,
-    mongoObjectIdValidation,
-    sendSuccessResponse
+    parseObject, parseValueNode,
+    parseLiteral, toObject,
+    checkBlogExistence, checkCommentExistence,
+    mongoObjectIdValidation, sendSuccessResponse,
+    checkProductExistence, checkCourseExistence
 }

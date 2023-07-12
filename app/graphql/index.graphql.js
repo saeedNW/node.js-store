@@ -10,7 +10,8 @@ const {
 } = require("./queries");
 /** import mutations */
 const {
-    BlogCommentCreationMutation
+    BlogCommentCreationMutation, CourseCommentCreationMutation,
+    ProductCommentCreationMutation
 } = require("./mutations");
 
 /**
@@ -40,7 +41,9 @@ const RootQuery = new GraphQLObjectType({
 const RootMutation = new GraphQLObjectType({
     name: "Mutation",
     fields: {
-        BlogCommentCreationMutation
+        blogCommentCreation: BlogCommentCreationMutation,
+        courseCommentCreation: CourseCommentCreationMutation,
+        productCommentCreation: ProductCommentCreationMutation,
     }
 });
 

@@ -9,7 +9,7 @@ const {UserType} = require("./public.types");
  * define parent comment type
  */
 const CommentAnswerType = new GraphQLObjectType({
-    name: "parentCommentType",
+    name: "commentAnswerType",
     fields: {
         _id: {type: GraphQLString},
         user: {type: UserType},

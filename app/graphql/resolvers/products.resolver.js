@@ -12,7 +12,12 @@ const ProductResolver = async (_, args, context) => {
     /** extract product id from args */
     const {productId} = args;
     /** get product data */
-    return productModel.findOne({_id: productId}).populate([{path: 'supplier'}, {path: 'category'}]);
+    return productModel.findOne({_id: productId}).populate([
+        {path: 'supplier'},
+        {path: 'category'},
+        {path: 'comments.user'},
+        {path: 'comments.answers.user'},
+    ]);
 }
 
 /**
@@ -22,7 +27,12 @@ const ProductsListResolver = async (_, args, context) => {
     /** initialize user access verification */
     await graphqlAccessTokenVerification(context);
     /** get products data */
-    return productModel.find({}).populate([{path: 'supplier'}, {path: 'category'}]);
+    return productModel.find({}).populate([
+        {path: 'supplier'},
+        {path: 'category'},
+        {path: 'comments.user'},
+        {path: 'comments.answers.user'},
+    ]);
 }
 
 module.exports = {

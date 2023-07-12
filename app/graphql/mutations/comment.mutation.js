@@ -1,12 +1,20 @@
 /** import comments resolvers */
-const {BlogCommentCreationResolver} = require("app/graphql/resolvers/comments.resolver");
+const {
+    BlogCommentCreationResolver,
+    ProductCommentCreationResolver,
+    CourseCommentCreationResolver
+} = require("app/graphql/resolvers/comments.resolver");
 /** import comments args */
-const {BlogCommentCreationArgs} = require("app/graphql/args/comments.args");
+const {
+    BlogCommentCreationArgs,
+    CourseCommentCreationArgs,
+    ProductCommentCreationArgs
+} = require("app/graphql/args/comments.args");
 /** import public types */
 const {ResponseType} = require("app/graphql/types/public.types");
 
 /**
- * define comment creation mutation
+ * define blog comment creation mutation
  */
 const BlogCommentCreationMutation = {
     type: ResponseType,
@@ -14,6 +22,26 @@ const BlogCommentCreationMutation = {
     resolve: BlogCommentCreationResolver
 }
 
+/**
+ * define product comment creation mutation
+ */
+const ProductCommentCreationMutation = {
+    type: ResponseType,
+    args: {...ProductCommentCreationArgs},
+    resolve: ProductCommentCreationResolver
+}
+
+/**
+ * define course comment creation mutation
+ */
+const CourseCommentCreationMutation = {
+    type: ResponseType,
+    args: {...CourseCommentCreationArgs},
+    resolve: CourseCommentCreationResolver
+}
+
 module.exports = {
-    BlogCommentCreationMutation
+    BlogCommentCreationMutation,
+    ProductCommentCreationMutation,
+    CourseCommentCreationMutation,
 }
