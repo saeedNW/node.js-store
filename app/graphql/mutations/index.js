@@ -10,6 +10,12 @@ const {
     BlogLikeMutation,
     CourseLikeMutation
 } = require("./like.mutation");
+/** import dislikes mutation */
+const {
+    ProductDislikeMutation,
+    CourseDislikeMutation,
+    BlogDislikeMutation,
+} = require("./dislike.mutation");
 
 module.exports = {
     BlogCommentCreationMutation,
@@ -18,4 +24,7 @@ module.exports = {
     ProductLikeMutation,
     BlogLikeMutation,
     CourseLikeMutation,
+    ProductDislikeMutation,
+    CourseDislikeMutation,
+    BlogDislikeMutation,
 }

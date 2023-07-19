@@ -46,7 +46,7 @@ const Schema = new mongoose.Schema({
         ref: "users",
         default: []
     },
-    dislike: {
+    dislikes: {
         type: [mongoose.Types.ObjectId],
         ref: "users",
         default: []

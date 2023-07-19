@@ -71,7 +71,7 @@ class AdminBlogController extends Controller {
          * define fields that can't be updated
          * @type {string[]}
          */
-        const blackListedFields = ["author", "comments", "likes", "dislike", "bookmark"];
+        const blackListedFields = ["author", "comments", "likes", "dislikes", "bookmark"];
 
         try {
             /** check if the given id is a valid mongodb ObjectId */

@@ -15,9 +15,9 @@ const createHttpError = require("http-errors");
 const httpStatus = require("http-status-codes");
 
 /**
- * define product like resolver
+ * define product dislike resolver
  */
-const ProductLikeResolver = async (_, args, context) => {
+const ProductDislikeResolver = async (_, args, context) => {
     /**
      * initialize user access verification.
      * get user data
@@ -33,28 +33,28 @@ const ProductLikeResolver = async (_, args, context) => {
     /** check product existence */
     const product = await checkProductExistence(productId);
 
-    /** add or remove user's like */
-    if (isLiked(product, user._id)) {
+    /** add or remove user's dislike */
+    if (isDisliked(product, user._id)) {
         /**
-         * proceed if the product is already liked by the user.
-         * remove user's like
+         * proceed if the product is already Disliked by the user.
+         * remove user's dislike
          */
-        const updateResult = await productModel.updateOne({'_id': new mongoose.Types.ObjectId(productId)}, {'$pull': {'likes': user._id}});
+        const updateResult = await productModel.updateOne({'_id': new mongoose.Types.ObjectId(productId)}, {'$pull': {'dislikes': user._id}});
 
         /** return error if the update process failed */
         if (updateResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
     } else {
         /**
-         * proceed if the product isn't liked by the user.
-         * remove user's dislike if it exists
+         * proceed if the product isn't Disliked by the user.
+         * remove user's like if it exists
          */
-        const removeDislikeResult = await productModel.updateOne({'_id': new mongoose.Types.ObjectId(productId)}, {'$pull': {'dislikes': user._id}});
+        const removeLikeResult = await productModel.updateOne({'_id': new mongoose.Types.ObjectId(productId)}, {'$pull': {'likes': user._id}});
 
         /** return error if the update process failed */
-        if (removeDislikeResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+        if (removeLikeResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
-        /** add user's like */
-        const updateResult = await productModel.updateOne({'_id': new mongoose.Types.ObjectId(productId)}, {'$push': {'likes': user._id}});
+        /** add user's dislike */
+        const updateResult = await productModel.updateOne({'_id': new mongoose.Types.ObjectId(productId)}, {'$push': {'dislikes': user._id}});
 
         /** return error if the update process failed */
         if (updateResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
@@ -65,9 +65,9 @@ const ProductLikeResolver = async (_, args, context) => {
 }
 
 /**
- * define course like resolver
+ * define course dislike resolver
  */
-const CourseLikeResolver = async (_, args, context) => {
+const CourseDislikeResolver = async (_, args, context) => {
     /**
      * initialize user access verification.
      * get user data
@@ -83,28 +83,28 @@ const CourseLikeResolver = async (_, args, context) => {
     /** check course existence */
     const course = await checkCourseExistence(courseId);
 
-    /** add or remove user's like */
-    if (isLiked(course, user._id)) {
+    /** add or remove user's dislike */
+    if (isDisliked(course, user._id)) {
         /**
-         * proceed if the course is already liked by the user.
-         * remove user's like
+         * proceed if the course is already Disliked by the user.
+         * remove user's dislike
          */
-        const updateResult = await courseModel.updateOne({'_id': new mongoose.Types.ObjectId(courseId)}, {'$pull': {'likes': user._id}});
+        const updateResult = await courseModel.updateOne({'_id': new mongoose.Types.ObjectId(courseId)}, {'$pull': {'dislikes': user._id}});
 
         /** return error if the update process failed */
         if (updateResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
     } else {
         /**
-         * proceed if the course isn't liked by the user.
-         * remove user's dislike if it exists
+         * proceed if the course isn't Disliked by the user.
+         * remove user's like if it exists
          */
-        const removeDislikeResult = await courseModel.updateOne({'_id': new mongoose.Types.ObjectId(courseId)}, {'$pull': {'dislikes': user._id}});
+        const removeLikeResult = await courseModel.updateOne({'_id': new mongoose.Types.ObjectId(courseId)}, {'$pull': {'likes': user._id}});
 
         /** return error if the update process failed */
-        if (removeDislikeResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+        if (removeLikeResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
-        /** add user's like */
-        const updateResult = await courseModel.updateOne({'_id': new mongoose.Types.ObjectId(courseId)}, {'$push': {'likes': user._id}});
+        /** add user's dislike */
+        const updateResult = await courseModel.updateOne({'_id': new mongoose.Types.ObjectId(courseId)}, {'$push': {'dislikes': user._id}});
 
         /** return error if the update process failed */
         if (updateResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
@@ -115,9 +115,9 @@ const CourseLikeResolver = async (_, args, context) => {
 }
 
 /**
- * define Blog like resolver
+ * define Blog dislike resolver
  */
-const BlogLikeResolver = async (_, args, context) => {
+const BlogDislikeResolver = async (_, args, context) => {
     /**
      * initialize user access verification.
      * get user data
@@ -133,28 +133,28 @@ const BlogLikeResolver = async (_, args, context) => {
     /** check blog existence */
     const blog = await checkBlogExistence(blogId);
 
-    /** add or remove user's like */
-    if (isLiked(blog, user._id)) {
+    /** add or remove user's dislike */
+    if (isDisliked(blog, user._id)) {
         /**
-         * proceed if the blog is already liked by the user.
-         * remove user's like
+         * proceed if the blog is already Disliked by the user.
+         * remove user's dislike
          */
-        const updateResult = await blogModel.updateOne({'_id': new mongoose.Types.ObjectId(blogId)}, {'$pull': {'likes': user._id}});
+        const updateResult = await blogModel.updateOne({'_id': new mongoose.Types.ObjectId(blogId)}, {'$pull': {'dislikes': user._id}});
 
         /** return error if the update process failed */
         if (updateResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
     } else {
         /**
-         * proceed if the blog isn't liked by the user.
-         * remove user's dislike if it exists
+         * proceed if the blog isn't Disliked by the user.
+         * remove user's like if it exists
          */
-        const removeDislikeResult = await blogModel.updateOne({'_id': new mongoose.Types.ObjectId(blogId)}, {'$pull': {'dislikes': user._id}});
+        const removeLikeResult = await blogModel.updateOne({'_id': new mongoose.Types.ObjectId(blogId)}, {'$pull': {'likes': user._id}});
 
         /** return error if the update process failed */
-        if (removeDislikeResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
+        if (removeLikeResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
 
-        /** add user's like */
-        const updateResult = await blogModel.updateOne({'_id': new mongoose.Types.ObjectId(blogId)}, {'$push': {'likes': user._id}});
+        /** add user's dislike */
+        const updateResult = await blogModel.updateOne({'_id': new mongoose.Types.ObjectId(blogId)}, {'$push': {'dislikes': user._id}});
 
         /** return error if the update process failed */
         if (updateResult.modifiedCount <= 0) throw new createHttpError.ServerInternalError("فرایند با مشکل مواجه شد، لطفا مجددا تلاش نمایید");
@@ -165,18 +165,18 @@ const BlogLikeResolver = async (_, args, context) => {
 }
 
 /**
- * check if the item has been liked by the user or not
+ * check if the item has been disliked by the user or not
  * @param item item data
  * @param userId user object id
  * @returns {boolean}
  */
-function isLiked(item, userId) {
-    /** check if item likes includes user's object id */
-    return !!item.likes.includes(userId);
+function isDisliked(item, userId) {
+    /** check if item dislikes includes user's object id */
+    return !!item.dislikes.includes(userId);
 }
 
 module.exports = {
-    ProductLikeResolver,
-    CourseLikeResolver,
-    BlogLikeResolver,
+    ProductDislikeResolver,
+    CourseDislikeResolver,
+    BlogDislikeResolver,
 }
