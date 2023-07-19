@@ -6,12 +6,13 @@ const {
     ProductsListQuery, ProductQuery,
     CoursesListQuery, CourseQuery,
     CategoryQuery, CategoriesListQuery,
-    ParentCategoriesList, ChildCategoriesList
+    ParentCategoriesList, ChildCategoriesList,
 } = require("./queries");
 /** import mutations */
 const {
     BlogCommentCreationMutation, CourseCommentCreationMutation,
-    ProductCommentCreationMutation
+    ProductCommentCreationMutation, ProductLikeMutation,
+    BlogLikeMutation, CourseLikeMutation,
 } = require("./mutations");
 
 /**
@@ -44,6 +45,9 @@ const RootMutation = new GraphQLObjectType({
         blogCommentCreation: BlogCommentCreationMutation,
         courseCommentCreation: CourseCommentCreationMutation,
         productCommentCreation: ProductCommentCreationMutation,
+        likeProduct: ProductLikeMutation,
+        likeBlog: BlogLikeMutation,
+        likeCourse: CourseLikeMutation,
     }
 });
 

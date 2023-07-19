@@ -130,7 +130,7 @@ async function checkBlogExistence(_id) {
  */
 async function checkProductExistence(_id) {
     /** get product data from database */
-    const product = await productModel.findOne({_id});
+    const product = await productModel.findOne({_id: new mongoose.Types.ObjectId(_id)});
 
     /** throw error if product was not found */
     if (!product) throw new createHttpError.NotFound("محصولی با این مشخصات یافت نشد");
