@@ -14,7 +14,8 @@ const {
     ProductCommentCreationMutation, ProductLikeMutation,
     BlogLikeMutation, CourseLikeMutation,
     BlogDislikeMutation, CourseDislikeMutation,
-    ProductDislikeMutation,
+    ProductDislikeMutation, BlogBookmarkMutation,
+    CourseBookmarkMutation, ProductBookmarkMutation
 } = require("./mutations");
 
 /**
@@ -53,6 +54,9 @@ const RootMutation = new GraphQLObjectType({
         dislikeBlog: BlogDislikeMutation,
         dislikeCourse: CourseDislikeMutation,
         dislikeProduct: ProductDislikeMutation,
+        blogBookmark: BlogBookmarkMutation,
+        courseBookmark: CourseBookmarkMutation,
+        productBookmark: ProductBookmarkMutation,
     }
 });
 
