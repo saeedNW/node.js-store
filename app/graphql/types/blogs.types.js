@@ -22,6 +22,8 @@ const BlogType = new GraphQLObjectType({
         tags: {type: new GraphQLList(GraphQLString)},
         category: {type: PublicCategoryType},
         comments: {type: CommentsListType},
+        likes: {type: new GraphQLList(UserType)},
+        dislikes: {type: new GraphQLList(UserType)},
         createdAt: {type: GraphQLDateTime},
         updatedAt: {type: GraphQLDateTime},
     }
