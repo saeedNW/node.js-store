@@ -11,7 +11,8 @@ const {
 } = require("./categories.query");
 /** import user profile queries */
 const {
-    UserBookmarkedBlogsQuery, UserBookmarkedCoursesQuery
+    UserBookmarkedBlogsQuery, UserBookmarkedCoursesQuery,
+    UserBookmarkedProductsQuery
 } = require("./user.profile.query");
 
 module.exports = {
@@ -22,4 +23,5 @@ module.exports = {
     ParentCategoriesList, ChildCategoriesList,
     UserBookmarkedBlogsQuery,
     UserBookmarkedCoursesQuery,
+    UserBookmarkedProductsQuery,
 }

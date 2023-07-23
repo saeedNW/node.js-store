@@ -1,7 +1,7 @@
 /** import graphql access verification */
 const {graphqlAccessTokenVerification} = require("app/http/middlewares/verify.access.token.middleware");
 /** import models */
-const {blogModel, courseModel} = require("app/models");
+const {blogModel, courseModel, productModel} = require("app/models");
 /** import mongoose */
 const {default: mongoose} = require("mongoose");
 
@@ -49,7 +49,30 @@ const UserBookmarkedCoursesResolver = async (_, args, context) => {
     ]);
 }
 
+/**
+ * define users bookmarked products resolver
+ */
+const UserBookmarkedProductsResolver = async (_, args, context) => {
+    /**
+     * initialize user access verification.
+     * get user data
+     */
+    const user = await graphqlAccessTokenVerification(context);
+
+    /** get user bookmarked products */
+    return productModel.find({bookmarks: user._id}).populate([
+        {path: 'category'},
+        {path: 'comments.user'},
+        {path: 'comments.answers.user'},
+        {path: 'likes'},
+        {path: 'dislikes'},
+        {path: 'bookmarks'},
+        {path: 'supplier'},
+    ]);
+}
+
 module.exports = {
     UserBookmarkedBlogsResolver,
     UserBookmarkedCoursesResolver,
+    UserBookmarkedProductsResolver,
 }
