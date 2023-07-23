@@ -43,17 +43,17 @@ const Schema = new mongoose.Schema({
     },
     likes: {
         type: [mongoose.Types.ObjectId],
-        ref: "users",
+        ref: "user",
         default: []
     },
     dislikes: {
         type: [mongoose.Types.ObjectId],
-        ref: "users",
+        ref: "user",
         default: []
     },
     bookmarks: {
         type: [mongoose.Types.ObjectId],
-        ref: "users",
+        ref: "user",
         default: []
     },
 }, {
