@@ -9,11 +9,14 @@ const {
     CategoryQuery, CategoriesListQuery,
     ParentCategoriesList, ChildCategoriesList
 } = require("./categories.query");
+/** import user profile queries */
+const {UserBookmarkedBlogsQuery} = require("./user.profile.query");
 
 module.exports = {
     BlogsListQuery, BlogQuery,
     ProductsListQuery, ProductQuery,
     CoursesListQuery, CourseQuery,
     CategoryQuery, CategoriesListQuery,
-    ParentCategoriesList, ChildCategoriesList
+    ParentCategoriesList, ChildCategoriesList,
+    UserBookmarkedBlogsQuery
 }
