@@ -27,6 +27,7 @@ const {
     AddProductToBasketMutation,
     AddCourseToBasketMutation,
     RemoveProductFromBasketMutation,
+    RemoveCourseFromBasketMutation
 } = require("./basket.mutation");
 
 module.exports = {
@@ -45,4 +46,5 @@ module.exports = {
     AddProductToBasketMutation,
     AddCourseToBasketMutation,
     RemoveProductFromBasketMutation,
+    RemoveCourseFromBasketMutation,
 }

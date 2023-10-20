@@ -5,6 +5,7 @@ const {
     AddProductToBasketResolver,
     AddCourseToBasketResolver,
     RemoveProductFromBasketResolver,
+    RemoveCourseFromBasketResolver
 } = require("app/graphql/resolvers/basket.resolver");
 /** import basket args */
 const {
@@ -39,8 +40,18 @@ const RemoveProductFromBasketMutation = {
     resolve: RemoveProductFromBasketResolver
 }
 
+/**
+ * define remove course from basket mutation
+ */
+const RemoveCourseFromBasketMutation = {
+    type: ResponseType,
+    args: {...BasketCourseArgs},
+    resolve: RemoveCourseFromBasketResolver
+}
+
 module.exports = {
     AddProductToBasketMutation,
     AddCourseToBasketMutation,
     RemoveProductFromBasketMutation,
+    RemoveCourseFromBasketMutation,
 }

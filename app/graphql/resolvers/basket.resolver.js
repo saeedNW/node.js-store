@@ -165,6 +165,58 @@ const RemoveProductFromBasketResolver = async (_, args, context) => {
 }
 
 /**
+ * define remove course from basket resolver
+ */
+const RemoveCourseFromBasketResolver = async (_, args, context) => {
+    /**
+     * initialize user access verification.
+     * get user data
+     */
+    const user = await graphqlAccessTokenVerification(context);
+
+    /** extract data from arguments */
+    const {courseId} = args;
+
+    /** check if the course id is a valid mongodb object id */
+    mongoObjectIdValidation(courseId);
+
+    /** check course existence */
+    await checkCourseExistence(courseId);
+
+    /** retrieve course data from user basket */
+    const course = await findCourseInBasket(user._id, courseId);
+
+    /** throe error if the course was not found */
+    if (!course) throw new createHttpError.NotFound('دوره مورد نظر در سبد خرید یافت نشد');
+
+    /** proceed based on course count */
+    if (course.count > 1) {
+        /** update course count if its count was more than 1 */
+        await userModel.updateOne({
+            '_id': user._id,
+            'basket.courses.courseId': courseId
+        }, {
+            $inc: {'basket.courses.$.count': -1}
+        });
+    } else {
+        /** remove course from user's basket if its count was less than equal to 1 */
+        await userModel.updateOne({
+            '_id': user._id,
+            'basket.courses.courseId': courseId
+        }, {
+            $pull: {
+                'basket.courses': {
+                    courseId,
+                }
+            }
+        });
+    }
+
+    /** send success response */
+    return sendSuccessResponse(httpStatus.OK, 'دوره با موفقیت از سبد خرید حذف شد');
+}
+
+/**
  * retrieve chosen product from user basket
  * @param {object|string} userId - user object id
  * @param {object|string} productId - product object id
@@ -208,4 +260,5 @@ module.exports = {
     AddProductToBasketResolver,
     AddCourseToBasketResolver,
     RemoveProductFromBasketResolver,
+    RemoveCourseFromBasketResolver,
 }
