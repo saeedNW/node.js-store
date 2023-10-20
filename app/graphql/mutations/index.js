@@ -25,6 +25,7 @@ const {
 /** import basket mutation */
 const {
     AddProductToBasketMutation,
+    AddCourseToBasketMutation,
 } = require("./basket.mutation");
 
 module.exports = {
@@ -41,4 +42,5 @@ module.exports = {
     CourseBookmarkMutation,
     BlogBookmarkMutation,
     AddProductToBasketMutation,
+    AddCourseToBasketMutation,
 }

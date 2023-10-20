@@ -3,7 +3,7 @@ const {graphqlAccessTokenVerification} = require("app/http/middlewares/verify.ac
 /** import graphql utils */
 const {
     checkProductExistence, sendSuccessResponse,
-    mongoObjectIdValidation
+    checkCourseExistence, mongoObjectIdValidation
 } = require("app/graphql/utils");
 /** import models */
 const {userModel} = require("app/models");
@@ -62,6 +62,55 @@ const AddProductToBasketResolver = async (_, args, context) => {
 }
 
 /**
+ * define add course to basket resolver
+ */
+const AddCourseToBasketResolver = async (_, args, context) => {
+    /**
+     * initialize user access verification.
+     * get user data
+     */
+    const user = await graphqlAccessTokenVerification(context);
+
+    /** extract data from arguments */
+    const {courseId} = args;
+
+    /** check if the course id is a valid mongodb object id */
+    mongoObjectIdValidation(courseId);
+
+    /** check course existence */
+    await checkCourseExistence(courseId);
+
+    /** retrieve course data from user basket */
+    const course = await findCourseInBasket(user._id, courseId);
+
+    /** proceed based on course existence */
+    if (course) {
+        /** update course count if it was found in user's basket */
+        await userModel.updateOne({
+            '_id': user._id,
+            'basket.courses.courseId': courseId
+        }, {
+            $inc: {'basket.courses.$.count': 1}
+        });
+    } else {
+        /** add course to user's basket if it was not found */
+        await userModel.updateOne({
+            '_id': user._id,
+        }, {
+            $push: {
+                'basket.courses': {
+                    courseId,
+                    count: 1
+                }
+            }
+        });
+    }
+
+    /** send success response */
+    return sendSuccessResponse(httpStatus.OK);
+}
+
+/**
  * retrieve chosen product from user basket
  * @param {object|string} userId - user object id
  * @param {object|string} productId - product object id
@@ -81,6 +130,27 @@ async function findProductInBasket(userId, productId) {
     return product?.basket?.products?.[0];
 }
 
+/**
+ * retrieve chosen course from user basket
+ * @param {object|string} userId - user object id
+ * @param {object|string} courseId - course object id
+ * @returns {Promise<*>} - return founded product data
+ */
+async function findCourseInBasket(userId, courseId) {
+    /** retrieve user basket course data from database */
+    const basketCourse = await userModel.findOne({
+        '_id': userId,
+        'basket.courses.courseId': courseId
+    }, {'basket.courses.$': 1});
+
+    /** copy course data */
+    const course = copyObject(basketCourse);
+
+    /** return courses data */
+    return course?.basket?.courses?.[0];
+}
+
 module.exports = {
     AddProductToBasketResolver,
+    AddCourseToBasketResolver,
 }
