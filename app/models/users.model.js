@@ -2,6 +2,48 @@
 const {default: mongoose} = require("mongoose");
 
 /**
+ * define product schema for basket
+ */
+const productSchema = new mongoose.Schema({
+    productId: {
+        type: mongoose.Types.ObjectId,
+        ref: "product"
+    },
+    count: {
+        type: Number,
+        default: 1
+    }
+});
+
+/**
+ * define course schema for basket
+ */
+const courseSchema = new mongoose.Schema({
+    courseId: {
+        type: mongoose.Types.ObjectId,
+        ref: "course"
+    },
+    count: {
+        type: Number,
+        default: 1
+    }
+});
+
+/**
+ * define basket schema
+ */
+const basketSchema = new mongoose.Schema({
+    products: {
+        type: [productSchema],
+        default: []
+    },
+    courses: {
+        type: [courseSchema],
+        default: []
+    },
+});
+
+/**
  * define user schema
  */
 const Schema = new mongoose.Schema({
@@ -30,7 +72,7 @@ const Schema = new mongoose.Schema({
     otp: {
         type: {
             code: {
-                type: Number
+                type: String
             },
             expires: {
                 type: Date
@@ -66,6 +108,7 @@ const Schema = new mongoose.Schema({
         ref: "course",
         default: []
     },
+    basket: {type: basketSchema}
 }, {
     timestamps: true
 });
