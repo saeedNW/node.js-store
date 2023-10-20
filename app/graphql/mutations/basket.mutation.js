@@ -4,6 +4,7 @@ const {ResponseType} = require("app/graphql/types/public.types");
 const {
     AddProductToBasketResolver,
     AddCourseToBasketResolver,
+    RemoveProductFromBasketResolver,
 } = require("app/graphql/resolvers/basket.resolver");
 /** import basket args */
 const {
@@ -29,7 +30,17 @@ const AddCourseToBasketMutation = {
     resolve: AddCourseToBasketResolver
 }
 
+/**
+ * define remove product from basket mutation
+ */
+const RemoveProductFromBasketMutation = {
+    type: ResponseType,
+    args: {...BasketProductArgs},
+    resolve: RemoveProductFromBasketResolver
+}
+
 module.exports = {
     AddProductToBasketMutation,
     AddCourseToBasketMutation,
+    RemoveProductFromBasketMutation,
 }

@@ -7,6 +7,8 @@ const {
 } = require("app/graphql/utils");
 /** import models */
 const {userModel} = require("app/models");
+/** import http-error module */
+const createHttpError = require("http-errors");
 /** import http status codes module */
 const httpStatus = require("http-status-codes");
 /** import helper functions */
@@ -111,6 +113,58 @@ const AddCourseToBasketResolver = async (_, args, context) => {
 }
 
 /**
+ * define remove product from basket resolver
+ */
+const RemoveProductFromBasketResolver = async (_, args, context) => {
+    /**
+     * initialize user access verification.
+     * get user data
+     */
+    const user = await graphqlAccessTokenVerification(context);
+
+    /** extract data from arguments */
+    const {productId} = args;
+
+    /** check if the product id is a valid mongodb object id */
+    mongoObjectIdValidation(productId);
+
+    /** check product existence */
+    await checkProductExistence(productId);
+
+    /** retrieve product data from user basket */
+    const product = await findProductInBasket(user._id, productId);
+
+    /** throe error if the product was not found */
+    if (!product) throw new createHttpError.NotFound('محصول مورد نظر در سبد خرید یافت نشد');
+
+    /** proceed based on product count */
+    if (product.count > 1) {
+        /** update product count if its count was more than 1 */
+        await userModel.updateOne({
+            '_id': user._id,
+            'basket.products.productId': productId
+        }, {
+            $inc: {'basket.products.$.count': -1}
+        });
+    } else {
+        /** remove product from user's basket if its count was less than equal to 1 */
+        await userModel.updateOne({
+            '_id': user._id,
+            'basket.products.productId': productId
+        }, {
+            $pull: {
+                'basket.products': {
+                    productId,
+                }
+            }
+        });
+    }
+
+    /** send success response */
+    return sendSuccessResponse(httpStatus.OK, 'محصول با موفقیت از سبد خرید حذف شد');
+}
+
+/**
  * retrieve chosen product from user basket
  * @param {object|string} userId - user object id
  * @param {object|string} productId - product object id
@@ -153,4 +207,5 @@ async function findCourseInBasket(userId, courseId) {
 module.exports = {
     AddProductToBasketResolver,
     AddCourseToBasketResolver,
+    RemoveProductFromBasketResolver,
 }
