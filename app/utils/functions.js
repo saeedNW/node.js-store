@@ -335,6 +335,125 @@ function getCourseTotalTime(chapters = []) {
     return (hour + ":" + minute + ":" + second);
 }
 
+/**
+ * user basket data retriever
+ * @param {object|string} userId - user's object id
+ * @returns {Promise<*>} - return user's basket data
+ */
+async function getUserBasket(userId) {
+    /** retrieve user basket data */
+    const userData = await model.userModel.aggregate([
+        {
+            $match: {_id: userId}
+        },
+        {
+            $project: {basket: 1}
+        }, {
+            $lookup: {
+                from: "products",
+                localField: "basket.products.productId",
+                foreignField: "_id",
+                as: "productDetail"
+            }
+        }, {
+            $lookup: {
+                from: "courses",
+                localField: "basket.courses.courseId",
+                foreignField: "_id",
+                as: "courseDetail"
+            }
+        }, {
+            $addFields: {
+                "productDetail": {
+                    /**
+                     * calculate user payment
+                     * MongoDB $function document => https://www.mongodb.com/docs/manual/reference/operator/aggregation/function/
+                     */
+                    $function: {
+                        body: function (productDetail, products) {
+                            return productDetail.map(function (product) {
+                                /** get product count in user basket */
+                                const count = products.find(item => item.productId.valueOf() === product._id.valueOf()).count;
+                                /** calculate user order total price */
+                                const totalPrice = count * product.price
+                                /** return result */
+                                return {
+                                    ...product,
+                                    basketCount: count,
+                                    totalPrice,
+                                    /** calculate discount */
+                                    finalPrice: Math.ceil(totalPrice - ((product.discount / 100) * totalPrice))
+                                }
+                            })
+                        },
+                        args: ["$productDetail", "$basket.products"],
+                        lang: "js"
+                    }
+                },
+                "courseDetail": {
+                    /** calculate user payment */
+                    $function: {
+                        body: function (courseDetail) {
+                            return courseDetail.map(function (course) {
+                                return {
+                                    ...course,
+                                    /** calculate discount */
+                                    finalPrice: Math.ceil(course.price - ((course.discount / 100) * course.price))
+                                }
+                            })
+                        },
+                        args: ["$courseDetail"],
+                        lang: "js"
+                    }
+                },
+                "payDetail": {
+                    $function: {
+                        body: function (courseDetail, productDetail, products) {
+                            /** calculate course price amount */
+                            const courseAmount = courseDetail.reduce(function (total, course) {
+                                return Math.ceil(total + (course.price - ((course.discount / 100) * course.price)));
+                            }, 0)
+
+                            /** calculate course price amount */
+                            const productAmount = productDetail.reduce(function (total, product) {
+                                /** get product count in user basket */
+                                const count = products.find(item => item.productId.valueOf() === product._id.valueOf()).count;
+                                /** calculate user order total price */
+                                const totalPrice = count * product.price;
+                                /** calculate discount */
+                                return Math.ceil(total + (totalPrice - ((product.discount / 100) * totalPrice)));
+                            }, 0)
+
+                            /** extract courses' id from courses' data */
+                            const courseIds = courseDetail.map(course => course._id.valueOf());
+                            /** extract products' id from products' data */
+                            const productIds = productDetail.map(product => product._id.valueOf());
+
+                            /** return final data */
+                            return {
+                                courseAmount,
+                                productAmount,
+                                paymentAmount: courseAmount + productAmount,
+                                courseIds,
+                                productIds
+                            }
+                        },
+                        args: ["$courseDetail", "$productDetail", "$basket.products"],
+                        lang: "js"
+                    }
+                },
+            }
+        }, {
+            $project: {
+                basket: 0
+            }
+        }
+    ]);
+
+    /** return data */
+    return copyObject(userData);
+}
+
 module.exports = {
     randomNumberGenerator,
     signAccessToken,
@@ -346,5 +465,6 @@ module.exports = {
     deleteInvalidPropertyInObject,
     setFeatures,
     getTime,
-    getCourseTotalTime
+    getCourseTotalTime,
+    getUserBasket,
 }

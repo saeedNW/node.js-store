@@ -1,9 +1,12 @@
 /** import graphql access verification */
 const {graphqlAccessTokenVerification} = require("app/http/middlewares/verify.access.token.middleware");
+/** import helper functions */
+const {getUserBasket} = require("app/utils/functions");
 /** import models */
-const {blogModel, courseModel, productModel} = require("app/models");
-/** import mongoose */
-const {default: mongoose} = require("mongoose");
+const {
+    blogModel, courseModel,
+    productModel, userModel
+} = require("app/models");
 
 /**
  * define users bookmarked blogs resolver
@@ -71,8 +74,23 @@ const UserBookmarkedProductsResolver = async (_, args, context) => {
     ]);
 }
 
+/**
+ * define users basket resolver
+ */
+const UserBasketResolver = async (_, args, context) => {
+    /**
+     * initialize user access verification.
+     * get user data
+     */
+    const user = await graphqlAccessTokenVerification(context);
+
+    /** retrieve user basket data */
+    return (await getUserBasket(user._id));
+}
+
 module.exports = {
     UserBookmarkedBlogsResolver,
     UserBookmarkedCoursesResolver,
     UserBookmarkedProductsResolver,
+    UserBasketResolver,
 }

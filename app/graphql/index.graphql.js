@@ -8,7 +8,7 @@ const {
     CategoryQuery, CategoriesListQuery,
     ParentCategoriesList, ChildCategoriesList,
     UserBookmarkedBlogsQuery, UserBookmarkedCoursesQuery,
-    UserBookmarkedProductsQuery,
+    UserBookmarkedProductsQuery, UserBasketQuery
 } = require("./queries");
 /** import mutations */
 const {
@@ -42,6 +42,7 @@ const RootQuery = new GraphQLObjectType({
         getUserBookmarkedBlogs: UserBookmarkedBlogsQuery,
         getUserBookmarkedCourses: UserBookmarkedCoursesQuery,
         getUserBookmarkedProducts: UserBookmarkedProductsQuery,
+        getUserBasket: UserBasketQuery,
     }
 });
 

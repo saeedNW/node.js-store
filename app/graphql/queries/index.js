@@ -12,7 +12,7 @@ const {
 /** import user profile queries */
 const {
     UserBookmarkedBlogsQuery, UserBookmarkedCoursesQuery,
-    UserBookmarkedProductsQuery
+    UserBookmarkedProductsQuery, UserBasketQuery,
 } = require("./user.profile.query");
 
 module.exports = {
@@ -24,4 +24,5 @@ module.exports = {
     UserBookmarkedBlogsQuery,
     UserBookmarkedCoursesQuery,
     UserBookmarkedProductsQuery,
+    UserBasketQuery,
 }

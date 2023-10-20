@@ -108,6 +108,11 @@ const Schema = new mongoose.Schema({
         ref: "course",
         default: []
     },
+    products: {
+        type: [mongoose.Types.ObjectId],
+        ref: "products",
+        default: []
+    },
     basket: {type: basketSchema}
 }, {
     timestamps: true

@@ -8,8 +8,13 @@ const {ProductsListType} = require("app/graphql/types/products.types");
 const {
     UserBookmarkedBlogsResolver,
     UserBookmarkedCoursesResolver,
-    UserBookmarkedProductsResolver
+    UserBookmarkedProductsResolver,
+    UserBasketResolver
 } = require("app/graphql/resolvers/user.profile.resolver");
+
+
+
+const {AnyType} = require("../types/public.types");
 
 /**
  * define user bookmarked blogs query
@@ -35,8 +40,17 @@ const UserBookmarkedProductsQuery = {
     resolve: UserBookmarkedProductsResolver
 }
 
+/**
+ * define user basket query
+ */
+const UserBasketQuery = {
+    type: AnyType,
+    resolve: UserBasketResolver
+}
+
 module.exports = {
     UserBookmarkedBlogsQuery,
     UserBookmarkedCoursesQuery,
     UserBookmarkedProductsQuery,
+    UserBasketQuery,
 }

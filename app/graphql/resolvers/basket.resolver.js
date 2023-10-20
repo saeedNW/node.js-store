@@ -85,28 +85,21 @@ const AddCourseToBasketResolver = async (_, args, context) => {
     /** retrieve course data from user basket */
     const course = await findCourseInBasket(user._id, courseId);
 
-    /** proceed based on course existence */
-    if (course) {
-        /** update course count if it was found in user's basket */
-        await userModel.updateOne({
-            '_id': user._id,
-            'basket.courses.courseId': courseId
-        }, {
-            $inc: {'basket.courses.$.count': 1}
-        });
-    } else {
-        /** add course to user's basket if it was not found */
-        await userModel.updateOne({
-            '_id': user._id,
-        }, {
-            $push: {
-                'basket.courses': {
-                    courseId,
-                    count: 1
-                }
+    /** throw error if the course was in user basket */
+    if (course)
+        throw new createHttpError.BadRequest("این دوره از پیش در سبد خرید وجود دارد.")
+
+    /** add course to user's basket */
+    await userModel.updateOne({
+        '_id': user._id,
+    }, {
+        $push: {
+            'basket.courses': {
+                courseId,
+                count: 1
             }
-        });
-    }
+        }
+    });
 
     /** send success response */
     return sendSuccessResponse(httpStatus.OK);
