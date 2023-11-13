@@ -23,6 +23,11 @@ const {adminMainRouter} = require("./admin");
 /** initialize admin router */
 mainRouter.use("/admin", accessTokenVerification, checkRole("ADMIN"), adminMainRouter);
 
+/** import support router */
+const {supportsRouter} = require("./support/support.router");
+/** initialize support router */
+mainRouter.use("/support",  supportsRouter);
+
 /** import graphql config */
 const {graphqlConfig} = require("app/graphql/graphql.config");
 /** initialize admin router */
