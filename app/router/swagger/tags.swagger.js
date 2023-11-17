@@ -27,3 +27,10 @@
  *      -   name: user-authentication
  *          description: users authentication routes
  */
+
+/**
+ * @swagger
+ *  tags:
+ *      -   name: support
+ *          description: support routes
+ */
