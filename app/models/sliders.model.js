@@ -2,7 +2,7 @@
 const {default: mongoose} = require("mongoose");
 
 /**
- * define blogs schema
+ * define slider schema
  */
 const Schema = new mongoose.Schema({
     title: {

@@ -16,6 +16,8 @@ const {userModel} = require("./users.model");
 const {permissionsModel} = require("./permission.model");
 /** import roles model */
 const {rolesModel} = require("./role.model");
+/** import chat model */
+const {chatModel} = require("./chat.model");
 
 /** export main model */
 module.exports = {
@@ -28,4 +30,5 @@ module.exports = {
     userModel,
     permissionsModel,
     rolesModel,
+    chatModel,
 }
