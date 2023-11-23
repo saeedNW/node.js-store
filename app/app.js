@@ -27,6 +27,8 @@ module.exports = class Application {
         console.log(`application running in ${process.env.NODE_ENV} environment`);
         /** initialize application configuration method */
         this.applicationConfiguration();
+        /** initialize client session */
+        this.initClientSession();
         /** initialize application template engine */
         this.templateEngineInitializer();
         /** initialize application swagger configuration method */
@@ -66,6 +68,26 @@ module.exports = class Application {
         this.#app.use(this.#express.urlencoded({extended: true}));
         /** initialize express statics */
         this.#app.use(this.#express.static(path.resolve("./public")));
+    }
+
+    initClientSession() {
+        /** import cookie parser module */
+        const cookieParser = require('cookie-parser');
+        /** import express session module */
+        const session = require('express-session');
+
+        /** initialize cookie parser module */
+        this.#app.use(cookieParser(process.env.COOKIE_PARSER_SECRET_KEY));
+
+        /** initialize express session */
+        this.#app.use(session({
+            secret: process.env.COOKIE_PARSER_SECRET_KEY,
+            resave: true,
+            saveUninitialized: true,
+            cookie: {
+                secure: true
+            }
+        }));
     }
 
     /**
