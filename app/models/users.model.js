@@ -103,6 +103,10 @@ const Schema = new mongoose.Schema({
         ref: 'role',
         default: null
     },
+    token: {
+        type: String,
+        default: ''
+    },
     courses: {
         type: [mongoose.Types.ObjectId],
         ref: "course",
