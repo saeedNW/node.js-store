@@ -204,6 +204,8 @@ module.exports = class Application {
         const expressLayouts = require("express-ejs-layouts");
         /** import path module */
         const path = require("path");
+        /** import client global ejs variables handler */
+        const {clientHelper} = require("app/utils/client");
 
         /** initialize express-ejs-layouts */
         this.#app.use(expressLayouts);
@@ -237,6 +239,12 @@ module.exports = class Application {
          * render process with "layout" option.
          */
         this.#app.set("layout", "./layouts/layout");
+
+        /** initialize view engine locals data */
+        this.#app.use((req, res, next) => {
+            this.#app.locals = clientHelper(req, res);
+            next();
+        })
     }
 
     /**

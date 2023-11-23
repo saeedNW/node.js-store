@@ -13,7 +13,7 @@ const messageSchema = new mongoose.Schema({
         type: String
     },
     dateTime: {
-        type: Number
+        type: Date
     }
 });
 

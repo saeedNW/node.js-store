@@ -8,16 +8,29 @@
     padding: 0;
 }
 
+ul {
+    list-style: none;
+}
+
+#contacts ul {
+    margin: 19px 10px;
+}
+
 body {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: #27ae60;
-    font-family: 'Vazir';
-    font-size: 1em;
-    color: #32465a;
+    background: #27ae60 !important;
+    font-family: 'Vazir', serif !important;
+    font-size: 1em !important;
+    color: #32465a !important;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+}
+
+#login-submit {
+    width: 48px;
+    height: 31px;
 }
 
 #frame {
@@ -28,6 +41,11 @@ body {
     min-height: 300px;
     max-height: 720px;
     background: #E6EAEA;
+}
+
+.login-frame {
+    width: 40% !important;
+    height: unset !important;
 }
 
 #frame #sidepanel {
@@ -53,7 +71,15 @@ body {
 }
 
 #frame #sidepanel #profile.expanded .wrap p {
-    margin-top: 10px;
+    margin-top: 17px;
+}
+
+i.fa.fa-paperclip.attachment {
+    position: absolute;
+    z-index: 999999;
+    top: 11px;
+    right: 70px;
+    margin: auto;
 }
 
 #frame #sidepanel #profile.expanded .wrap i.expand-button {
@@ -136,7 +162,7 @@ body {
 #frame #sidepanel #profile .wrap #status-options.active {
     opacity: 1;
     visibility: visible;
-    margin: 75px 0 0 0;
+    margin-top: 75px;
 }
 
 #frame #sidepanel #profile .wrap #status-options:before {
@@ -158,9 +184,10 @@ body {
 
 #frame #sidepanel #profile .wrap #status-options ul li {
     display: block;
-    width: 100%;
-    height: 100%;
     text-align: center;
+    margin: 0 4px 7px;
+    border-bottom: 1px solid #999;
+    padding-bottom: 5px;
 }
 
 #frame #sidepanel #profile .wrap #status-options ul li:hover {
@@ -169,8 +196,9 @@ body {
 }
 
 #frame #sidepanel #profile .wrap #status-options ul li p {
-    width: 100%;
-    height: 100%;
+    text-align: right;
+    float: unset;
+    margin: 0;
 }
 
 #frame #sidepanel #profile .wrap #status-options ul li#status-online span.status-circle {
@@ -297,6 +325,7 @@ body {
     position: relative;
     font-size: 0.9em;
     cursor: pointer;
+    margin: 20px 0;
 }
 
 #frame #sidepanel #contacts ul li.contact:hover {
@@ -344,12 +373,13 @@ body {
 #frame #sidepanel #contacts ul li.contact .wrap img {
     width: 40px;
     border-radius: 50%;
-    float: left;
+    vertical-align: top;
     margin-right: 10px;
+    display: inline-block;
 }
 
 #frame #sidepanel #contacts ul li.contact .wrap .meta {
-    padding: 0;
+    display: inline-block;
 }
 
 #frame #sidepanel #contacts ul li.contact .wrap .meta .name {
@@ -463,6 +493,7 @@ body {
 
 #frame .content .contact-profile .social-media {
     float: right;
+    direction: rtl;
 }
 
 #frame .content .contact-profile .social-media i {
@@ -479,9 +510,7 @@ body {
 }
 
 #frame .content .messages {
-    height: auto;
-    min-height: calc(100% - 93px);
-    max-height: calc(100% - 93px);
+    max-height: 590px;
     overflow-y: scroll;
     overflow-x: hidden;
     width: 100%;
@@ -498,16 +527,13 @@ body {
 
 #frame .content .messages ul {
     margin: 30px 22px 30px 30px;
-    padding-bottom: 40px !important;
+    max-height: 531px;
 }
 
 #frame .content .messages ul li {
     display: inline-block;
     width: calc(100% - 25px);
     font-size: 0.9em;
-}
-
-#frame .content .messages ul li:nth-last-child(1) {
     margin-bottom: 20px;
 }
 
