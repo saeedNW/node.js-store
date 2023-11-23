@@ -141,8 +141,12 @@ module.exports = class Application {
     createServer() {
         /** import http module */
         const http = require("http");
+        /** import socket initializer */
+        const {initialSocket} = require("app/socket.io/socket.initializer");
         /** create http server */
         const server = http.createServer(this.#app);
+        /** initialize socket connection */
+        initialSocket(server);
         /** run server */
         server.listen(this.#PORT, () => {
             console.log(`running > http://localhost:${this.#PORT}`, `time: ${new Date()}`);
