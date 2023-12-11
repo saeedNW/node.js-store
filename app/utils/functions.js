@@ -208,10 +208,11 @@ function setFeatures(body) {
 
 /**
  * remove invalid properties in an object
- * @param data data object that needs to be validated
- * @param blackListFields list of the fields that has to be removed
+ * @param {object} data - data object that needs to be validated
+ * @param {array<any>} blackListFields - list of the fields that has to be removed
+ * @param {array<any>} nullableFields - list of the fields that can be empty and shouldn't be removed
  */
-function deleteInvalidPropertyInObject(data = {}, blackListFields = []) {
+function deleteInvalidPropertyInObject(data = {}, blackListFields = [], nullableFields = []) {
     /**
      * define invalid and nullish data
      * @type {(string|number)[]}
@@ -221,15 +222,26 @@ function deleteInvalidPropertyInObject(data = {}, blackListFields = []) {
     /** loop over data object properties */
     Object.keys(data).forEach(key => {
         /** remove property if it's a blacked listed data */
-        if (blackListFields.includes(key)) delete data[key]
-        /** trim string data */
-        if (typeof data[key] == "string") data[key] = data[key].trim();
-        /** loop over element of array properties and trim them */
-        if (Array.isArray(data[key]) && data[key].length > 0) data[key] = data[key].map(item => item.trim())
+        if (blackListFields.includes(key)) delete data[key];
         /** remove array properties if it's empty */
-        if (Array.isArray(data[key]) && data[key].length == 0) delete data[key]
+        if (Array.isArray(data[key]) && data[key].length === 0 && !nullableFields.includes(key)) delete data[key];
+
         /** remove property if it's an invalid or nullish data */
-        if (nullishData.includes(data[key])) delete data[key];
+        if (nullishData.includes(data[key].trim()) && !nullableFields.includes(key)) delete data[key];
+
+        /** proceed if data is a nested object */
+        if (typeof data[key] === 'object' && data[key] !== null) {
+            /** loop over data object properties */
+            Object.keys(data[key]).forEach(prop => {
+                /** remove property if it's a blacked listed data */
+                if (blackListFields.includes(prop)) delete data[key][prop];
+                /** remove property if it's an invalid or nullish data */
+                if (nullishData.includes(data[key][prop].trim()) && !nullableFields.includes(prop)) delete data[key][prop];
+            });
+
+            /** remove object properties if it's empty */
+            if (Object.keys(data[key]).length === 0 && !nullableFields.includes(key)) delete data[key];
+        }
     })
 }
 
