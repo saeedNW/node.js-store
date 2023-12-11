@@ -17,7 +17,7 @@ adminBlogRouter.get("/",
 
 adminBlogRouter.post("/add",
     permissionGuard([permissionConstants.addBlogs]),
-    uploadFile.single("image"), stringToArray("tags"), AdminBlogController.createBlog);
+    uploadFile.single("image"), stringToArray("tags", "body"), AdminBlogController.createBlog);
 
 adminBlogRouter.get("/single/:blogId",
     permissionGuard([permissionConstants.showBlogs]),
@@ -29,7 +29,7 @@ adminBlogRouter.delete("/remove/:blogId",
 
 adminBlogRouter.patch("/update/:blogId",
     permissionGuard([permissionConstants.editBlogs]),
-    uploadFile.single("image"), stringToArray("tags"), AdminBlogController.updateBlog);
+    uploadFile.single("image"), stringToArray("tags", "body"), AdminBlogController.updateBlog);
 
 module.exports = {
     adminBlogRouter

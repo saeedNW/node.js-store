@@ -7,9 +7,9 @@ const {uploadFile} = require("app/utils/multer");
 /** import string to array convertor */
 const {stringToArray} = require("app/http/middlewares/string.to.array.middleware");
 
-adminProductRouter.post("/new", uploadFile.array("images", 10), stringToArray("tags"), stringToArray("colors"), AdminProductController.addProduct);
+adminProductRouter.post("/new", uploadFile.array("images", 10), stringToArray("tags", "body"), stringToArray("colors", "body"), AdminProductController.addProduct);
 
-adminProductRouter.patch("/edit/:productId", uploadFile.array("images", 10), stringToArray("tags"), stringToArray("colors"), AdminProductController.updateProduct);
+adminProductRouter.patch("/edit/:productId", uploadFile.array("images", 10), stringToArray("tags", "body"), stringToArray("colors", "body"), AdminProductController.updateProduct);
 
 adminProductRouter.delete("/remove/:productId", AdminProductController.removeProduct);
 

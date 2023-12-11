@@ -7,7 +7,7 @@ const {uploadFile} = require("app/utils/multer");
 /** import string to array convertor */
 const {stringToArray} = require("app/http/middlewares/string.to.array.middleware");
 
-adminCourseRouter.post("/new", uploadFile.single("image"), stringToArray("tags"), AdminCourseController.addCourse);
+adminCourseRouter.post("/new", uploadFile.single("image"), stringToArray("tags", "body"), AdminCourseController.addCourse);
 
 adminCourseRouter.patch("/edit/:courseId", AdminCourseController.updateCourse);
 
